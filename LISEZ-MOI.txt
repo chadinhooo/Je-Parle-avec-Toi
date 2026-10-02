@@ -1,0 +1,19 @@
+INSTALLER « Je Parle Avec Toi » COMME UNE APPLI (PWA)
+
+Contenu du dossier
+- manifest.webmanifest   : carte d'identité de l'appli (nom, couleurs, icônes)
+- service-worker.js      : mode hors ligne (garde l'appli et les pictogrammes en mémoire)
+- assets/                : icônes (192, 512, maskable)
+
+À faire
+1. Renomme ton fichier HTML en index.html.
+2. Mets dans un même dossier : index.html + manifest.webmanifest + service-worker.js + assets/
+3. Héberge ce dossier en HTTPS (obligatoire pour l'installation et le hors ligne) :
+   - GitHub Pages, Netlify (glisser-déposer le dossier) ou Cloudflare Pages : gratuits.
+4. Ouvre l'adresse obtenue sur le téléphone :
+   - iPhone/iPad : Safari > Partager > Sur l'écran d'accueil.
+   - Android : Chrome > menu (3 points) > Installer l'application.
+5. Ouvre l'appli une fois avec internet pour charger les pictogrammes : ensuite ils restent disponibles hors ligne.
+
+Mise à jour
+Quand tu modifies index.html, change VERSION dans service-worker.js (ex. 'jpat-v6') pour forcer la mise à jour chez tout le monde.
