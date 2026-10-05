@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Je Parle Avec Toi">
+<meta name="format-detection" content="telephone=no">
+<title>Je Parle Avec Toi</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0d7a72">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:none;text-size-adjust:none;scroll-behavior:smooth;}
+:root, [data-theme="light"]{
+  --color-bg:#f7f6f2; --color-surface:#ffffff; --color-surface-2:#fbfbf9; --color-surface-offset:#f0eee8;
+  --color-divider:#e2ded6; --color-border:#d8d3c8;
+  --color-text:#26241f; --color-text-muted:#6f6a5f; --color-text-faint:#a8a297;
+  --color-primary:#0d7a72; --color-primary-hover:#0a5f59; --color-primary-active:#084c47; --color-primary-highlight:#d3e9e6;
+  --color-error:#b3261e; --color-error-highlight:#f6d9d6;
+  --radius-sm:.5rem; --radius-md:.9rem; --radius-lg:1.4rem; --radius-xl:2rem; --radius-full:9999px;
+  --shadow-sm:0 2px 6px rgba(60,50,30,.08); --shadow-md:0 6px 20px rgba(60,50,30,.12); --shadow-lg:0 16px 40px rgba(60,50,30,.18);
+  --cat-bleu:#2f7dd1; --cat-bleu-bg:#dcebfa;
+  --cat-vert:#3d9c4a; --cat-vert-bg:#dff3e0;
+  --cat-rouge:#d64545; --cat-rouge-bg:#fadede;
+  --cat-jaune:#c99416; --cat-jaune-bg:#faf1d3;
+  --cat-violet:#8a5cc9; --cat-violet-bg:#ece1f8;
+  --cat-orange:#e07a2c; --cat-orange-bg:#fbe6d3;
+  --font-display:'Baloo 2','Comic Sans MS',sans-serif;
+  --font-body:'Quicksand','Segoe UI',sans-serif;
+}
+[data-theme="dark"]{
+  --color-bg:#181a19; --color-surface:#20221f; --color-surface-2:#252722; --color-surface-offset:#2b2d27;
+  --color-divider:#33352f; --color-border:#3c3e37;
+  --color-text:#eceae4; --color-text-muted:#a6a398; --color-text-faint:#726f64;
+  --color-primary:#4fc7bd; --color-primary-hover:#7fd9d1; --color-primary-active:#a3e5df; --color-primary-highlight:#274642;
+  --color-error:#e08b86; --color-error-highlight:#4a2d2b;
+  --shadow-sm:0 2px 6px rgba(0,0,0,.3); --shadow-md:0 6px 20px rgba(0,0,0,.4); --shadow-lg:0 16px 40px rgba(0,0,0,.5);
+  --cat-bleu-bg:#1d3350; --cat-vert-bg:#1d3a22; --cat-rouge-bg:#452323; --cat-jaune-bg:#453a1c; --cat-violet-bg:#33244a; --cat-orange-bg:#452c1a;
+}
+body{min-height:100dvh;font-family:var(--font-body);font-size:1.05rem;color:var(--color-text);background:var(--color-bg);line-height:1.5;overflow-x:hidden;}
+img{display:block;max-width:100%;height:auto;}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none;}
+:focus-visible{outline:3px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
+h1,h2,h3{font-family:var(--font-display);line-height:1.15;}
+
+#app{max-width:100%;min-height:100dvh;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;gap:.75rem;padding:.9rem 1rem;background:var(--color-surface);border-bottom:1px solid var(--color-divider);position:sticky;top:0;z-index:30;}
+.logo{width:42px;height:42px;flex-shrink:0;}
+.topbar h1{font-size:1.15rem;color:var(--color-primary);}
+.topbar-spacer{flex:1;}
+.icon-btn{width:48px;height:48px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:var(--color-surface-offset);transition:background .18s;}
+.icon-btn:hover{background:var(--color-primary-highlight);}
+.icon-btn:active{transform:scale(.94);}
+
+.sentence-bar{display:flex;align-items:center;gap:.6rem;padding:.8rem 1rem;background:var(--color-surface-2);border-bottom:1px solid var(--color-divider);position:sticky;top:64px;z-index:29;}
+.sentence-strip{flex:1;display:flex;gap:.5rem;overflow-x:auto;min-height:64px;align-items:center;padding:.25rem;}
+.sentence-strip:empty::after{content:'Touche une image pour construire ta phrase';color:var(--color-text-faint);font-size:.9rem;white-space:nowrap;}
+.sentence-chip{display:flex;flex-direction:column;align-items:center;gap:.15rem;background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius-md);padding:.3rem .5rem;min-width:52px;flex-shrink:0;box-shadow:var(--shadow-sm);animation:pop .25s ease;}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.sentence-chip img{width:30px;height:30px;object-fit:contain;}
+.sentence-chip .label{font-size:.65rem;font-weight:600;color:var(--color-text-muted);white-space:nowrap;}
+.bar-actions{display:flex;gap:.5rem;flex-shrink:0;}
+.btn{font-family:var(--font-body);font-weight:700;border-radius:var(--radius-full);padding:.85rem 1.3rem;font-size:.95rem;display:inline-flex;align-items:center;gap:.5rem;transition:background .18s,transform .12s;min-height:48px;}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:var(--color-primary);color:#fff;box-shadow:var(--shadow-sm);}
+.btn-primary:hover{background:var(--color-primary-hover);}
+.btn-ghost{background:var(--color-surface-offset);color:var(--color-text);}
+.btn-ghost:hover{background:var(--color-error-highlight);color:var(--color-error);}
+
+.cat-tabs{display:flex;gap:.6rem;padding:.9rem 1rem;overflow-x:auto;background:var(--color-bg);}
+.cat-tab{flex-shrink:0;display:flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:var(--radius-full);font-weight:700;font-family:var(--font-display);font-size:.95rem;border:2px solid transparent;min-height:48px;white-space:nowrap;transition:transform .15s;}
+.cat-tab:active{transform:scale(.95);}
+.cat-tab.active{border-color:currentColor;box-shadow:var(--shadow-sm);}
+
+main{flex:1;padding:0 1rem 6.5rem;}
+.board-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(140px,100%),1fr));gap:1rem;padding-top:.25rem;}
+.pic-card{position:relative;background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius-lg);padding:.9rem .6rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;min-height:150px;box-shadow:var(--shadow-sm);transition:transform .15s,box-shadow .15s;}
+.pic-card:active{transform:scale(.94);box-shadow:var(--shadow-md);}
+.pic-card .strip{position:absolute;top:0;left:0;right:0;height:8px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+.pic-card .pic-img-wrap{width:76px;height:76px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;background:var(--color-surface-offset);overflow:hidden;}
+.pic-card .pic-img-wrap img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.pic-card .pic-label{font-family:var(--font-display);font-weight:700;font-size:.95rem;text-align:center;}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--color-surface);border-top:1px solid var(--color-divider);z-index:40;padding-bottom:env(safe-area-inset-bottom);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.7rem 0;font-size:1.4rem;color:var(--color-text-muted);min-height:64px;}
+.nav-btn span{font-size:.72rem;font-weight:600;font-family:var(--font-body);}
+.nav-btn.active{color:var(--color-primary);}
+
+.screen{display:none;}
+.screen.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+.profile-screen{padding:2rem 1.25rem 6rem;max-width:640px;margin:0 auto;}
+.profile-screen h2{font-size:1.6rem;margin-bottom:.4rem;}
+.profile-screen p.sub{color:var(--color-text-muted);margin-bottom:1.5rem;}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;}
+.profile-card{background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius-xl);padding:1.2rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;box-shadow:var(--shadow-sm);}
+.profile-avatar{width:74px;height:74px;border-radius:var(--radius-full);background:var(--color-primary-highlight);display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.profile-name{font-family:var(--font-display);font-weight:700;}
+.add-profile-card{border-style:dashed;color:var(--color-text-muted);justify-content:center;}
+
+.settings-screen{padding:1.5rem 1.25rem 6rem;max-width:720px;margin:0 auto;}
+.settings-screen h2{font-size:1.4rem;margin-bottom:1rem;}
+.settings-section{background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-lg);padding:1.2rem;margin-bottom:1.2rem;box-shadow:var(--shadow-sm);}
+.settings-section h3{font-size:1.05rem;margin-bottom:.8rem;color:var(--color-primary);}
+.field{margin-bottom:1rem;}
+.field label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.4rem;color:var(--color-text-muted);}
+.field input,.field select{width:100%;padding:.75rem .9rem;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-2);font-family:var(--font-body);font-size:1rem;min-height:48px;}
+.field input[type=file]{padding:.5rem;}
+.field input:focus{border-color:var(--color-primary);}
+.row-flex{display:flex;gap:.75rem;flex-wrap:wrap;}
+.chip-select{display:flex;gap:.5rem;flex-wrap:wrap;}
+.chip-select button{padding:.55rem 1rem;border-radius:var(--radius-full);border:2px solid var(--color-border);font-weight:700;font-size:.85rem;}
+.chip-select button.selected{border-color:currentColor;box-shadow:var(--shadow-sm);}
+.card-list{display:flex;flex-direction:column;gap:.6rem;max-height:320px;overflow-y:auto;}
+.card-list-item{display:flex;align-items:center;gap:.8rem;padding:.6rem .8rem;background:var(--color-surface-2);border-radius:var(--radius-md);border:1px solid var(--color-divider);}
+.card-list-item img{width:36px;height:36px;object-fit:contain;}
+.card-list-item .meta{flex:1;}
+.card-list-item .meta .n{font-weight:700;}
+.card-list-item .meta .c{font-size:.8rem;color:var(--color-text-muted);}
+.card-list-item .del{color:var(--color-error);font-size:1.3rem;padding:.4rem;}
+
+.lock-banner{position:fixed;inset:0;background:var(--color-bg);z-index:60;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;padding:2rem;text-align:center;}
+.lock-banner.hidden{display:none;}
+.lock-banner .lock-icon{font-size:3rem;}
+.pin-inputs{display:flex;gap:.6rem;}
+.pin-inputs input{width:52px;height:60px;text-align:center;font-size:1.6rem;border-radius:var(--radius-md);border:2px solid var(--color-border);background:var(--color-surface);}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;padding:3rem 1rem;color:var(--color-text-muted);}
+.empty-state .ic{font-size:2.6rem;margin-bottom:.8rem;}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--color-primary);color:#fff;padding:.8rem 1.3rem;border-radius:var(--radius-full);font-weight:700;box-shadow:var(--shadow-md);z-index:80;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+@media (min-width:768px){main{padding:0 2rem 2rem;} .bottom-nav{max-width:520px;left:50%;transform:translateX(-50%);border-radius:var(--radius-full);bottom:1rem;box-shadow:var(--shadow-lg);border:1px solid var(--color-divider);}}
+
+html,body{-webkit-touch-callout:none}
+body{min-height:100vh;min-height:100dvh;-webkit-user-select:none;user-select:none;overscroll-behavior-y:none;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+#app{min-height:100vh;min-height:100dvh}
+button,.pic-card,.nav-btn{touch-action:manipulation;-webkit-appearance:none;appearance:none}
+input,select{-webkit-appearance:none;appearance:none;font-size:16px}
+input[type=text],input[type=tel],input[type=search],select{-webkit-user-select:text;user-select:text}
+input[type=search]{width:100%;padding:.75rem .9rem;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-2);color:var(--color-text);min-height:48px;font-family:var(--font-body)}
+.topbar{padding-top:calc(.9rem + env(safe-area-inset-top))}
+.lock-banner{top:0;right:0;bottom:0;left:0}
+.cat-tabs,.quick,.crumbs,.chips{-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar,.quick::-webkit-scrollbar,.crumbs::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}
+.ic{display:inline-flex;align-items:center;justify-content:center;line-height:0}
+.ic svg{width:22px;height:22px}
+.nav-btn .ic svg{width:26px;height:26px}
+.icon-btn .ic svg{width:24px;height:24px}
+.sentence-bar{display:block;padding:.7rem 1rem;top:var(--tb,64px)}
+.sentence-row{display:flex;align-items:center;gap:.6rem}
+.sentence-text{flex:1;font-family:var(--font-display);font-weight:700;font-size:1.45rem;min-height:2.2rem;line-height:1.2}
+.sentence-text.empty{color:var(--color-text-faint);font-size:1rem;font-weight:500}
+.crumbs{display:flex;gap:.4rem;overflow-x:auto;padding-top:.5rem}
+.crumbs:empty{display:none}
+.crumb{display:flex;align-items:center;gap:.35rem;flex-shrink:0;padding:.25rem .7rem .25rem .3rem;border-radius:var(--radius-full);font-weight:700;font-size:.85rem;border:2px solid currentColor}
+.crumb .ci{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;overflow:hidden}
+.crumb .ci img{width:24px;height:24px;object-fit:contain}
+.quick{display:flex;gap:.5rem;overflow-x:auto;padding:.6rem 1rem}
+.quick button{flex-shrink:0;display:flex;align-items:center;gap:.4rem;padding:.3rem .9rem .3rem .4rem;border-radius:var(--radius-full);background:var(--cat-jaune-bg);color:var(--cat-jaune);font-weight:700;font-family:var(--font-display);min-height:44px}
+.quick button:active{transform:scale(.94)}
+.quick .qi{display:flex;width:32px;height:32px;align-items:center;justify-content:center;background:#fff;border-radius:50%;overflow:hidden}
+.quick img{width:26px;height:26px;object-fit:contain}
+.flow-head{display:flex;align-items:center;gap:.7rem;padding:.6rem 1rem 0}
+.flow-title{flex:1;font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--color-primary)}
+.pic-img-wrap{font-size:2rem;background:#fff}
+.pic-img-wrap img{width:100%;height:100%;object-fit:contain;padding:4px}
+.ph{font-family:var(--font-display);font-weight:800;color:var(--color-text-faint);font-size:2rem}
+.cat-tab img{width:26px;height:26px;object-fit:contain;background:#fff;border-radius:50%;padding:2px}
+.pic-sub{font-size:.75rem;color:var(--color-text-muted);text-align:center;margin-top:-.3rem}
+.done-box{grid-column:1/-1;text-align:center;padding:1.5rem 0;display:flex;flex-direction:column;gap:1rem;align-items:center}
+.skip-box{grid-column:1/-1;display:flex;justify-content:center;padding-top:.5rem}
+.profile-card.current{border-color:var(--color-primary)}
+.profile-avatar{font-family:var(--font-display);font-weight:800;color:#fff;font-size:1.9rem}
+.card-list-item select{padding:.4rem;border-radius:var(--radius-sm);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text)}
+.card-list-item .ci2{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px;flex-shrink:0;overflow:hidden}
+.card-list-item .ci2 img{width:34px;height:34px}
+.card-list-item .del,.card-list-item .act{display:flex;align-items:center;padding:.4rem}
+.card-list-item .act{color:var(--color-text-muted)}
+.lock-icon svg{width:48px;height:48px}
+.toast{bottom:calc(90px + env(safe-area-inset-bottom))}
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem}
+.type-btn{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.6rem .4rem;border-radius:var(--radius-md);border:2px solid var(--color-border);background:var(--color-surface);text-align:center;font-weight:700;font-size:.85rem}
+.type-btn .ti{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px}
+.type-btn img{width:38px;height:38px;object-fit:contain}
+.type-btn small{font-weight:500;color:var(--color-text-muted);font-size:.7rem;line-height:1.2}
+.type-btn.on,.seg button.on,.chip.on{border-color:var(--color-primary);background:var(--color-primary-highlight);color:var(--color-primary)}
+.seg{display:flex;gap:.5rem;flex-wrap:wrap}
+.seg button,.chip{padding:.55rem 1rem;border-radius:var(--radius-full);border:2px solid var(--color-border);font-weight:700;font-size:.85rem;background:var(--color-surface);min-height:44px}
+.chips{display:flex;gap:.5rem;overflow-x:auto;padding:.7rem 0}
+.chip{flex-shrink:0;min-height:40px}
+.editor{border:2px solid var(--color-primary);border-radius:var(--radius-lg);padding:1rem;margin:1rem 0;background:var(--color-surface-2)}
+.editor h3{margin-bottom:.8rem}
+.img-pick{display:flex;align-items:center;gap:.6rem;justify-content:center;margin-bottom:.7rem}
+.img-prev{width:110px;height:110px;border-radius:var(--radius-md);background:#fff;border:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.img-prev img{width:100%;height:100%;object-fit:contain;padding:6px}
+.preview{background:var(--color-primary-highlight);color:var(--color-primary);padding:.7rem 1rem;border-radius:var(--radius-md);font-weight:700;margin-bottom:1rem}
+details.grp{margin-bottom:.6rem;border:1px solid var(--color-divider);border-radius:var(--radius-md);background:var(--color-surface-2)}
+details.grp>summary{padding:.8rem 1rem;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.grp>summary::-webkit-details-marker{display:none}
+details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.5rem}
+.hint{font-size:.8rem;color:var(--color-text-muted);margin-top:.3rem}
+
+.board-grid.big{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.board-grid.big .pic-card{min-height:200px}
+.board-grid.big .pic-img-wrap{width:104px;height:104px}
+.board-grid.big .pic-label{font-size:1.2rem}
+.board-grid.big .pic-sub{font-size:.85rem}
+.flow-hint{padding:.2rem 1rem 0;color:var(--color-text-muted);font-size:1rem;font-weight:600}
+.btn.small{min-height:38px;padding:.4rem .9rem;font-size:.8rem}
+.int-row .meta .c{display:block}
+.int-row.off{opacity:.55}
+.int-row{flex-wrap:wrap}
+.int-row .acts{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.int-row .ci2 img{width:34px;height:34px}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="topbar" id="topbar">
+<svg class="logo" viewBox="0 0 48 48" fill="none" aria-label="Logo Je Parle Avec Toi"><circle cx="24" cy="24" r="22" fill="var(--color-primary-highlight)"/><path d="M14 20a10 10 0 0 1 20 0v4a10 10 0 0 1-6 9l-1 3-2-3a10 10 0 0 1-11-9z" fill="var(--color-primary)"/><circle cx="19" cy="21" r="1.8" fill="var(--color-surface)"/><circle cx="29" cy="21" r="1.8" fill="var(--color-surface)"/></svg>
+<h1>Je Parle Avec Toi</h1><div class="topbar-spacer"></div>
+<button class="icon-btn" id="themeToggle" aria-label="Changer de thème"><i class="ic" id="themeIcon"></i></button>
+</header>
+<section class="screen active" id="screen-board">
+<div class="sentence-bar">
+<div class="sentence-row">
+<div class="sentence-text empty" id="sentenceText" aria-live="polite"></div>
+<div class="bar-actions">
+<button class="btn btn-ghost" id="clearSentence" aria-label="Recommencer"><i class="ic" data-ic="reset"></i></button>
+<button class="btn btn-primary" id="speakSentence" aria-label="Dire ma phrase"><i class="ic" data-ic="speaker"></i>Dire</button>
+</div></div>
+<div class="crumbs" id="crumbs"></div>
+</div>
+<div class="quick" id="quickRow" aria-label="Mots rapides"></div>
+<div class="flow-head"><button class="btn btn-ghost" id="backBtn" style="display:none" aria-label="Retour"><i class="ic" data-ic="back"></i>Retour</button><div class="flow-title" id="flowTitle"></div><button class="icon-btn" id="hintSpeak" aria-label="Écouter la consigne"><i class="ic" data-ic="speaker"></i></button></div>
+<p class="flow-hint" id="flowHint"></p>
+<div class="cat-tabs" id="catTabs" role="tablist"></div>
+<main><div class="board-grid" id="boardGrid"></div></main>
+</section>
+<section class="screen" id="screen-profiles"><div class="profile-screen"><h2>Qui utilise l'application ?</h2><p class="sub">Touche ton profil pour commencer.</p><div class="profile-grid" id="profileGrid"></div></div></section>
+<section class="screen" id="screen-settings"><div class="settings-screen"><h2>Personnalisation</h2>
+
+<div class="settings-section" id="secIntents"><h3>Étape 2 : « Que veux-tu dire ? »</h3>
+<p class="hint" style="margin-bottom:.8rem">Ce sont les grandes images de l'étape 2 (Je veux, J'ai mal…). Tu peux changer leur image, les masquer, changer leur ordre ou en créer de nouvelles.</p>
+<button class="btn btn-primary" id="openAddIntent"><i class="ic" data-ic="plus"></i>Ajouter un « Que veux-tu dire ? »</button>
+<div class="editor" id="intEditor" style="display:none">
+<h3 id="inTitle">Nouveau</h3>
+<div id="inCustom">
+<div class="field"><label>1. Début de la phrase</label><div class="seg" id="inPresets"></div>
+<input type="text" id="inVerb" placeholder="Ou écris le verbe : voudrais, préfère, adore…" autocapitalize="none" style="margin-top:.6rem">
+<p class="hint">La phrase commencera par « Je » : Je voudrais, J'adore…</p></div>
+<div class="field"><label>2. Qu'est-ce qui peut suivre ?</label><div class="seg" id="inStyle"></div></div>
+<div class="field"><label>3. Phrase négative ?</label><div class="seg" id="inNeg"></div></div>
+</div>
+<div class="field"><label>Couleur</label><div class="seg" id="inColor"></div></div>
+<div class="field"><label>Image</label>
+<div class="img-pick"><button class="icon-btn" id="inPrev" aria-label="Image précédente"><i class="ic" data-ic="back"></i></button><div class="img-prev" id="inImg"></div><button class="icon-btn" id="inNext" aria-label="Image suivante"><i class="ic" data-ic="next"></i></button></div>
+<div class="row-flex"><input type="search" id="inQ" placeholder="Chercher une autre image" style="flex:1;min-width:140px"><button class="btn btn-ghost" id="inSearch">Chercher</button></div>
+<div class="row-flex" style="margin-top:.6rem"><label class="btn btn-ghost" for="inPhoto">Utiliser ma photo</label><input type="file" id="inPhoto" accept="image/*" style="display:none"></div>
+<p class="hint" id="inHint"></p></div>
+<div class="field"><label for="inSub">Petit texte sous l'image (facultatif)</label><input type="text" id="inSub" placeholder="Ex : Je demande quelque chose"></div>
+<div class="preview" id="inPreview"></div>
+<div class="row-flex"><button class="btn btn-primary" id="inSave">Enregistrer</button><button class="btn btn-ghost" id="inCancel">Annuler</button></div>
+</div>
+<div id="intentsList" style="margin-top:.8rem"></div>
+<button class="btn btn-ghost" id="resetIntents" style="margin-top:.6rem">Tout remettre comme au départ</button>
+</div>
+
+<div class="settings-section"><h3>Pictogrammes</h3>
+<div class="row-flex"><input type="search" id="cardSearch" placeholder="Rechercher un mot" style="flex:1;min-width:140px"><button class="btn btn-primary" id="openAdd"><i class="ic" data-ic="plus"></i>Ajouter un mot</button></div>
+<div class="chips" id="kindFilter"></div>
+
+<div class="editor" id="editor" style="display:none">
+<h3 id="edTitle">Nouveau mot</h3>
+<div class="field"><label for="edLabel">1. Le mot</label><input type="text" id="edLabel" placeholder="Ex : Fromage" autocomplete="off" autocapitalize="sentences"></div>
+<div class="field" id="edTypeWrap"><label>2. Quel type de mot ?</label><div class="type-grid" id="edTypes"></div></div>
+<div class="field" id="edOpts"></div>
+<div class="field"><label>3. L'image</label>
+<div class="img-pick"><button class="icon-btn" id="edPrev" aria-label="Image précédente"><i class="ic" data-ic="back"></i></button><div class="img-prev" id="edImg"></div><button class="icon-btn" id="edNext" aria-label="Image suivante"><i class="ic" data-ic="next"></i></button></div>
+<div class="row-flex"><input type="search" id="edQ" placeholder="Chercher une autre image" style="flex:1;min-width:140px"><button class="btn btn-ghost" id="edSearch">Chercher</button></div>
+<div class="row-flex" style="margin-top:.6rem"><label class="btn btn-ghost" for="edPhoto">Utiliser ma photo</label><input type="file" id="edPhoto" accept="image/*" style="display:none"></div>
+<p class="hint" id="edHint"></p></div>
+<div class="preview" id="edPreview"></div>
+<div class="row-flex"><button class="btn btn-primary" id="edSave">Enregistrer</button><button class="btn btn-ghost" id="edCancel">Annuler</button></div>
+</div>
+
+<div id="cardsList"></div>
+<button class="btn btn-ghost" id="restoreDeleted" style="margin-top:.8rem">Rétablir les mots supprimés</button>
+</div>
+
+<div class="settings-section"><h3>Profils</h3>
+<p style="color:var(--color-text-muted);font-size:.85rem;margin-bottom:.8rem">Garçon ou fille : sert aux accords (« Je suis content / contente »).</p>
+<div class="card-list" id="profileList"></div>
+<div class="field" style="margin-top:1rem"><label for="newProfileName">Ajouter un profil enfant</label>
+<div class="row-flex"><input type="text" id="newProfileName" placeholder="Prénom de l'enfant" style="flex:1"><select id="newProfileGender" style="width:auto"><option value="m">Garçon</option><option value="f">Fille</option></select><button class="btn btn-primary" id="addProfileBtn">Ajouter</button></div></div></div>
+
+<div class="settings-section"><h3>Interface</h3><div class="field"><label>Thème</label><div class="row-flex"><button class="btn btn-ghost" id="lightModeBtn"><i class="ic" data-ic="sun"></i>Clair</button><button class="btn btn-ghost" id="darkModeBtn"><i class="ic" data-ic="moon"></i>Sombre</button></div></div>
+<div class="field"><label for="voiceRate">Vitesse de la voix</label><input type="range" id="voiceRate" min="0.5" max="1.5" step="0.1" value="0.9"></div>
+<button class="btn btn-ghost" id="testVoice"><i class="ic" data-ic="speaker"></i>Tester la voix</button></div>
+<div class="settings-section"><h3>Mode enfant</h3><p style="color:var(--color-text-muted);margin-bottom:.8rem;font-size:.9rem">Une fois activé, ce menu est verrouillé par code parent.</p><button class="btn btn-primary" id="enableKidMode"><i class="ic" data-ic="lock"></i>Activer le mode enfant</button></div>
+</div></section>
+<nav class="bottom-nav" aria-label="Navigation principale">
+<button class="nav-btn active" data-screen="board" aria-label="Parler"><i class="ic" data-ic="chat"></i><span>Parler</span></button>
+<button class="nav-btn" data-screen="profiles" aria-label="Profils"><i class="ic" data-ic="user"></i><span>Profils</span></button>
+<button class="nav-btn" data-screen="settings" id="navSettings" aria-label="Réglages"><i class="ic" data-ic="sliders"></i><span>Réglages</span></button>
+</nav>
+</div>
+<div class="lock-banner hidden" id="lockBanner"><div class="lock-icon"><i class="ic" data-ic="lock"></i></div><h2>Mode enfant activé</h2><p style="color:var(--color-text-muted);max-width:36ch">Entre le code parent pour déverrouiller la personnalisation.</p>
+<div class="pin-inputs"><input type="tel" inputmode="numeric" maxlength="1" class="pin-d"><input type="tel" inputmode="numeric" maxlength="1" class="pin-d"><input type="tel" inputmode="numeric" maxlength="1" class="pin-d"><input type="tel" inputmode="numeric" maxlength="1" class="pin-d"></div>
+<button class="btn btn-primary" id="unlockBtn">Déverrouiller</button><p style="font-size:.8rem;color:var(--color-text-faint)">Code par défaut : 1234</p></div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+
+var API='https://api.arasaac.org/api/pictograms/';
+var V={vouloir:'veux',besoin:'ai besoin',envie:'ai envie',aimer:'aime',etre:'suis',avoir:'ai'};
+var INTENTS=[
+{id:'want',mode:'want',q:'vouloir',color:'vert',v:'vouloir',menu:'Je veux',sub:'Je demande quelque chose'},
+{id:'pain',mode:'pain',pic:28765,color:'rouge',menu:"J'ai mal",sub:'Ça me fait mal'},
+{id:'need',mode:'need',q:'avoir besoin',color:'bleu',v:'besoin',de:1,menu:"J'ai besoin de",sub:"C'est important pour moi"},
+{id:'envie',mode:'envie',q:'avoir envie',color:'violet',v:'envie',de:1,menu:"J'ai envie de",sub:"J'aimerais bien"},
+{id:'notwant',mode:'want',pic:5525,color:'orange',v:'vouloir',neg:1,menu:'Je ne veux pas',sub:'Non, pas ça'},
+{id:'like',mode:'like',q:'aimer',color:'rouge',v:'aimer',menu:"J'aime",sub:"Ce que j'aime"},
+{id:'feel',mode:'feel',pic:3245,color:'jaune',menu:'Je me sens',sub:'Mes émotions et mon corps'}];
+function vow(s){return /^[aeiouyhàâäéèêëîïôöùûüœ]/i.test(s);}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function nw(c){return (c.w||c.label).toLowerCase();}
+function deWrap(x){return (vow(x)?"d'":'de ')+x;}
+function defArt(c){var w=nw(c);if(c.pl)return 'les '+w;if(vow(w))return "l'"+w;return (c.g==='f'?'la ':'le ')+w;}
+function directForm(c){var w=nw(c);
+ if(c.art==='part'){if(c.pl)return 'des '+w;if(vow(w))return "de l'"+w;return (c.g==='f'?'de la ':'du ')+w;}
+ if(c.art==='ind'){if(c.pl)return 'des '+w;return (c.g==='f'?'une ':'un ')+w;}
+ return defArt(c);}
+function deForm(c){var w=nw(c);
+ if(c.art==='part')return deWrap(w);
+ if(c.art==='ind'){if(c.pl)return deWrap(w);return deWrap((c.g==='f'?'une ':'un ')+w);}
+ if(c.pl)return 'des '+w;if(vow(w))return "de l'"+w;return (c.g==='f'?'de la ':'du ')+w;}
+function negForm(c){var w=nw(c);if(c.art==='part'||c.art==='ind')return deWrap(w);return defArt(c);}
+function personNp(c){var w=nw(c);var d=c.det||'none';if(d==='none')return c.label;
+ if(d==='le'&&vow(w))return "l'"+w;return d+' '+w;}
+function personDe(c){var w=nw(c);var d=c.det||'none';
+ if(d==='none')return deWrap(c.label);if(d==='le')return vow(w)?"de l'"+w:'du '+w;
+ return 'de '+d+' '+w;}
+function placeLoc(c){var w=nw(c);if(c.adv)return w;if(c.pl)return 'aux '+w;if(vow(w))return "à l'"+w;return (c.g==='f'?'à la ':'au ')+w;}
+function possessive(c){var w=nw(c);if(c.pl)return 'mes';if(vow(w))return 'mon';return c.g==='f'?'ma':'mon';}
+function feminize(m){if(/e$/.test(m))return m;if(/eux$/.test(m))return m.slice(0,-3)+'euse';if(/if$/.test(m))return m.slice(0,-2)+'ive';return m+'e';}
+function agree(c,g){var m=(c.m||c.label).toLowerCase();return g==='f'?(c.f||feminize(m)):m;}
+function vpText(c){var t=(c.inf||nw(c)).replace('{mon}','mon');
+ if(c.refl)return vow(t)?"m'"+t:'me '+t;
+ return t;}
+function jeVerb(form,neg){var parts=form.split(' ');var first=parts[0];var rest=parts.slice(1).join(' ');var out;
+ if(neg)out='je '+(vow(first)?"n'":'ne ')+first+' pas';
+ else if(vow(first))out="j'"+first;
+ else out='je '+first;
+ return out+(rest?' '+rest:'');}
+function detailText(it,c,d){
+ if(!d)return '';
+ var f=c.follow;
+ if(f==='drink'||f==='food')return ' '+(it.neg?negForm(d):directForm(d));
+ if(f==='play'||f==='watch')return ' '+d.ph;
+ if(f==='cloth')return ' '+possessive(d)+' '+nw(d);
+ if(f==='person')return ' '+personNp(d);
+ return '';}
+function complement(it,c,d){var k=c.kind,de=!!it.de,md=it.mode||it.id,like=md==='like';
+ if(k==='verb'){var inf=vpText(c)+detailText(it,c,d);return de?deWrap(inf):inf;}
+ if(k==='food'||k==='thing'){
+  if(c.see){var vv='voir '+defArt(c);if(like)return defArt(c);return de?deWrap(vv):vv;}
+  if(like)return defArt(c);if(de)return deForm(c);if(it.neg)return negForm(c);return directForm(c);}
+ if(k==='person'){var np=personNp(c);
+  if(like)return np;if(md==='need')return personDe(c);if(md==='envie')return deWrap('voir '+np);return 'voir '+np;}
+ if(k==='place'){var a='aller '+placeLoc(c);return de?deWrap(a):a;}
+ return '';}
+function jeSentence(it,c,g,d){
+ var md=it.mode||it.id;
+ if(md==='pain')return jeVerb(V.avoir)+' mal '+placeLoc(c);
+ if(md==='feel'){
+  if(c.kind==='emotion')return jeVerb(V.etre)+' '+agree(c,g);
+  return jeVerb(V.avoir)+' '+nw(c);}
+ return jeVerb(it.vtext||V[it.v],it.neg)+' '+complement(it,c,d);}
+function withDest(dest,txt){return dest?dest.label+', '+txt:cap(txt);}
+function followKind(f){return {drink:'food',food:'food',play:'play',watch:'watch',cloth:'cloth',person:'person'}[f];}
+function followMatch(f,x){if(x.kind!==followKind(f))return false;if(f==='drink')return !!x.drink;if(f==='food')return !x.drink;return true;}
+var FOLLOW_TITLE={drink:'Quoi à boire ?',food:'Quoi à manger ?',play:'À quoi ?',watch:'Quoi regarder ?',cloth:'Quel vêtement ?',person:'Qui ?'};
+
+function C(id,kind,label,pic,o){var c={id:id,kind:kind,label:label,pic:pic||null,photo:null};for(var k in o)c[k]=o[k];return c;}
+var CARDS=[
+C(1,'food','Pain',2494,{g:'m',art:'part'}),C(2,'food','Eau',2248,{g:'f',art:'part',drink:true}),C(3,'food','Lait',2445,{g:'m',art:'part',drink:true}),
+C(4,'food','Jus',11461,{g:'m',art:'part',drink:true}),C(5,'food','Soupe',2573,{g:'f',art:'part'}),C(6,'food','Glace',2385,{g:'f',art:'part'}),
+C(7,'food','Pizza',2527,{g:'f',art:'part'}),C(8,'food','Gâteau',2502,{g:'m',art:'part'}),C(9,'food','Chocolat',2334,{g:'m',art:'part'}),
+C(10,'food','Frites',2505,{g:'f',art:'part',pl:true}),C(11,'food','Fruit',28339,{g:'m',art:'ind'}),C(12,'food','Pomme',2462,{g:'f',art:'ind'}),
+C(13,'food','Banane',2530,{g:'f',art:'ind'}),C(14,'food','Yaourt',2618,{g:'m',art:'ind'}),C(15,'food','Bonbon',2686,{g:'m',art:'ind'}),
+C(16,'food','Sirop',null,{g:'m',art:'part',drink:true,q:'sirop'}),C(17,'food','Riz',null,{g:'m',art:'part',q:'riz'}),C(18,'food','Pâtes',null,{g:'f',art:'part',pl:true,q:'pâtes'}),
+C(19,'food','Viande',null,{g:'f',art:'part',q:'viande'}),C(110,'food','Poisson',null,{g:'m',art:'part',q:'poisson cuit'}),C(111,'food','Légumes',null,{g:'m',art:'part',pl:true,q:'légumes'}),
+C(112,'food','Œuf',null,{g:'m',art:'ind',q:'œuf'}),C(113,'food','Biscuit',null,{g:'m',art:'ind',q:'biscuit'}),C(114,'food','Compote',null,{g:'f',art:'part',q:'compote'}),
+C(115,'food','Fromage',null,{g:'m',art:'part',q:'fromage'}),C(116,'food','Céréales',null,{g:'f',art:'part',pl:true,q:'céréales'}),
+C(20,'thing','Aide',12252,{g:'f',art:'part'}),C(21,'thing','Tablette',9165,{g:'f',art:'def'}),C(22,'thing','Téléphone',2585,{g:'m',art:'def'}),
+C(23,'thing','Poupée',2482,{g:'f',art:'def'}),C(24,'thing','Voiture',2339,{g:'f',art:'def'}),C(25,'thing','Livre',2450,{g:'m',art:'def'}),
+C(26,'thing','Ballon',2269,{g:'m',art:'def'}),C(27,'thing','Puzzle',2540,{g:'m',art:'def'}),C(28,'thing','Chien',2517,{g:'m',art:'def',see:true}),
+C(29,'thing','Chat',2406,{g:'m',art:'def',see:true}),C(120,'thing','Doudou',null,{g:'m',art:'def',q:'doudou'}),C(121,'thing','Télé',null,{g:'f',art:'def',q:'télévision'}),
+C(122,'thing','Casque',null,{g:'m',art:'def',q:'casque audio'}),C(123,'thing','Crayons',null,{g:'m',art:'def',pl:true,q:'crayons'}),C(124,'thing','Couverture',null,{g:'f',art:'def',q:'couverture'}),
+C(125,'thing','Silence',null,{g:'m',art:'part',q:'silence'}),C(126,'thing','Bruit',null,{g:'m',art:'part',q:'bruit'}),C(127,'thing','Lumière',null,{g:'f',art:'part',q:'lumière'}),
+C(128,'thing','Médicament',null,{g:'m',art:'ind',q:'médicament'}),C(129,'thing','Pansement',null,{g:'m',art:'ind',q:'pansement'}),
+C(40,'verb','Boire',2276,{inf:'boire',follow:'drink'}),C(41,'verb','Manger',2349,{inf:'manger',follow:'food'}),C(42,'verb','Dormir',2369,{inf:'dormir'}),
+C(43,'verb','Câlin',27407,{inf:'faire un câlin'}),C(44,'verb','Jouer',2439,{inf:'jouer',follow:'play'}),C(45,'verb','Dessiner',5506,{inf:'dessiner'}),
+C(46,'verb','Musique',24795,{inf:'écouter de la musique'}),C(47,'verb','Vélo',2277,{inf:'faire du vélo'}),C(48,'verb','Peinture',2360,{inf:'faire de la peinture'}),
+C(49,'verb','Danse',2652,{inf:'danser'}),C(50,'verb',"S'habiller",2781,{inf:'habiller',refl:true}),C(51,'verb','Se laver',3323,{inf:'laver',refl:true}),
+C(52,'verb','Brosser dents',2694,{inf:'brosser les dents',refl:true}),C(53,'verb','Pyjama',2522,{inf:'mettre {mon} pyjama'}),
+C(54,'verb','Attendre',8109,{inf:'attendre'}),C(55,'verb','Arrêter',7195,{inf:'arrêter'}),
+C(130,'verb','Regarder',null,{inf:'regarder',follow:'watch',req:true,q:'regarder'}),C(131,'verb','Appeler',null,{inf:'appeler',follow:'person',req:true,q:'téléphoner'}),
+C(132,'verb','Vêtements',null,{inf:'mettre',follow:'cloth',req:true,q:'vêtements'}),C(133,'verb','Pause',null,{inf:'faire une pause',q:'se reposer'}),
+C(134,'verb','Lire',null,{inf:'lire',q:'lire'}),C(135,'verb','Chanter',null,{inf:'chanter',q:'chanter'}),C(136,'verb','Courir',null,{inf:'courir',q:'courir'}),
+C(137,'verb','Sortir',null,{inf:'sortir',q:'sortir'}),
+C(60,'place','Piscine',3142,{g:'f'}),C(61,'place','Plage',2826,{g:'f'}),C(62,'place','Jardin',2434,{g:'m'}),C(63,'place','Dehors',5475,{adv:true}),
+C(64,'place','Maison',2317,{g:'f'}),C(65,'place','École',3082,{g:'f'}),C(66,'place','Toilettes',2430,{g:'f',pl:true}),
+C(140,'place','Cuisine',null,{g:'f',q:'cuisine'}),C(141,'place','Chambre',null,{g:'f',q:'chambre'}),C(142,'place','Salon',null,{g:'m',q:'salon'}),
+C(143,'place','Salle de bain',null,{g:'f',q:'salle de bain'}),C(144,'place','Parc',null,{g:'m',q:'parc'}),C(145,'place','Magasin',null,{g:'m',q:'magasin'}),
+C(70,'person','Maman',2458,{g:'f',det:'none'}),C(71,'person','Papa',2497,{g:'m',det:'none'}),C(72,'person','Frère',2423,{g:'m',det:'mon'}),
+C(73,'person','Sœur',2422,{g:'f',det:'ma'}),C(74,'person','Mamie',2243,{g:'f',det:'none'}),C(75,'person','Papi',2244,{g:'m',det:'none'}),
+C(76,'person','Docteur',2467,{g:'m',det:'le'}),C(77,'person','Copain',2392,{g:'m',det:'mon'}),C(78,'person','Maîtresse',null,{g:'f',det:'la',q:'maîtresse'}),
+C(79,'person','Tonton',null,{g:'m',det:'none',q:'oncle'}),C(69,'person','Tata',null,{g:'f',det:'none',q:'tante'}),
+C(80,'emotion','Content',3245,{}),C(81,'emotion','Triste',2606,{}),C(82,'emotion','Fâché',35567,{}),C(83,'emotion','Fatigué',2314,{}),
+C(84,'emotion','Calme',31310,{}),C(85,'emotion','Surpris',2574,{}),C(86,'emotion','Malade',3308,{}),
+C(150,'emotion','En colère',null,{q:'colère'}),C(151,'emotion','Inquiet',null,{f:'inquiète',q:'inquiet'}),C(152,'emotion','Excité',null,{q:'excité'}),
+C(153,'emotion','Seul',null,{f:'seule',q:'seul'}),C(154,'emotion','Ennuyé',null,{q:'ennui'}),
+C(90,'state','Peur',10261,{}),C(92,'state','Faim',null,{q:'avoir faim'}),C(93,'state','Soif',null,{q:'avoir soif'}),
+C(94,'state','Chaud',null,{q:'avoir chaud'}),C(95,'state','Froid',null,{q:'avoir froid'}),C(96,'state','Sommeil',null,{q:'avoir sommeil'}),
+C(160,'body','Tête',null,{g:'f',q:'tête'}),C(161,'body','Ventre',null,{g:'m',q:'ventre'}),C(162,'body','Gorge',null,{g:'f',q:'gorge'}),
+C(163,'body','Dents',null,{g:'f',pl:true,q:'dents'}),C(164,'body','Oreille',null,{g:'f',q:'oreille'}),C(165,'body','Dos',null,{g:'m',q:'dos'}),
+C(166,'body','Bras',null,{g:'m',q:'bras'}),C(167,'body','Main',null,{g:'f',q:'main'}),C(168,'body','Jambe',null,{g:'f',q:'jambe'}),
+C(169,'body','Pied',null,{g:'m',q:'pied'}),C(170,'body','Yeux',null,{g:'m',pl:true,q:'yeux'}),C(171,'body','Nez',null,{g:'m',q:'nez'}),
+C(172,'body','Genou',null,{g:'m',q:'genou'}),C(173,'body','Cou',null,{g:'m',q:'cou'}),C(174,'body','Épaule',null,{g:'f',q:'épaule'}),
+C(175,'body','Doigt',null,{g:'m',q:'doigt'}),C(176,'body','Cœur',null,{g:'m',q:'cœur'}),C(177,'body','Cheville',null,{g:'f',q:'cheville'}),
+C(178,'body','Partout',null,{adv:true,q:'partout'}),
+C(180,'play','Ballon',2269,{ph:'au ballon'}),C(181,'play','Voiture',2339,{ph:'avec la voiture'}),C(182,'play','Poupée',2482,{ph:'à la poupée'}),
+C(183,'play','Cache-cache',null,{ph:'à cache-cache',q:'cache-cache'}),C(184,'play','Cartes',null,{ph:'aux cartes',q:'jeu de cartes'}),C(185,'play','Constructions',null,{ph:'aux constructions',q:'jeu de construction'}),
+C(186,'play','Tablette',9165,{ph:'sur la tablette'}),C(187,'play','Dehors',5475,{ph:'dehors'}),
+C(190,'watch','Télé',null,{ph:'la télé',q:'télévision'}),C(191,'watch','Dessin animé',null,{ph:'un dessin animé',q:'dessin animé'}),C(192,'watch','Film',null,{ph:'un film',q:'film'}),
+C(193,'watch','Photos',null,{ph:'des photos',q:'photo'}),
+C(200,'cloth','Manteau',null,{g:'m',q:'manteau'}),C(201,'cloth','Pull',null,{g:'m',q:'pull'}),C(202,'cloth','Pantalon',null,{g:'m',q:'pantalon'}),
+C(203,'cloth','T-shirt',null,{g:'m',q:'tee-shirt'}),C(204,'cloth','Chaussures',null,{g:'f',pl:true,q:'chaussures'}),C(205,'cloth','Chaussettes',null,{g:'f',pl:true,q:'chaussettes'}),
+C(206,'cloth','Bonnet',null,{g:'m',q:'bonnet'}),C(207,'cloth','Écharpe',null,{g:'f',q:'écharpe'}),
+C(100,'word','Oui',5583,{}),C(101,'word','Non',5525,{}),C(102,'word','Merci',8128,{}),C(103,'word',"S'il te plaît",38907,{}),
+C(104,'word','Stop',8289,{}),C(105,'word','Pardon',11625,{}),C(106,'word','Encore',37163,{}),C(107,'word','Fini',5358,{}),
+C(108,'word','Bonjour',null,{q:'bonjour'}),C(109,'word','Au revoir',null,{q:'au revoir'})
+];
+var GROUPS={food:{label:'Manger / Boire',pic:2527,color:'vert'},verb:{label:'Actions',pic:2439,color:'orange'},thing:{label:'Objets',pic:9165,color:'bleu'},
+person:{label:'Personnes',pic:2458,color:'violet'},place:{label:'Lieux',pic:2317,color:'rouge'},emotion:{label:'Émotions',pic:3245,color:'jaune'},
+state:{label:'Mon corps',pic:10261,color:'bleu'},word:{label:'Mots rapides',pic:5583,color:'jaune'},
+body:{label:'Corps',pic:28765,color:'rouge'},play:{label:'Jeux',pic:2439,color:'orange'},watch:{label:'Écran',pic:9165,color:'bleu'},cloth:{label:'Vêtements',pic:null,color:'vert',q:'vêtements'}};
+var TYPES=[
+{k:'food',label:'Aliment',ex:'Je veux du pain',pic:2527},{k:'drink',label:'Boisson',ex:"Je veux de l'eau",pic:2248},
+{k:'thing',label:'Objet ou animal',ex:'Je veux la tablette',pic:9165},{k:'verb',label:'Action',ex:'Je veux jouer',pic:2439},
+{k:'person',label:'Personne',ex:'Maman, …',pic:2458},{k:'place',label:'Lieu',ex:'Je veux aller à la plage',pic:2317},
+{k:'body',label:'Partie du corps',ex:"J'ai mal à la tête",pic:28765},{k:'emotion',label:'Émotion',ex:'Je suis content',pic:3245},
+{k:'state',label:'Besoin du corps',ex:"J'ai faim",pic:10261},{k:'word',label:'Mot rapide',ex:'Oui, merci…',pic:5583}];
+var EXTRA_TYPES={play:'Jeu',watch:'Écran',cloth:'Vêtement'};
+function typeOf(c){return (c.kind==='food'&&c.drink)?'drink':c.kind;}
+function typeLabel(k){for(var i=0;i<TYPES.length;i++)if(TYPES[i].k===k)return TYPES[i].label;return EXTRA_TYPES[k]||k;}
+
+var ICONS={
+speaker:'<path d="M3 10v4h4l5 4V6L7 10H3z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/>',
+back:'<path d="M15 18l-6-6 6-6"/>',next:'<path d="M9 18l6-6-6-6"/>',
+reset:'<path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+moon:'<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>',
+chat:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+user:'<circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>',
+sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>',
+trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',
+pencil:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',up:'<path d="M18 15l-6-6-6 6"/>',down:'<path d="M6 9l6 6 6-6"/>'};
+function ic(n,sz){return '<svg viewBox="0 0 24 24" width="'+(sz||22)+'" height="'+(sz||22)+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>';}
+var STORAGEKEY='je-parle-avec-toi-state-v5',PICKEY='je-parle-avec-toi-pics-v1';
+var COLORS=['#0d7a72','#2f7dd1','#8a5cc9','#d64545','#e07a2c','#3d9c4a'];
+var state={theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light',profiles:[{id:1,name:'Lina',gender:'f',color:COLORS[0]}],activeProfile:1,kidMode:false,voiceRate:0.9,cards:[],deleted:[],edits:{},intentEdits:{},customIntents:[],intentOrder:[]};
+var flow={dest:null,intent:null,target:null,detail:null,tab:null};
+var idCounter=1000,picCache={},picFailed={},picPending={},picTimer=null;
+var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+function byId(i){return document.getElementById(i)}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function saveState(){if(!lsSet(STORAGEKEY,JSON.stringify({theme:state.theme,profiles:state.profiles,activeProfile:state.activeProfile,kidMode:state.kidMode,voiceRate:state.voiceRate,deleted:state.deleted,edits:state.edits,intentEdits:state.intentEdits,customIntents:state.customIntents,intentOrder:state.intentOrder,custom:state.cards.filter(function(c){return c.id>=1000})})))toast("Mémoire de l'appareil pleine : supprime des photos")}
+function guessKind(c){var m={nourriture:'food',emotions:'emotion',famille:'person',activites:'verb',besoins:'verb',routine:'verb'};return m[c.cat]||'thing';}
+function buildCards(custom){state.cards=clone(CARDS).filter(function(c){return state.deleted.indexOf(c.id)<0}).map(function(c){return state.edits[c.id]?clone(state.edits[c.id]):c}).concat(custom)}
+function loadState(){
+ var custom=[],raw=null,keys=[STORAGEKEY,'je-parle-avec-toi-state-v4','je-parle-avec-toi-state-v3','je-parle-avec-toi-state-v2'];
+ for(var i=0;i<keys.length&&!raw;i++)raw=lsGet(keys[i]);
+ try{
+  if(raw){var d=JSON.parse(raw);
+   ['theme','activeProfile','kidMode','voiceRate'].forEach(function(k){if(d[k]!==undefined)state[k]=d[k]});
+   if(Array.isArray(d.profiles))state.profiles=d.profiles;
+   if(Array.isArray(d.deleted))state.deleted=d.deleted;
+   if(d.edits&&typeof d.edits==='object')state.edits=d.edits;
+   if(d.intentEdits&&typeof d.intentEdits==='object')state.intentEdits=d.intentEdits;
+   if(Array.isArray(d.customIntents))state.customIntents=d.customIntents;
+   if(Array.isArray(d.intentOrder))state.intentOrder=d.intentOrder;
+   if(Array.isArray(d.custom))custom=d.custom;
+   else if(Array.isArray(d.cards))custom=d.cards.filter(function(c){return c.id>=1000});
+  }else{var o=lsGet('je-parle-avec-toi-state-v1');if(o){var v1=JSON.parse(o);
+   ['theme','activeProfile','kidMode','voiceRate'].forEach(function(k){if(v1[k]!==undefined)state[k]=v1[k]});
+   if(Array.isArray(v1.profiles))state.profiles=v1.profiles.map(function(p){return {id:p.id,name:p.name,gender:p.gender||(p.name==='Lina'?'f':'m')}});
+   if(Array.isArray(v1.cards))v1.cards.forEach(function(c){if(c.id>=1000){var k=guessKind(c);var n={id:c.id,kind:k,label:c.label,pic:c.pic,photo:c.photo,g:'m'};
+    if(k==='food')n.art='part';if(k==='thing')n.art='def';if(k==='verb')n.inf=c.label.toLowerCase();if(k==='person')n.det='none';custom.push(n)}})}}
+ }catch(e){}
+ state.profiles.forEach(function(p,i){if(!p.gender)p.gender='m';if(!p.color)p.color=COLORS[i%COLORS.length]});
+ buildCards(custom);
+ state.customIntents.forEach(function(i){var n=parseInt(String(i.id).slice(1),10);if(n>=idCounter)idCounter=n+1});
+ state.cards.forEach(function(c){if(c.id>=idCounter)idCounter=c.id+1});
+ state.profiles.forEach(function(p){if(p.id>=idCounter)idCounter=p.id+1});
+ try{picCache=JSON.parse(lsGet(PICKEY)||'{}')||{}}catch(e){picCache={}}
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]})}
+function toast(m){var t=byId('toast');t.textContent=m;t.classList.add('show');clearTimeout(t.timer);t.timer=setTimeout(function(){t.classList.remove('show')},2400)}
+function norm(s){s=String(s).toLowerCase();return s.normalize?s.normalize('NFD').replace(/[\u0300-\u036f]/g,''):s}
+
+function refreshAll(){renderFlow();renderQuick();if(byId('screen-settings').classList.contains('active'))renderCardsList();}
+function schedulePics(){clearTimeout(picTimer);picTimer=setTimeout(refreshAll,350)}
+function ensurePic(q){
+ if(!q||picCache[q]||picPending[q]||picFailed[q]||typeof fetch==='undefined')return;
+ picPending[q]=1;
+ fetch(API+'fr/bestsearch/'+encodeURIComponent(q)).then(function(r){return r.ok?r.json():[]}).then(function(a){
+  if(a&&a.length&&a[0]._id){picCache[q]=a[0]._id;lsSet(PICKEY,JSON.stringify(picCache))}else picFailed[q]=1;
+ }).catch(function(){picFailed[q]=1}).then(function(){delete picPending[q];schedulePics()});
+}
+function imgHTML(url,label){var l=esc((label||'?').charAt(0).toUpperCase());return url?'<img src="'+url+'" alt="" data-l="'+l+'" loading="lazy" draggable="false">':'<span class="ph">'+l+'</span>';}
+function cardUrl(c){if(c.photo)return c.photo;if(c.pic)return API+c.pic;var q=(c.q||c.label).toLowerCase();if(picCache[q])return API+picCache[q];ensurePic(q);return null;}
+function visual(c){return imgHTML(cardUrl(c),c.label)}
+function visualQ(q,label){var u=null;if(picCache[q])u=API+picCache[q];else ensurePic(q);return imgHTML(u,label)}
+function intentVis(it){var lab=intentMenu(it);if(it.photo)return imgHTML(it.photo,lab);if(it.pic)return imgHTML(API+it.pic,lab);return visualQ(it.q||lab.toLowerCase(),lab)}
+document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.getAttribute('data-l')){var sp=document.createElement('span');sp.className='ph';sp.textContent=t.getAttribute('data-l');if(t.replaceWith)t.replaceWith(sp);else if(t.parentNode)t.parentNode.replaceChild(sp,t)}},true);
+
+function activeProfile(){return state.profiles.filter(function(p){return p.id===state.activeProfile})[0]||state.profiles[0]}
+function cardById(id){return state.cards.filter(function(c){return c.id===id})[0]}
+function destCard(){return (flow.dest&&flow.dest!=='all')?cardById(flow.dest):null}
+function allIntents(){var base=INTENTS.map(function(i){var e=state.intentEdits[i.id];return e?Object.assign({},i,e):i}),all=base.concat(state.customIntents),out=[],seen={};
+ state.intentOrder.forEach(function(id){all.forEach(function(i){if(i.id===id&&!seen[id]){seen[id]=1;out.push(i)}})});
+ all.forEach(function(i){if(!seen[i.id]){seen[i.id]=1;out.push(i)}});return out}
+function visibleIntents(){return allIntents().filter(function(i){return !i.hidden})}
+function getIntent(){return allIntents().filter(function(i){return i.id===flow.intent})[0]||null}
+function intentLabel(it){var m=it.mode||it.id;if(m==='feel')return "Je suis … / J'ai …";if(m==='pain')return "J'ai mal …";return cap(jeVerb(it.vtext||V[it.v],it.neg))+(it.de?' de …':' …');}
+function intentMenu(it){return it.menu||intentLabel(it).replace(' …','')}
+function intentCrumb(it){return (it.mode||it.id)==='feel'?'Je ressens':intentMenu(it)}
+function hintFor(st){var it=getIntent();
+ if(st===1)return 'Touche la personne à qui tu veux parler.';
+ if(st===2)return "Touche l'image qui montre ce que tu veux dire.";
+ if(st===3){var m=it?(it.mode||it.id):'';return m==='pain'?"Touche l'endroit où tu as mal.":m==='feel'?'Touche ce que tu ressens.':'Touche ce que tu veux dire.'}
+ if(st===4)return 'Touche pour préciser.';
+ return "Ta phrase est prête. Touche Redire pour l'écouter."}
+function targetCard(){return flow.target?cardById(flow.target):null}
+function stage(){if(!flow.dest)return 1;if(!flow.intent)return 2;var t=targetCard();if(!t)return 3;if(t.follow&&flow.detail===null)return 4;return 5}
+function currentSentence(){
+ if(!flow.dest)return '';
+ var d=destCard(),it=getIntent(),t=targetCard(),g=activeProfile().gender||'m';
+ if(!it)return d?d.label+', …':'';
+ if(!t){var base=intentLabel(it).replace("Je suis … / J'ai …",'…');if(d)base=base.replace(/^Je /,'je ').replace(/^J'ai /,"j'ai ");return withDest(d,base);}
+ var det=flow.detail?cardById(flow.detail):null;
+ var txt=withDest(d,jeSentence(it,t,g,det));
+ return stage()===4?txt+' …':txt;}
+
+var uttRef=null,speechReady=false;
+function frVoice(){if(!('speechSynthesis' in window))return null;var vs=speechSynthesis.getVoices()||[];
+ var fr=vs.filter(function(v){return v.lang&&v.lang.replace('_','-').toLowerCase()==='fr-fr'});
+ if(!fr.length)fr=vs.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf('fr')===0});return fr[0]||null;}
+function speakText(text,quiet){
+ if(!('speechSynthesis' in window)){if(!quiet)toast('Voix non disponible sur cet appareil');return}
+ var u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=state.voiceRate;var v=frVoice();if(v)u.voice=v;uttRef=u;
+ if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(function(){speechSynthesis.speak(u)},80)}
+ else{speechSynthesis.speak(u)}}
+function unlockSpeech(){if(speechReady||!('speechSynthesis' in window))return;speechReady=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+document.addEventListener('touchend',unlockSpeech,{passive:true});document.addEventListener('click',unlockSpeech);
+
+function pickCard(vis,color,label,sub,fn){var b=document.createElement('button');b.className='pic-card';b.setAttribute('role','listitem');b.setAttribute('aria-label',label);
+ b.innerHTML='<span class="strip" style="background:var(--cat-'+color+')"></span><span class="pic-img-wrap">'+vis+'</span><span class="pic-label">'+esc(label)+'</span>'+(sub?'<span class="pic-sub">'+esc(sub)+'</span>':'');
+ b.addEventListener('click',fn);return b;}
+function resetFlow(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;flow.tab=null;renderFlow();}
+function renderCrumbs(){var wrap=byId('crumbs');wrap.innerHTML='';var it=getIntent();
+ function add(vis,label,color,fn){var b=document.createElement('button');b.className='crumb';b.style.color='var(--cat-'+color+')';b.style.background='var(--cat-'+color+'-bg)';b.innerHTML='<span class="ci">'+vis+'</span>'+esc(label);b.addEventListener('click',fn);wrap.appendChild(b);}
+ if(flow.dest){var d=destCard();add(d?visual(d):visualQ('tout le monde','T'),d?d.label:'Tout le monde','violet',function(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;renderFlow()});}
+ if(it)add(intentVis(it),intentCrumb(it),it.color,function(){flow.intent=null;flow.target=null;flow.detail=null;renderFlow()});
+ var t=targetCard();
+ if(t)add(visual(t),t.label,GROUPS[t.kind].color,function(){flow.target=null;flow.detail=null;renderFlow()});
+ if(t&&flow.detail){var dd=cardById(flow.detail);if(dd)add(visual(dd),dd.label,GROUPS[dd.kind].color,function(){flow.detail=null;renderFlow()});}}
+function finishSentence(){renderFlow();speakText(currentSentence(),true)}
+function renderFlow(){
+ var st=stage(),grid=byId('boardGrid'),tabs=byId('catTabs'),title=byId('flowTitle'),back=byId('backBtn'),txt=byId('sentenceText');
+ grid.className='board-grid'+(st===2?' big':'');byId('flowHint').textContent=hintFor(st);var sent=currentSentence();txt.textContent=sent||'Choisis à qui tu veux parler';txt.classList.toggle('empty',!sent);
+ renderCrumbs();back.style.display=st>1?'inline-flex':'none';grid.innerHTML='';tabs.innerHTML='';tabs.style.display='none';
+ var t=targetCard();
+ if(st===1){title.textContent='1. À qui tu parles ?';
+  state.cards.filter(function(c){return c.kind==='person'}).forEach(function(c){grid.appendChild(pickCard(visual(c),'violet',c.label,'',function(){flow.dest=c.id;renderFlow()}))});
+  grid.appendChild(pickCard(visualQ('tout le monde','T'),'vert','Tout le monde','',function(){flow.dest='all';renderFlow()}));
+ }else if(st===2){title.textContent='2. Que veux-tu dire ?';
+  visibleIntents().forEach(function(it){grid.appendChild(pickCard(intentVis(it),it.color,intentMenu(it),it.sub||'',function(){flow.intent=it.id;flow.tab=null;renderFlow()}))});
+ }else if(st===3){var it=getIntent();title.textContent='3. '+(it.mode==='feel'?'Comment tu te sens ?':it.mode==='pain'?'Où as-tu mal ?':'Quoi ?');
+  var kinds=it.mode==='feel'?['emotion','state']:it.mode==='pain'?['body']:['food','verb','thing','person','place'];
+  var avail=kinds.filter(function(k){return state.cards.some(function(c){return c.kind===k})});
+  if(!flow.tab||avail.indexOf(flow.tab)<0)flow.tab=avail[0];
+  if(avail.length>1){tabs.style.display='flex';
+   avail.forEach(function(k){var g=GROUPS[k];var b=document.createElement('button');b.className='cat-tab'+(flow.tab===k?' active':'');b.style.background='var(--cat-'+g.color+'-bg)';b.style.color='var(--cat-'+g.color+')';b.setAttribute('role','tab');
+    b.innerHTML=(g.pic?imgHTML(API+g.pic,g.label):visualQ(g.q,g.label))+'<span>'+g.label+'</span>';b.addEventListener('click',function(){flow.tab=k;renderFlow()});tabs.appendChild(b)});}
+  var list=state.cards.filter(function(c){return c.kind===flow.tab&&c.id!==flow.dest});
+  if(!list.length)grid.innerHTML='<div class="empty-state"><h3>Aucune image ici</h3><p>Ajoute des images depuis Réglages.</p></div>';
+  list.forEach(function(c){grid.appendChild(pickCard(visual(c),GROUPS[c.kind].color,c.label,'',function(){flow.target=c.id;flow.detail=null;if(c.follow)renderFlow();else finishSentence()}))});
+ }else if(st===4){title.textContent='4. '+FOLLOW_TITLE[t.follow];
+  var items=state.cards.filter(function(x){return followMatch(t.follow,x)&&x.id!==flow.dest&&x.id!==t.id});
+  items.forEach(function(x){grid.appendChild(pickCard(visual(x),GROUPS[x.kind].color,x.label,'',function(){flow.detail=x.id;finishSentence()}))});
+  if(!t.req){var sk=document.createElement('div');sk.className='skip-box';sk.innerHTML='<button class="btn btn-ghost" id="skipDetail">Terminer sans préciser</button>';grid.appendChild(sk);
+   byId('skipDetail').addEventListener('click',function(){flow.detail=0;finishSentence()});}
+ }else{title.textContent='Ta phrase';
+  var box=document.createElement('div');box.className='done-box';
+  box.innerHTML='<button class="btn btn-primary" id="againSpeak" style="font-size:1.2rem;padding:1rem 2rem">'+ic('speaker')+'Redire</button><button class="btn btn-ghost" id="newSentence" style="font-size:1.1rem;padding:1rem 2rem">Nouvelle phrase</button><button class="btn btn-ghost" id="changeLast">'+ic('pencil')+'Modifier le dernier mot</button>';
+  grid.appendChild(box);
+  byId('againSpeak').addEventListener('click',function(){speakText(currentSentence())});
+  byId('newSentence').addEventListener('click',resetFlow);
+  byId('changeLast').addEventListener('click',goBack);}
+}
+function goBack(){var st=stage(),t=targetCard();
+ if(st===5){if(t&&t.follow)flow.detail=null;else flow.target=null}
+ else if(st===4){flow.target=null;flow.detail=null}
+ else if(st===3)flow.intent=null;else if(st===2)flow.dest=null;
+ renderFlow();}
+byId('backBtn').addEventListener('click',goBack);
+byId('clearSentence').addEventListener('click',resetFlow);
+byId('speakSentence').addEventListener('click',function(){if(stage()<5){toast("Termine ta phrase d'abord");return}speakText(currentSentence())});
+byId('testVoice').addEventListener('click',function(){speakText('Bonjour, je suis prêt à parler avec toi')});
+function renderQuick(){var row=byId('quickRow');row.innerHTML='';state.cards.filter(function(c){return c.kind==='word'}).forEach(function(c){
+ var b=document.createElement('button');b.setAttribute('aria-label',c.label);b.innerHTML='<span class="qi">'+visual(c)+'</span>'+esc(c.label);
+ b.addEventListener('click',function(){speakText(c.label);toast(c.label)});row.appendChild(b)});}
+function applyTheme(){document.documentElement.setAttribute('data-theme',state.theme);byId('themeIcon').innerHTML=ic(state.theme==='dark'?'sun':'moon',24);
+ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',state.theme==='dark'?'#181a19':'#0d7a72');}
+byId('themeToggle').addEventListener('click',function(){state.theme=state.theme==='dark'?'light':'dark';applyTheme();saveState()});
+byId('lightModeBtn').addEventListener('click',function(){state.theme='light';applyTheme();saveState()});
+byId('darkModeBtn').addEventListener('click',function(){state.theme='dark';applyTheme();saveState()});
+byId('voiceRate').addEventListener('input',function(e){state.voiceRate=parseFloat(e.target.value);saveState()});
+function goScreen(name){$$('.screen').forEach(function(s){s.classList.remove('active')});byId('screen-'+name).classList.add('active');
+ $$('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===name)});if(name==='settings')renderSettings();window.scrollTo(0,0);}
+$$('.nav-btn').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.screen==='settings'&&state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen(b.dataset.screen)})});
+function avatar(p){return '<span class="profile-avatar" style="background:'+p.color+'">'+esc(p.name.charAt(0).toUpperCase())+'</span>'}
+function renderProfiles(){var grid=byId('profileGrid');grid.innerHTML='';
+ state.profiles.forEach(function(p){var c=document.createElement('button');c.className='profile-card'+(p.id===state.activeProfile?' current':'');
+  c.innerHTML=avatar(p)+'<span class="profile-name">'+esc(p.name)+'</span>';
+  c.addEventListener('click',function(){state.activeProfile=p.id;saveState();renderProfiles();resetFlow();goScreen('board');toast('Bonjour '+p.name)});grid.appendChild(c)});
+ var a=document.createElement('button');a.className='profile-card add-profile-card';a.innerHTML='<span class="profile-avatar" style="background:var(--color-surface-offset);color:var(--color-text-muted)">+</span><span class="profile-name">Ajouter</span>';
+ a.addEventListener('click',function(){if(state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen('settings');byId('newProfileName').focus()});grid.appendChild(a);}
+function renderProfileList(){var list=byId('profileList');list.innerHTML='';
+ state.profiles.forEach(function(p){var row=document.createElement('div');row.className='card-list-item';
+  row.innerHTML='<span class="profile-avatar" style="background:'+p.color+';width:40px;height:40px;font-size:1.1rem">'+esc(p.name.charAt(0).toUpperCase())+'</span><span class="meta"><span class="n">'+esc(p.name)+'</span></span><select aria-label="Genre"><option value="m">Garçon</option><option value="f">Fille</option></select><button class="del" aria-label="Supprimer '+esc(p.name)+'">'+ic('trash')+'</button>';
+  var sel=row.querySelector('select');sel.value=p.gender||'m';sel.addEventListener('change',function(){p.gender=sel.value;saveState();renderFlow()});
+  row.querySelector('.del').addEventListener('click',function(){if(state.profiles.length===1){toast('Il faut garder au moins un profil');return}
+   state.profiles=state.profiles.filter(function(x){return x.id!==p.id});if(state.activeProfile===p.id)state.activeProfile=state.profiles[0].id;saveState();renderProfileList();renderProfiles();renderFlow()});
+  list.appendChild(row)});}
+byId('addProfileBtn').addEventListener('click',function(){var name=byId('newProfileName').value.trim();if(!name){toast('Écris un prénom');return}
+ state.profiles.push({id:idCounter++,name:name,gender:byId('newProfileGender').value,color:COLORS[state.profiles.length%COLORS.length]});saveState();byId('newProfileName').value='';renderProfileList();renderProfiles();toast('Profil ajouté')});
+
+/* ---------- Pictogrammes : liste ---------- */
+var cardFilter='all',cardQuery='',edit=null,searchCache={},edTimer=null;
+function renderKindFilter(){var wrap=byId('kindFilter');wrap.innerHTML='';var counts={};
+ state.cards.forEach(function(c){var k=typeOf(c);counts[k]=(counts[k]||0)+1});
+ function chip(k,label){var b=document.createElement('button');b.className='chip'+(cardFilter===k?' on':'');b.textContent=label;b.addEventListener('click',function(){cardFilter=k;renderKindFilter();renderCardsList()});wrap.appendChild(b)}
+ chip('all','Tous ('+state.cards.length+')');
+ TYPES.concat([{k:'play',label:'Jeu'},{k:'watch',label:'Écran'},{k:'cloth',label:'Vêtement'}]).forEach(function(t){if(counts[t.k])chip(t.k,t.label+' ('+counts[t.k]+')')});}
+function cardRow(c){var row=document.createElement('div');row.className='card-list-item';
+ row.innerHTML='<span class="ci2">'+visual(c)+'</span><span class="meta"><span class="n">'+esc(c.label)+'</span></span><button class="act" aria-label="Modifier '+esc(c.label)+'">'+ic('pencil')+'</button><button class="del" aria-label="Supprimer '+esc(c.label)+'">'+ic('trash')+'</button>';
+ row.querySelector('.act').addEventListener('click',function(){openEditor(c)});
+ row.querySelector('.meta').addEventListener('click',function(){openEditor(c)});
+ row.querySelector('.del').addEventListener('click',function(){if(typeof confirm==='function'&&!confirm('Supprimer « '+c.label+' » ?'))return;
+  state.cards=state.cards.filter(function(x){return x.id!==c.id});if(c.id<1000&&state.deleted.indexOf(c.id)<0)state.deleted.push(c.id);delete state.edits[c.id];saveState();renderKindFilter();renderCardsList();renderQuick();resetFlow()});
+ return row;}
+function renderCardsList(){var list=byId('cardsList');list.innerHTML='';var q=norm(cardQuery.trim()),groups={};
+ state.cards.forEach(function(c){var k=typeOf(c);if(cardFilter!=='all'&&k!==cardFilter)return;if(q&&norm(c.label).indexOf(q)<0)return;(groups[k]=groups[k]||[]).push(c)});
+ var any=false;TYPES.map(function(t){return t.k}).concat(['play','watch','cloth']).forEach(function(k){var arr=groups[k];if(!arr)return;any=true;
+  var d=document.createElement('details');d.className='grp';if(q||cardFilter!=='all')d.setAttribute('open','');
+  d.innerHTML='<summary><span>'+typeLabel(k)+'</span><span>'+arr.length+'</span></summary>';
+  var rows=document.createElement('div');rows.className='rows';arr.forEach(function(c){rows.appendChild(cardRow(c))});d.appendChild(rows);list.appendChild(d)});
+ if(!any)list.innerHTML='<p class="hint">Aucun mot trouvé.</p>';}
+byId('cardSearch').addEventListener('input',function(e){cardQuery=e.target.value;renderCardsList()});
+byId('restoreDeleted').addEventListener('click',function(){state.deleted=[];var custom=state.cards.filter(function(c){return c.id>=1000});buildCards(custom);saveState();renderKindFilter();renderCardsList();renderQuick();resetFlow();toast('Mots rétablis')});
+
+/* ---------- Pictogrammes : création / modification ---------- */
+function guessGender(l){l=l.toLowerCase();return (/(e|ion|té)$/.test(l)&&!/(age|isme)$/.test(l))?'f':'m'}
+function guessPlural(l){l=l.toLowerCase();return l.length>3&&/s$/.test(l)&&!/(bras|dos|riz|jus|pas|cours|bois|fois|repas|mais)$/.test(l)}
+function openEditor(c){
+ var locked=!!(c&&EXTRA_TYPES[c.kind]);
+ edit={id:c?c.id:null,orig:c?clone(c):null,locked:locked,label:c?c.label:'',type:c?typeOf(c):'food',g:c?(c.g||'m'):'m',pl:c?!!c.pl:false,art:c?(c.art||'part'):'part',inf:c?(c.inf||''):'',det:c?(c.det||'none'):'none',q:c?(c.q||''):'',pic:c?c.pic:null,photo:c?c.photo:null,pics:[],pi:0,manual:!!c&&!!(c.pic||c.photo),gTouched:!!c,searchQ:''};
+ byId('edTitle').textContent=c?'Modifier « '+c.label+' »':'Nouveau mot';
+ byId('edLabel').value=edit.label;byId('edQ').value='';byId('edTypeWrap').style.display=locked?'none':'block';
+ byId('editor').style.display='block';renderTypes();renderOpts();renderImg();updatePreview();runSearch();
+ var el=byId('editor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function closeEditor(){edit=null;byId('editor').style.display='none';}
+function renderTypes(){var w=byId('edTypes');w.innerHTML='';
+ TYPES.forEach(function(t){var b=document.createElement('button');b.className='type-btn'+(edit.type===t.k?' on':'');
+  b.innerHTML='<span class="ti">'+imgHTML(API+t.pic,t.label)+'</span>'+esc(t.label)+'<small>'+esc(t.ex)+'</small>';
+  b.addEventListener('click',function(){edit.type=t.k;renderTypes();renderOpts();updatePreview()});w.appendChild(b)});}
+function seg(name,label,opts,cur){var h='<label>'+label+'</label><div class="seg" style="margin-bottom:.8rem">';
+ opts.forEach(function(o){h+='<button type="button" data-opt="'+name+'" data-val="'+o[0]+'" class="'+(String(cur)===String(o[0])?'on':'')+'">'+o[1]+'</button>'});return h+'</div>';}
+function renderOpts(){var t=edit.type,h='';
+ if(edit.locked){byId('edOpts').innerHTML='<p class="hint">Tu peux changer le nom et l\'image de ce mot.</p>';return}
+ var hasG=['food','drink','thing','place','body','person'].indexOf(t)>-1,hasPl=['food','drink','thing','place','body'].indexOf(t)>-1;
+ if(hasG)h+=seg('g',t==='person'?'Garçon ou fille (pour les accords)':'Genre du mot',[['m',t==='person'?'Garçon / homme':'Masculin (le, un)'],['f',t==='person'?'Fille / femme':'Féminin (la, une)']],edit.g);
+ if(hasPl)h+=seg('pl','Nombre',[['0','Un seul'],['1','Plusieurs (des, les)']],edit.pl?'1':'0');
+ if(t==='food')h+=seg('art','Quantité',[['part','Du, de la (du pain)'],['ind','Un, une (une pomme)']],edit.art);
+ if(t==='person')h+=seg('det','Comment on l\'appelle ?',[['none','Par son prénom'],['mon','mon …'],['ma','ma …'],['le','le …'],['la','la …']],edit.det);
+ if(t==='verb')h+='<label for="edInf">Le verbe à l\'infinitif</label><input type="text" id="edInf" value="'+esc(edit.inf)+'" placeholder="'+esc((edit.label||'jouer').toLowerCase())+'" autocapitalize="none"><p class="hint">Exemples : jouer au foot, faire du vélo, se laver.</p>';
+ byId('edOpts').innerHTML=h;}
+byId('edOpts').addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-opt]'):null;if(!b||!edit)return;
+ var o=b.getAttribute('data-opt'),v=b.getAttribute('data-val');
+ if(o==='pl')edit.pl=(v==='1');else{edit[o]=v;if(o==='g')edit.gTouched=true}
+ renderOpts();updatePreview();});
+byId('edOpts').addEventListener('input',function(e){if(edit&&e.target.id==='edInf'){edit.inf=e.target.value;updatePreview()}});
+function previewCard(){var e=edit;if(e.locked)return clone(e.orig);
+ var t=e.type,c={id:-1,label:e.label.trim()||'…',g:e.g,pl:e.pl};c.kind=(t==='drink')?'food':t;
+ if(t==='drink'){c.drink=true;c.art='part'}if(t==='food')c.art=e.art;if(t==='thing')c.art='def';
+ if(t==='verb')c.inf=(e.inf.trim()||c.label).toLowerCase();if(t==='person')c.det=e.det;return c;}
+function updatePreview(){if(!edit)return;var c=previewCard(),t=edit.type,txt='',g=activeProfile().gender||'m';
+ function I(id){return INTENTS.filter(function(i){return i.id===id})[0]}
+ if(edit.locked||c.kind==='play'||c.kind==='watch'||c.kind==='cloth')txt=c.label;
+ else if(t==='word')txt=c.label;
+ else if(t==='emotion'||t==='state')txt=jeSentence(I('feel'),c,g);
+ else if(t==='body')txt=jeSentence(I('pain'),c,g);
+ else if(t==='person')txt=jeSentence(I('want'),c,g)+' ou « '+c.label+', … »';
+ else txt=jeSentence(I('want'),c,g);
+ byId('edPreview').textContent='Exemple : '+cap(txt);}
+function searchPics(q,cb){if(!q||typeof fetch==='undefined'){cb([]);return}
+ if(searchCache[q]){cb(searchCache[q]);return}
+ fetch(API+'fr/bestsearch/'+encodeURIComponent(q)).then(function(r){return r.ok?r.json():[]}).then(function(a){
+  var ids=(a||[]).slice(0,15).map(function(x){return x._id}).filter(Boolean);searchCache[q]=ids;cb(ids)}).catch(function(){cb([])});}
+function runSearch(){if(!edit)return;var q=(byId('edQ').value.trim()||edit.q||edit.label.trim()).toLowerCase();edit.searchQ=q;
+ searchPics(q,function(ids){if(!edit||edit.searchQ!==q)return;edit.pics=ids.slice();
+  if(edit.pic&&edit.pics.indexOf(edit.pic)<0)edit.pics.unshift(edit.pic);
+  if(!edit.manual&&!edit.photo&&ids.length)edit.pic=ids[0];
+  edit.pi=Math.max(0,edit.pics.indexOf(edit.pic));renderImg();});}
+function renderImg(){if(!edit)return;var url=edit.photo||(edit.pic?API+edit.pic:null);
+ byId('edImg').innerHTML=imgHTML(url,edit.label||'?');
+ byId('edHint').textContent=edit.photo?'Photo personnelle.':edit.pics.length?('Image '+(edit.pi+1)+' sur '+edit.pics.length+' : utilise les flèches pour en voir d\'autres.'):'Aucune image trouvée (une connexion est nécessaire). Tu peux utiliser ta photo.';}
+function stepPic(d){if(!edit||!edit.pics.length)return;edit.photo=null;edit.manual=true;edit.pi=(edit.pi+d+edit.pics.length)%edit.pics.length;edit.pic=edit.pics[edit.pi];renderImg();}
+byId('edPrev').addEventListener('click',function(){stepPic(-1)});byId('edNext').addEventListener('click',function(){stepPic(1)});
+byId('edSearch').addEventListener('click',function(){if(!edit)return;var v=byId('edQ').value.trim();if(v){edit.q=v.toLowerCase();edit.manual=false;edit.photo=null}runSearch();});
+byId('edLabel').addEventListener('input',function(e){if(!edit)return;edit.label=e.target.value;
+ if(!edit.gTouched&&!edit.id){edit.g=guessGender(edit.label);edit.pl=guessPlural(edit.label);renderOpts()}
+ updatePreview();clearTimeout(edTimer);if(!edit.manual)edTimer=setTimeout(runSearch,600);});
+function resizePhoto(data,max,cb){var im=new Image();im.onload=function(){try{var r=Math.min(1,max/Math.max(im.width,im.height)),w=Math.round(im.width*r),h=Math.round(im.height*r),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);cb(cv.toDataURL('image/jpeg',0.85))}catch(e){cb(data)}};im.onerror=function(){cb(data)};im.src=data;}
+byId('edPhoto').addEventListener('change',function(e){var f=e.target.files[0];if(!f||!edit)return;var r=new FileReader();
+ r.onload=function(ev){resizePhoto(ev.target.result,256,function(d){if(!edit)return;edit.photo=d;edit.manual=true;renderImg()})};r.readAsDataURL(f);e.target.value='';});
+byId('edCancel').addEventListener('click',closeEditor);
+byId('openAdd').addEventListener('click',function(){openEditor(null)});
+byId('edSave').addEventListener('click',function(){var e=edit;if(!e)return;var label=e.label.trim();if(!label){toast('Écris le mot');byId('edLabel').focus();return}
+ var isNew=!e.id,c=isNew?{id:idCounter++}:cardById(e.id);if(!c){closeEditor();return}
+ if(!e.locked){var t=e.type,oldT=e.orig?typeOf(e.orig):null;
+  if(oldT!==t)['drink','art','inf','det','g','pl','follow','req','refl','see','adv','f','m'].forEach(function(k){delete c[k]});
+  c.kind=(t==='drink')?'food':t;
+  if(t==='drink'){c.drink=true;c.art='part'}else if(t==='food'){delete c.drink;c.art=e.art}else if(t==='thing'&&oldT!=='thing'){c.art='def'}
+  if(['food','drink','thing','place','body','person'].indexOf(t)>-1)c.g=e.g;
+  if(['food','drink','thing','place','body'].indexOf(t)>-1){if(e.pl)c.pl=true;else delete c.pl}
+  if(t==='verb')c.inf=(e.inf.trim()||label).toLowerCase();
+  if(t==='person')c.det=e.det;}
+ c.label=label;c.pic=e.pic||null;c.photo=e.photo||null;if(e.q)c.q=e.q;else if(isNew||c.q===undefined)delete c.q;
+ if(isNew)state.cards.push(c);
+ if(c.id<1000)state.edits[c.id]=clone(c);
+ saveState();closeEditor();renderKindFilter();renderCardsList();renderQuick();resetFlow();toast(isNew?'Mot ajouté':'Modifications enregistrées');});
+
+
+/* ---------- Que veux-tu dire : gestion ---------- */
+var iedit=null,INT_COLORS=[['vert','Vert'],['bleu','Bleu'],['rouge','Rouge'],['jaune','Jaune'],['violet','Violet'],['orange','Orange']];
+var INT_PRESETS=[['voudrais','Je voudrais','want','vouloir'],['préfère','Je préfère','like','préférer'],['adore',"J'adore",'like','adorer'],['déteste','Je déteste','like','détester'],['ai peur',"J'ai peur de",'need','peur'],['ai besoin',"J'ai besoin de",'need','avoir besoin'],['ai envie',"J'ai envie de",'envie','avoir envie']];
+var INT_STYLES=[['want','Une demande',"du pain, jouer, voir Maman"],['like','Un goût',"le pain, jouer, Maman"],['need','Un besoin avec « de »',"de l'eau, de jouer"]];
+function saveIntents(){saveState();renderIntentList();renderFlow()}
+function renderIntentList(){var list=byId('intentsList');if(!list)return;list.innerHTML='';var all=allIntents();
+ all.forEach(function(it,idx){var row=document.createElement('div');row.className='card-list-item int-row'+(it.hidden?' off':'');
+  row.innerHTML='<span class="ci2">'+intentVis(it)+'</span><span class="meta"><span class="n">'+esc(intentMenu(it))+'</span><span class="c">'+esc(it.hidden?"Masqué pour l'enfant":(it.sub||''))+'</span></span>'+
+   '<span class="acts"><button class="btn btn-ghost small" data-a="up" aria-label="Monter">'+ic('up',18)+'</button><button class="btn btn-ghost small" data-a="down" aria-label="Descendre">'+ic('down',18)+'</button>'+
+   '<button class="btn btn-ghost small" data-a="hide">'+(it.hidden?'Afficher':'Masquer')+'</button><button class="btn btn-ghost small" data-a="edit">Modifier</button>'+(it.custom?'<button class="btn btn-ghost small" data-a="del" aria-label="Supprimer">'+ic('trash',18)+'</button>':'')+'</span>';
+  row.addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-a]'):null;if(!b)return;var a=b.getAttribute('data-a');
+   if(a==='up'||a==='down'){var ids=all.map(function(x){return x.id}),k=a==='up'?idx-1:idx+1;if(k<0||k>=ids.length)return;var t=ids[idx];ids[idx]=ids[k];ids[k]=t;state.intentOrder=ids;saveIntents()}
+   else if(a==='hide'){if(!it.hidden&&visibleIntents().length<=1){toast('Garde au moins une image visible');return}setIntentHidden(it,!it.hidden);saveIntents()}
+   else if(a==='edit')openIntentEditor(it);
+   else if(a==='del'){if(typeof confirm==='function'&&!confirm('Supprimer « '+intentMenu(it)+' » ?'))return;state.customIntents=state.customIntents.filter(function(x){return x.id!==it.id});state.intentOrder=state.intentOrder.filter(function(x){return x!==it.id});if(flow.intent===it.id)resetFlow();saveIntents()}});
+  list.appendChild(row)});}
+function setIntentHidden(it,h){if(it.custom){state.customIntents.forEach(function(x){if(x.id===it.id)x.hidden=h})}else{var e=state.intentEdits[it.id]||{};e.hidden=h;state.intentEdits[it.id]=e}}
+function segHTML(name,opts,cur){var h='';opts.forEach(function(o){h+='<button type="button" data-k="'+name+'" data-v="'+o[0]+'" class="'+(String(cur)===String(o[0])?'on':'')+'">'+o[1]+'</button>'});return h}
+function openIntentEditor(it){var custom=!it||it.custom;
+ iedit={id:it?it.id:null,builtin:!!it&&!it.custom,verb:it&&it.custom?(it.vtext||''):'',style:it&&it.custom?(it.mode==='envie'?'need':it.mode):'want',neg:it?!!it.neg:false,color:it?it.color:'vert',sub:it?(it.sub||''):'',q:it?(it.q||''):'',pic:it?(it.pic||null):null,photo:it?(it.photo||null):null,pics:[],pi:0,manual:!!it&&!!(it.pic||it.photo),searchQ:'',custom:custom,orig:it||null};
+ byId('inTitle').textContent=it?'Modifier « '+intentMenu(it)+' »':'Nouveau « Que veux-tu dire ? »';
+ byId('inCustom').style.display=custom?'block':'none';byId('inVerb').value=iedit.verb;byId('inSub').value=iedit.sub;byId('inQ').value='';
+ byId('intEditor').style.display='block';renderIntentOpts();renderIntentImg();updateIntentPreview();runIntentSearch();
+ var el=byId('intEditor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function closeIntentEditor(){iedit=null;byId('intEditor').style.display='none'}
+function renderIntentOpts(){if(!iedit)return;
+ byId('inPresets').innerHTML=INT_PRESETS.map(function(p){return '<button type="button" data-k="preset" data-v="'+p[0]+'" class="'+(iedit.verb===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('');
+ byId('inStyle').innerHTML=INT_STYLES.map(function(p){return '<button type="button" data-k="style" data-v="'+p[0]+'" class="'+(iedit.style===p[0]?'on':'')+'">'+p[1]+'<br><small style="font-weight:500">'+p[2]+'</small></button>'}).join('');
+ byId('inNeg').innerHTML=segHTML('neg',[['0','Non'],['1','Oui : « ne … pas »']],iedit.neg?'1':'0');
+ byId('inColor').innerHTML=segHTML('color',INT_COLORS,iedit.color);}
+function intentFromEditor(){var e=iedit,mode=e.style;if(mode==='need'&&/envie/.test(e.verb))mode='envie';
+ return {id:e.id||'tmp',custom:true,mode:mode,vtext:(e.verb||'').trim().toLowerCase(),neg:e.neg,de:(mode==='need'||mode==='envie')?1:0,color:e.color,sub:e.sub,q:e.q,pic:e.pic,photo:e.photo}}
+function updateIntentPreview(){if(!iedit)return;var out;
+ if(iedit.custom){if(!iedit.verb.trim()){byId('inPreview').textContent='Choisis ou écris le début de la phrase.';return}
+  var it=intentFromEditor(),g=activeProfile().gender||'m',food=cardById(1),act=state.cards.filter(function(c){return c.kind==='verb'})[0];
+  out=[];if(food)out.push(jeSentence(it,food,g));if(act)out.push(jeSentence(it,act,g));
+  byId('inPreview').textContent='Exemple : '+out.map(cap).join('  •  ')}
+ else byId('inPreview').textContent='Exemple : '+intentMenu(iedit.orig)+' …'}
+byId('intEditor').addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-k]'):null;if(!b||!iedit)return;var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');
+ if(k==='preset'){var p=INT_PRESETS.filter(function(x){return x[0]===v})[0];iedit.verb=p[0];iedit.style=p[2]==='envie'?'need':p[2];byId('inVerb').value=p[0];if(!iedit.manual){iedit.q=p[3];byId('inQ').value=''}runIntentSearch()}
+ else if(k==='style')iedit.style=v;else if(k==='neg')iedit.neg=(v==='1');else if(k==='color')iedit.color=v;
+ renderIntentOpts();updateIntentPreview();});
+byId('inVerb').addEventListener('input',function(e){if(!iedit)return;iedit.verb=e.target.value;renderIntentOpts();updateIntentPreview()});
+byId('inSub').addEventListener('input',function(e){if(iedit)iedit.sub=e.target.value});
+function runIntentSearch(){if(!iedit)return;var q=(byId('inQ').value.trim()||iedit.q||(iedit.builtin?(iedit.orig.q||''):'')).toLowerCase();iedit.searchQ=q;
+ searchPics(q,function(ids){if(!iedit||iedit.searchQ!==q)return;iedit.pics=ids.slice();if(iedit.pic&&iedit.pics.indexOf(iedit.pic)<0)iedit.pics.unshift(iedit.pic);
+  if(!iedit.manual&&!iedit.photo&&ids.length&&!iedit.pic)iedit.pic=ids[0];iedit.pi=Math.max(0,iedit.pics.indexOf(iedit.pic));renderIntentImg()})}
+function renderIntentImg(){if(!iedit)return;var url=iedit.photo||(iedit.pic?API+iedit.pic:null);
+ byId('inImg').innerHTML=imgHTML(url,(iedit.verb||(iedit.orig?intentMenu(iedit.orig):'?')));
+ byId('inHint').textContent=iedit.photo?'Photo personnelle.':iedit.pics.length?('Image '+(iedit.pi+1)+' sur '+iedit.pics.length+" : utilise les flèches pour en voir d'autres."):'Tape un mot dans « Chercher une autre image » (une connexion est nécessaire) ou utilise ta photo.'}
+function stepIntentPic(d){if(!iedit||!iedit.pics.length)return;iedit.photo=null;iedit.manual=true;iedit.pi=(iedit.pi+d+iedit.pics.length)%iedit.pics.length;iedit.pic=iedit.pics[iedit.pi];renderIntentImg()}
+byId('inPrev').addEventListener('click',function(){stepIntentPic(-1)});byId('inNext').addEventListener('click',function(){stepIntentPic(1)});
+byId('inSearch').addEventListener('click',function(){if(!iedit)return;var v=byId('inQ').value.trim();if(v){iedit.q=v.toLowerCase();iedit.manual=false;iedit.photo=null;iedit.pic=null}runIntentSearch()});
+byId('inPhoto').addEventListener('change',function(e){var f=e.target.files[0];if(!f||!iedit)return;var r=new FileReader();r.onload=function(ev){resizePhoto(ev.target.result,256,function(d){if(!iedit)return;iedit.photo=d;iedit.manual=true;renderIntentImg()})};r.readAsDataURL(f);e.target.value=''});
+byId('inCancel').addEventListener('click',closeIntentEditor);
+byId('openAddIntent').addEventListener('click',function(){openIntentEditor(null)});
+byId('inSave').addEventListener('click',function(){var e=iedit;if(!e)return;
+ if(e.custom){if(!e.verb.trim()){toast('Choisis le début de la phrase');return}
+  var it=intentFromEditor();it.id=e.id||('c'+(idCounter++));it.custom=true;it.hidden=e.orig?!!e.orig.hidden:false;
+  if(e.id){state.customIntents=state.customIntents.map(function(x){return x.id===e.id?it:x})}else state.customIntents.push(it)}
+ else{var ed=state.intentEdits[e.id]||{};ed.color=e.color;ed.sub=e.sub;if(e.manual||e.photo){ed.pic=e.photo?null:e.pic;ed.photo=e.photo||null;if(e.q)ed.q=e.q}state.intentEdits[e.id]=ed}
+ saveState();closeIntentEditor();renderIntentList();renderFlow();toast('Enregistré');});
+byId('resetIntents').addEventListener('click',function(){if(typeof confirm==='function'&&!confirm("Remettre toutes les images de l'étape 2 comme au départ ? Les créations seront supprimées."))return;state.intentEdits={};state.customIntents=[];state.intentOrder=[];saveState();closeIntentEditor();renderIntentList();resetFlow();toast('Remis comme au départ')});
+byId('hintSpeak').addEventListener('click',function(){speakText(hintFor(stage()))});
+function renderSettings(){renderProfileList();renderIntentList();renderKindFilter();renderCardsList();}
+byId('enableKidMode').addEventListener('click',function(){state.kidMode=true;saveState();goScreen('board');toast('Mode enfant activé')});
+$$('.pin-d').forEach(function(inp,i){inp.addEventListener('input',function(){if(inp.value&&$$('.pin-d')[i+1])$$('.pin-d')[i+1].focus()})});
+byId('unlockBtn').addEventListener('click',function(){var code=$$('.pin-d').map(function(i){return i.value}).join('');
+ if(code==='1234'){state.kidMode=false;saveState();byId('lockBanner').classList.add('hidden');$$('.pin-d').forEach(function(i){i.value=''});goScreen('settings');toast('Déverrouillé')}
+ else{toast('Code incorrect');$$('.pin-d').forEach(function(i){i.value=''});$$('.pin-d')[0].focus()}});
+function setTB(){var t=byId('topbar');if(t)document.documentElement.style.setProperty('--tb',t.offsetHeight+'px')}
+$$('[data-ic]').forEach(function(el){el.innerHTML=ic(el.getAttribute('data-ic'),el.closest&&el.closest('.lock-icon')?48:22)});
+loadState();applyTheme();byId('voiceRate').value=state.voiceRate;renderQuick();renderProfiles();renderFlow();setTB();
+window.addEventListener('resize',setTB);window.addEventListener('orientationchange',setTB);window.addEventListener('load',setTB);
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./service-worker.js').catch(function(){})})}
+
+
+})();
+</script>
+</body>
+</html>
