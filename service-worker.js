@@ -1,5 +1,5 @@
-const VERSION = 'jpat-v5';
-const SHELL = ['./', './index.html', './parle-avec-toi-app.html', './manifest.webmanifest', './assets/icon-192.png', './assets/icon-512.png'];
+const VERSION = 'jpat-v6';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -27,7 +27,7 @@ self.addEventListener('fetch', (e) => {
         const copy = res.clone();
         caches.open(VERSION).then((c) => c.put(req, copy));
         return res;
-      }).catch(() => caches.match(req).then((r) => r || caches.match('./index.html') || caches.match('./parle-avec-toi-app.html')))
+      }).catch(() => caches.match(req).then((r) => r || caches.match('./index.html')))
     );
     return;
   }
