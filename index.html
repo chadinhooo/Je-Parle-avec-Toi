@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="./assets/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{-webkit-text-size-adjust:none;text-size-adjust:none;scroll-behavior:smooth;}
@@ -211,26 +211,62 @@ details.grp>summary::-webkit-details-marker{display:none}
 details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.5rem}
 .hint{font-size:.8rem;color:var(--color-text-muted);margin-top:.3rem}
 
+/* ===== v6 : rendu plus sobre, plus tactile ===== */
+:root,[data-theme="light"]{--color-bg:#f5f0e6;--color-surface:#fffdf8;--color-surface-2:#faf6ec;--color-surface-offset:#ece5d5;--color-divider:#ded5c0;--color-border:#cfc4aa;--color-text:#1f2a2e;--color-text-muted:#5b6469;--color-text-faint:#8c9290;--color-primary:#0d7a72;--color-primary-hover:#0a625c;--color-primary-active:#084c47;--color-primary-highlight:#d6e8e3;--radius-sm:.4rem;--radius-md:.7rem;--radius-lg:1rem;--radius-xl:1.3rem;--shadow-sm:0 2px 0 rgba(31,42,46,.10);--shadow-md:0 3px 0 rgba(31,42,46,.14);--shadow-lg:0 12px 28px rgba(31,42,46,.16);--font-display:'Lexend','Atkinson Hyperlegible',system-ui,sans-serif;--font-body:'Atkinson Hyperlegible','Segoe UI',system-ui,sans-serif}
+[data-theme="dark"]{--color-bg:#14181a;--color-surface:#1c2123;--color-surface-2:#21282a;--color-surface-offset:#2a3235;--color-divider:#2f383b;--color-border:#3d484c;--color-text:#eceae4;--color-text-muted:#a9aea9;--color-text-faint:#757c78;--color-primary:#4fc7bd;--color-primary-hover:#7fd9d1;--color-primary-active:#a3e5df;--color-primary-highlight:#254541;--shadow-sm:0 2px 0 rgba(0,0,0,.35);--shadow-md:0 3px 0 rgba(0,0,0,.4)}
+body{font-family:var(--font-body);font-size:1.0625rem;line-height:1.55}
+h1,h2,h3,.btn,.cat-tab,.pic-label,.flow-title,.crumb,.profile-name{font-family:var(--font-display)}
+.topbar{border-bottom:2px solid var(--color-border)}
+.topbar h1{font-weight:700;letter-spacing:-.01em}
+.btn,.icon-btn,.cat-tab,.crumb,.chip,.seg button,.quick button,.type-btn,.int-row .btn{border-radius:var(--radius-md)}
+.btn{font-weight:600;letter-spacing:0}
+.btn-primary{box-shadow:0 3px 0 var(--color-primary-active)}
+.btn-primary:active{transform:translateY(2px);box-shadow:0 1px 0 var(--color-primary-active)}
+.btn-ghost{border:2px solid var(--color-border);background:var(--color-surface)}
+.icon-btn{border:2px solid var(--color-border);background:var(--color-surface)}
+.sentence-bar{background:var(--color-surface);border-bottom:2px solid var(--color-border);padding:.8rem 1rem}
+.sentence-text{font-family:var(--font-display);font-weight:600;font-size:1.7rem;line-height:1.3;letter-spacing:-.01em;color:var(--color-text)}
+.sentence-text.empty{font-size:1.05rem}
+.sentence-text .placeholder{font-size:1.05rem;font-weight:500;color:var(--color-text-faint)}
+.sentence-text .blank{display:inline-block;min-width:3.2ch;height:1em;margin:0 .1em;border-bottom:3px dashed var(--color-primary);vertical-align:-.12em}
+.flow-title{font-weight:700;font-size:1.25rem;letter-spacing:-.01em}
+.flow-hint{padding:.15rem 1rem 0;color:var(--color-text-muted);font-size:1rem}
+.pic-card{border:2px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:0 4px 0 var(--color-border);gap:.6rem}
+.pic-card:active{transform:translateY(3px);box-shadow:0 1px 0 var(--color-border)}
+.pic-card .strip{height:7px}
+.pic-img-wrap{background:#fff;border:1px solid var(--color-divider);border-radius:var(--radius-md)}
+.pic-label{font-weight:600;font-size:1rem;line-height:1.25}
 .board-grid.big{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
 .board-grid.big .pic-card{min-height:200px}
 .board-grid.big .pic-img-wrap{width:104px;height:104px}
 .board-grid.big .pic-label{font-size:1.2rem}
 .board-grid.big .pic-sub{font-size:.85rem}
-.flow-hint{padding:.2rem 1rem 0;color:var(--color-text-muted);font-size:1rem;font-weight:600}
-.btn.small{min-height:38px;padding:.4rem .9rem;font-size:.8rem}
-.int-row{flex-wrap:wrap}
-.int-row .meta .c{display:block}
-.int-row.off{opacity:.55}
-.int-row .acts{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.cat-tab{border:2px solid transparent;font-weight:600}
+.cat-tab.active{border-color:currentColor;box-shadow:0 3px 0 currentColor}
+.crumb{border-width:2px}
+.bottom-nav{border-top:2px solid var(--color-border);background:var(--color-surface)}
+.nav-btn{border-top:3px solid transparent}
+.nav-btn.active{border-top-color:var(--color-primary);background:var(--color-primary-highlight)}
+@media (min-width:768px){.bottom-nav{border-radius:var(--radius-xl);border:2px solid var(--color-border)}}
+.settings-section,.editor,details.grp,.le-row,.card-list-item{border-radius:var(--radius-lg)}
+.settings-section{border:2px solid var(--color-divider);box-shadow:none}
+.final-sentence{font-family:var(--font-display);font-weight:600;font-size:1.9rem;line-height:1.3;max-width:24ch;margin:.2rem auto .4rem}
 .isvg{width:100%;height:100%;display:block;padding:6px}
 .crumb .ci svg{width:24px;height:24px;padding:0}
 .cat-tab svg{width:26px;height:26px;padding:0;background:#fff;border-radius:50%}
 .ci2 svg{width:34px;height:34px;padding:0}
 .img-prev svg{width:90%;height:90%;padding:0}
-.type-btn .ti svg{padding:0}
-.le-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-md);margin-bottom:.45rem}
+.btn.small{min-height:38px;padding:.4rem .9rem;font-size:.8rem}
+.int-row{flex-wrap:wrap}
+.int-row .meta .c{display:block}
+.int-row.off{opacity:.55}
+.int-row .acts{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.le-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;background:var(--color-surface);border:1px solid var(--color-divider);margin-bottom:.45rem}
 .le-row .meta{flex:1;font-weight:700}
 .le-row .meta small{display:block;font-weight:500;color:var(--color-text-muted)}
+.level-help{background:var(--color-primary-highlight);border-radius:var(--radius-md);padding:.6rem .9rem;margin-bottom:.9rem;font-size:.85rem}
+.level-help p{margin:.15rem 0}
+.pf-row{display:flex;gap:.4rem;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -260,27 +296,22 @@ details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.
 <section class="screen" id="screen-settings"><div class="settings-screen"><h2>Personnalisation</h2>
 
 <div class="settings-section" id="secIntents"><h3>Étape 2 : « Que veux-tu dire ? »</h3>
-<p class="hint" style="margin-bottom:.8rem">Ce sont les grandes images de l'étape 2 (Je veux, J'ai besoin de, J'ai mal…). Pour chacune, tu peux choisir les images qui s'affichent à l'étape 3 (bouton « Images »), changer son dessin, la masquer, changer l'ordre, ou en créer de nouvelles.</p>
+<p class="hint" style="margin-bottom:.8rem">Ce sont les grandes images de l'étape 2. Pour chacune : choisis les images de l'étape 3 (bouton « Images »), change son dessin, son niveau, masque-la, change l'ordre, ou crées-en de nouvelles.</p>
 <button class="btn btn-primary" id="openAddIntent"><i class="ic" data-ic="plus"></i>Ajouter un « Que veux-tu dire ? »</button>
-
-<div class="editor" id="listEditor" style="display:none">
-<h3 id="leTitle">Images</h3>
-<p class="hint" style="margin-bottom:.8rem">Ces images s'affichent en premier à l'étape 3, dans l'onglet de cette phrase.</p>
+<div class="editor" id="listEditor" style="display:none"><h3 id="leTitle">Images</h3>
+<p class="hint" style="margin-bottom:.8rem">Ces images s'affichent en premier à l'étape 3.</p>
 <div id="leItems"></div>
 <div class="row-flex" style="margin-top:.6rem"><button class="btn btn-primary" id="leAddExisting"><i class="ic" data-ic="plus"></i>Ajouter une image existante</button><button class="btn btn-ghost" id="leCreate">Créer un nouveau mot</button></div>
 <div id="lePicker" style="display:none;margin-top:.8rem"><input type="search" id="leSearch" placeholder="Rechercher un mot"><div class="chips" id="leKinds"></div><div id="leCandidates"></div></div>
-<div class="row-flex" style="margin-top:.8rem"><button class="btn btn-primary" id="leDone">Terminé</button></div>
-</div>
-
-<div class="editor" id="intEditor" style="display:none">
-<h3 id="inTitle">Nouveau</h3>
+<div class="row-flex" style="margin-top:.8rem"><button class="btn btn-primary" id="leDone">Terminé</button></div></div>
+<div class="editor" id="intEditor" style="display:none"><h3 id="inTitle">Nouveau</h3>
 <div id="inCustom">
 <div class="field"><label>1. Début de la phrase</label><div class="seg" id="inPresets"></div>
 <input type="text" id="inVerb" placeholder="Ou écris le verbe : voudrais, préfère, adore…" autocapitalize="none" style="margin-top:.6rem">
 <p class="hint">La phrase commencera par « Je » : Je voudrais, J'adore…</p></div>
 <div class="field"><label>2. Qu'est-ce qui peut suivre ?</label><div class="seg" id="inStyle"></div></div>
-<div class="field"><label>3. Phrase négative ?</label><div class="seg" id="inNeg"></div></div>
-</div>
+<div class="field"><label>3. Phrase négative ?</label><div class="seg" id="inNeg"></div></div></div>
+<div class="field"><label>Visible à partir du niveau</label><div class="seg" id="inLvl"></div></div>
 <div class="field"><label>Couleur</label><div class="seg" id="inColor"></div></div>
 <div class="field"><label>Image</label>
 <div class="img-pick"><button class="icon-btn" id="inPrev" aria-label="Image précédente"><i class="ic" data-ic="back"></i></button><div class="img-prev" id="inImg"></div><button class="icon-btn" id="inNext" aria-label="Image suivante"><i class="ic" data-ic="next"></i></button></div>
@@ -289,11 +320,9 @@ details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.
 <p class="hint" id="inHint"></p></div>
 <div class="field"><label for="inSub">Petit texte sous l'image (facultatif)</label><input type="text" id="inSub" placeholder="Ex : Je demande quelque chose"></div>
 <div class="preview" id="inPreview"></div>
-<div class="row-flex"><button class="btn btn-primary" id="inSave">Enregistrer</button><button class="btn btn-ghost" id="inCancel">Annuler</button></div>
-</div>
+<div class="row-flex"><button class="btn btn-primary" id="inSave">Enregistrer</button><button class="btn btn-ghost" id="inCancel">Annuler</button></div></div>
 <div id="intentsList" style="margin-top:.8rem"></div>
-<button class="btn btn-ghost" id="resetIntents" style="margin-top:.6rem">Tout remettre comme au départ</button>
-</div>
+<button class="btn btn-ghost" id="resetIntents" style="margin-top:.6rem">Tout remettre comme au départ</button></div>
 
 <div class="settings-section"><h3>Pictogrammes</h3>
 <div class="row-flex"><input type="search" id="cardSearch" placeholder="Rechercher un mot" style="flex:1;min-width:140px"><button class="btn btn-primary" id="openAdd"><i class="ic" data-ic="plus"></i>Ajouter un mot</button></div>
@@ -318,10 +347,10 @@ details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.
 </div>
 
 <div class="settings-section"><h3>Profils</h3>
-<p style="color:var(--color-text-muted);font-size:.85rem;margin-bottom:.8rem">Garçon ou fille : sert aux accords (« Je suis content / contente »).</p>
+<p class="hint" style="margin-bottom:.8rem">Garçon ou fille : sert aux accords (« Je suis content / contente »). Le niveau règle ce que l'enfant voit.</p><div class="level-help"><p><b>Niveau 1</b> : Je veux, J'ai mal, Je ne veux pas, Je me sens.</p><p><b>Niveau 2</b> : ajoute Je vois, J'ai besoin de, J'ai envie de, J'aime.</p><p><b>Niveau 3</b> : ajoute les précisions (couleurs, tailles) pour les enfants qui lisent.</p></div>
 <div class="card-list" id="profileList"></div>
 <div class="field" style="margin-top:1rem"><label for="newProfileName">Ajouter un profil enfant</label>
-<div class="row-flex"><input type="text" id="newProfileName" placeholder="Prénom de l'enfant" style="flex:1"><select id="newProfileGender" style="width:auto"><option value="m">Garçon</option><option value="f">Fille</option></select><button class="btn btn-primary" id="addProfileBtn">Ajouter</button></div></div></div>
+<div class="row-flex"><input type="text" id="newProfileName" placeholder="Prénom de l'enfant" style="flex:1"><select id="newProfileGender" style="width:auto"><option value="m">Garçon</option><option value="f">Fille</option></select><select id="newProfileLevel" style="width:auto"><option value="1">Niveau 1</option><option value="2" selected>Niveau 2</option><option value="3">Niveau 3</option></select><button class="btn btn-primary" id="addProfileBtn">Ajouter</button></div></div></div>
 
 <div class="settings-section"><h3>Interface</h3><div class="field"><label>Thème</label><div class="row-flex"><button class="btn btn-ghost" id="lightModeBtn"><i class="ic" data-ic="sun"></i>Clair</button><button class="btn btn-ghost" id="darkModeBtn"><i class="ic" data-ic="moon"></i>Sombre</button></div></div>
 <div class="field"><label for="voiceRate">Vitesse de la voix</label><input type="range" id="voiceRate" min="0.5" max="1.5" step="0.1" value="0.9"></div>
@@ -329,6 +358,7 @@ details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.
 <div class="field"><label for="voiceSel">Voix</label><select id="voiceSel"></select><p class="hint" id="voiceHint"></p></div>
 <button class="btn btn-ghost" id="testVoice"><i class="ic" data-ic="speaker"></i>Écouter un exemple</button></div>
 <div class="settings-section"><h3>Mode enfant</h3><p style="color:var(--color-text-muted);margin-bottom:.8rem;font-size:.9rem">Une fois activé, ce menu est verrouillé par code parent.</p><button class="btn btn-primary" id="enableKidMode"><i class="ic" data-ic="lock"></i>Activer le mode enfant</button></div>
+<p class="hint" id="verTag" style="text-align:center;margin-top:1rem"></p>
 </div></section>
 <nav class="bottom-nav" aria-label="Navigation principale">
 <button class="nav-btn active" data-screen="board" aria-label="Parler"><i class="ic" data-ic="chat"></i><span>Parler</span></button>
@@ -342,516 +372,368 @@ details.grp .rows{padding:0 .6rem .6rem;display:flex;flex-direction:column;gap:.
 <div class="toast" id="toast"></div>
 <script>
 (function(){
-
 var API='https://api.arasaac.org/api/pictograms/';
-var V={vouloir:'veux',besoin:'ai besoin',envie:'ai envie',aimer:'aime',etre:'suis',avoir:'ai'};
+var V={vouloir:'veux',besoin:'ai besoin',envie:'ai envie',aimer:'aime',voir:'vois',etre:'suis',avoir:'ai'};
 var INTENTS=[
-{id:'want',mode:'want',color:'vert',v:'vouloir',menu:'Je veux',sub:'Je demande quelque chose',list:[2,3,1,41,40,44,21,20,43,66]},
-{id:'pain',mode:'pain',color:'rouge',menu:"J'ai mal",sub:'Ça me fait mal',list:[]},
-{id:'need',mode:'need',color:'bleu',v:'besoin',de:1,menu:"J'ai besoin de",sub:"C'est important pour moi",list:[20,66,40,41,128,129,133,43,125,120,124,42,51,122]},
-{id:'envie',mode:'envie',color:'violet',v:'envie',de:1,menu:"J'ai envie de",sub:"J'aimerais bien",list:[44,41,40,46,45,49,61,60,6,9,7,43]},
-{id:'notwant',mode:'want',color:'orange',v:'vouloir',neg:1,menu:'Je ne veux pas',sub:'Non, pas ça',list:[]},
-{id:'like',mode:'like',color:'rouge',v:'aimer',menu:"J'aime",sub:"Ce que j'aime",list:[]},
-{id:'feel',mode:'feel',color:'jaune',menu:'Je me sens',sub:'Mes émotions et mon corps',list:[]}];
-function vow(s){return /^[aeiouyhàâäéèêëîïôöùûüœ]/i.test(s);}
-function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
-function nw(c){return (c.w||c.label).toLowerCase();}
-function deWrap(x){return (vow(x)?"d'":'de ')+x;}
-function defArt(c){var w=nw(c);if(c.pl)return 'les '+w;if(vow(w))return "l'"+w;return (c.g==='f'?'la ':'le ')+w;}
-function directForm(c){var w=nw(c);
- if(c.art==='part'){if(c.pl)return 'des '+w;if(vow(w))return "de l'"+w;return (c.g==='f'?'de la ':'du ')+w;}
- if(c.art==='ind'){if(c.pl)return 'des '+w;return (c.g==='f'?'une ':'un ')+w;}
- return defArt(c);}
-function deForm(c){var w=nw(c);
- if(c.art==='part')return deWrap(w);
- if(c.art==='ind'){if(c.pl)return deWrap(w);return deWrap((c.g==='f'?'une ':'un ')+w);}
- if(c.pl)return 'des '+w;if(vow(w))return "de l'"+w;return (c.g==='f'?'de la ':'du ')+w;}
-function negForm(c){var w=nw(c);if(c.art==='part'||c.art==='ind')return deWrap(w);return defArt(c);}
-function personNp(c){var w=nw(c);var d=c.det||'none';if(d==='none')return c.label;
- if(d==='le'&&vow(w))return "l'"+w;return d+' '+w;}
-function personDe(c){var w=nw(c);var d=c.det||'none';
- if(d==='none')return deWrap(c.label);if(d==='le')return vow(w)?"de l'"+w:'du '+w;
- return 'de '+d+' '+w;}
-function placeLoc(c){var w=nw(c);if(c.adv)return w;if(c.pl)return 'aux '+w;if(vow(w))return "à l'"+w;return (c.g==='f'?'à la ':'au ')+w;}
-function possessive(c){var w=nw(c);if(c.pl)return 'mes';if(vow(w))return 'mon';return c.g==='f'?'ma':'mon';}
-function feminize(m){if(/e$/.test(m))return m;if(/eux$/.test(m))return m.slice(0,-3)+'euse';if(/if$/.test(m))return m.slice(0,-2)+'ive';return m+'e';}
-function agree(c,g){var m=(c.m||c.label).toLowerCase();return g==='f'?(c.f||feminize(m)):m;}
-function vpText(c){var t=(c.inf||nw(c)).replace('{mon}','mon');
- if(c.refl)return vow(t)?"m'"+t:'me '+t;
- return t;}
-function jeVerb(form,neg){var parts=form.split(' ');var first=parts[0];var rest=parts.slice(1).join(' ');var out;
- if(neg)out='je '+(vow(first)?"n'":'ne ')+first+' pas';
- else if(vow(first))out="j'"+first;
- else out='je '+first;
- return out+(rest?' '+rest:'');}
-function detailText(it,c,d){
- if(!d)return '';
- var f=c.follow;
- if(f==='drink'||f==='food')return ' '+(it.neg?negForm(d):directForm(d));
- if(f==='play'||f==='watch')return ' '+d.ph;
- if(f==='cloth')return ' '+possessive(d)+' '+nw(d);
- if(f==='person')return ' '+personNp(d);
- return '';}
+{id:'want',mode:'want',color:'vert',v:'vouloir',lvl:1,menu:'Je veux',sub:'Je demande quelque chose',list:[2,3,1,41,40,44,21,20,43,66,133,128,129,125,120,42,51,60,61,46,45,70,71]},
+{id:'pain',mode:'pain',color:'rouge',lvl:1,menu:"J'ai mal",sub:'Ça me fait mal',list:[]},
+{id:'notwant',mode:'want',color:'orange',v:'vouloir',neg:1,lvl:1,menu:'Je ne veux pas',sub:'Non, pas ça',list:[41,40,51,50,42,65,21,126,5,18,111]},
+{id:'feel',mode:'feel',color:'jaune',lvl:1,menu:'Je me sens',sub:'Mes émotions et mon corps',list:[]},
+{id:'see',mode:'see',color:'bleu',v:'voir',lvl:2,menu:'Je vois',sub:'Je regarde autour de moi',list:[28,29,24,210,211,212,213,214,215,218,219,222,223,227,228,62,61]},
+{id:'need',mode:'need',color:'violet',v:'besoin',de:1,lvl:2,menu:"J'ai besoin de",sub:"C'est important pour moi",list:[20,66,40,41,128,129,133,43,125,120,124,42,51,122]},
+{id:'envie',mode:'envie',color:'orange',v:'envie',de:1,lvl:2,menu:"J'ai envie de",sub:"J'aimerais bien",list:[44,41,40,46,45,49,61,60,6,9,7,43]},
+{id:'like',mode:'like',color:'jaune',v:'aimer',lvl:2,menu:"J'aime",sub:"Ce que j'aime",list:[44,46,45,49,28,29,24,26,9,12,7]}];
+function vow(s){return /^[aeiouyhàâäéèêëîïôöùûüœ]/i.test(s)}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function nw(c){return(c.w||c.label).toLowerCase()}
+function deWrap(x){return(vow(x)?"d'":'de ')+x}
+function defArt(c){var w=nw(c);if(c.pl)return'les '+w;if(vow(w))return"l'"+w;return(c.g==='f'?'la ':'le ')+w}
+function indefNP(c){var w=nw(c);if(c.pl)return c._ab?deWrap(w):'des '+w;return(c.g==='f'?'une ':'un ')+w}
+function directForm(c){var w=nw(c);if(c.art==='part'){if(c.pl)return'des '+w;if(vow(w))return"de l'"+w;return(c.g==='f'?'de la ':'du ')+w}if(c.art==='ind'){if(c.pl)return'des '+w;return(c.g==='f'?'une ':'un ')+w}return defArt(c)}
+function deForm(c){var w=nw(c);if(c.art==='part')return deWrap(w);if(c.art==='ind'){if(c.pl)return deWrap(w);return deWrap((c.g==='f'?'une ':'un ')+w)}if(c.pl)return'des '+w;if(vow(w))return"de l'"+w;return(c.g==='f'?'de la ':'du ')+w}
+function negForm(c){return(c.art==='part'||c.art==='ind')?deWrap(nw(c)):defArt(c)}
+function personNp(c){var w=nw(c),d=c.det||'none';if(d==='none')return c.label;if(d==='le'&&vow(w))return"l'"+w;return d+' '+w}
+function personDe(c){var w=nw(c),d=c.det||'none';if(d==='none')return deWrap(c.label);if(d==='le')return vow(w)?"de l'"+w:'du '+w;return'de '+d+' '+w}
+function placeLoc(c){var w=nw(c);if(c.adv)return w;if(c.pl)return'aux '+w;if(vow(w))return"à l'"+w;return(c.g==='f'?'à la ':'au ')+w}
+function possessive(c){var w=nw(c);if(c.pl)return'mes';if(vow(w))return'mon';return c.g==='f'?'ma':'mon'}
+function feminize(m){if(/e$/.test(m))return m;if(/eux$/.test(m))return m.slice(0,-3)+'euse';if(/if$/.test(m))return m.slice(0,-2)+'ive';return m+'e'}
+function agree(c,g){var m=(c.m||c.label).toLowerCase();return g==='f'?(c.f||feminize(m)):m}
+function adjForm(a,c){var w=nw(c),f=c.g==='f',m=(a.m||a.label||'').toLowerCase(),fe=(a.f||feminize(m)).toLowerCase();
+ if(a.inv)return m;
+ if(c.pl){if(f)return a.fp||(fe+(/[sx]$/.test(fe)?'':'s'));return a.mp||(/[sx]$/.test(m)?m:m+'s')}
+ if(f)return fe;if(a.mv&&a.pos==='before'&&vow(w))return a.mv;return m}
+function withAdj(c,a){if(!a)return c;var w=nw(c),af=adjForm(a,c),c2=Object.assign({},c);c2.w=a.pos==='before'?af+' '+w:w+' '+af;if(a.pos==='before'&&c.pl)c2._ab=true;return c2}
+function vpText(c){var t=(c.inf||nw(c)).replace('{mon}','mon');return c.refl?(vow(t)?"m'"+t:'me '+t):t}
+function jeVerb(form,neg){var p=form.split(' '),f=p[0],r=p.slice(1).join(' '),o;if(neg)o='je '+(vow(f)?"n'":'ne ')+f+' pas';else if(vow(f))o="j'"+f;else o='je '+f;return o+(r?' '+r:'')}
+function detailText(it,c,d){if(!d)return'';var f=c.follow;if(f==='drink'||f==='food')return' '+(it.neg?negForm(d):directForm(d));if(f==='play'||f==='watch')return' '+d.ph;if(f==='cloth')return' '+possessive(d)+' '+nw(d);if(f==='person')return' '+personNp(d);return''}
 function complement(it,c,d){var k=c.kind,de=!!it.de,md=it.mode||it.id,like=md==='like';
- if(k==='verb'){var inf=vpText(c)+detailText(it,c,d);return de?deWrap(inf):inf;}
- if(k==='food'||k==='thing'){
-  if(c.see){var vv='voir '+defArt(c);if(like)return defArt(c);return de?deWrap(vv):vv;}
-  if(like)return defArt(c);if(de)return deForm(c);if(it.neg)return negForm(c);return directForm(c);}
- if(k==='person'){var np=personNp(c);
-  if(like)return np;if(md==='need')return personDe(c);if(md==='envie')return deWrap('voir '+np);return 'voir '+np;}
- if(k==='place'){var a='aller '+placeLoc(c);return de?deWrap(a):a;}
- return '';}
-function jeSentence(it,c,g,d){
- var md=it.mode||it.id;
+ if(k==='verb'){var inf=vpText(c)+detailText(it,c,d);return de?deWrap(inf):inf}
+ if(k==='food'||k==='thing'){if(c.see){var vv='voir '+defArt(c);if(like)return defArt(c);return de?deWrap(vv):vv}if(like)return defArt(c);if(de)return deForm(c);if(it.neg)return negForm(c);return directForm(c)}
+ if(k==='person'){var np=personNp(c);if(like)return np;if(md==='need')return personDe(c);if(md==='envie')return deWrap('voir '+np);return'voir '+np}
+ if(k==='place'){var a='aller '+placeLoc(c);return de?deWrap(a):a}
+ return''}
+function seeNP(c){if(c.kind==='person')return personNp(c);if(c.kind==='place')return defArt(c);return indefNP(c)}
+function jeSentence(it,c,g,d,adj){var md=it.mode||it.id;
  if(md==='pain')return jeVerb(V.avoir)+' mal '+placeLoc(c);
- if(md==='feel'){
-  if(c.kind==='emotion')return jeVerb(V.etre)+' '+agree(c,g);
-  return jeVerb(V.avoir)+' '+nw(c);}
- return jeVerb(it.vtext||V[it.v],it.neg)+' '+complement(it,c,d);}
-function withDest(dest,txt){return dest?dest.label+', '+txt:cap(txt);}
-function followKind(f){return {drink:'food',food:'food',play:'play',watch:'watch',cloth:'cloth',person:'person'}[f];}
-function followMatch(f,x){if(x.kind!==followKind(f))return false;if(f==='drink')return !!x.drink;if(f==='food')return !x.drink;return true;}
+ if(md==='feel'){if(c.kind==='emotion')return jeVerb(V.etre)+' '+agree(c,g);return jeVerb(V.avoir)+' '+nw(c)}
+ var c2=(adj&&c.kind==='thing')?withAdj(c,adj):c;
+ if(md==='see')return jeVerb(it.vtext||V.voir,it.neg)+' '+seeNP(c2);
+ return jeVerb(it.vtext||V[it.v],it.neg)+' '+complement(it,c2,d)}
+function withDest(dest,txt){return dest?dest.label+', '+txt:cap(txt)}
+function followKind(f){return{drink:'food',food:'food',play:'play',watch:'watch',cloth:'cloth',person:'person'}[f]}
+function followMatch(f,x){if(x.kind!==followKind(f))return false;if(f==='drink')return!!x.drink;if(f==='food')return!x.drink;return true}
 var FOLLOW_TITLE={drink:'Quoi à boire ?',food:'Quoi à manger ?',play:'À quoi ?',watch:'Quoi regarder ?',cloth:'Quel vêtement ?',person:'Qui ?'};
-
-function C(id,kind,label,pic,o){var c={id:id,kind:kind,label:label,pic:pic||null,photo:null};for(var k in o)c[k]=o[k];return c;}
+function allowedKinds(mode){return mode==='feel'?['emotion','state']:mode==='pain'?['body']:mode==='see'?['thing','person','place']:['food','verb','thing','person','place']}
+function usable(c,mode){if(mode==='see')return!c.nosee&&!c.adv&&['thing','person','place'].indexOf(c.kind)>-1;return!c.onlySee}
+function C(id,kind,label,pic,o){var c={id:id,kind:kind,label:label,pic:pic||null,photo:null};for(var k in o)c[k]=o[k];return c}
 var CARDS=[
-C(1,'food','Pain',2494,{g:'m',art:'part'}),C(2,'food','Eau',2248,{g:'f',art:'part',drink:true}),C(3,'food','Lait',2445,{g:'m',art:'part',drink:true}),
-C(4,'food','Jus',11461,{g:'m',art:'part',drink:true}),C(5,'food','Soupe',2573,{g:'f',art:'part'}),C(6,'food','Glace',2385,{g:'f',art:'part'}),
-C(7,'food','Pizza',2527,{g:'f',art:'part'}),C(8,'food','Gâteau',2502,{g:'m',art:'part'}),C(9,'food','Chocolat',2334,{g:'m',art:'part'}),
-C(10,'food','Frites',2505,{g:'f',art:'part',pl:true}),C(11,'food','Fruit',28339,{g:'m',art:'ind'}),C(12,'food','Pomme',2462,{g:'f',art:'ind'}),
-C(13,'food','Banane',2530,{g:'f',art:'ind'}),C(14,'food','Yaourt',2618,{g:'m',art:'ind'}),C(15,'food','Bonbon',2686,{g:'m',art:'ind'}),
-C(16,'food','Sirop',null,{g:'m',art:'part',drink:true,q:'sirop'}),C(17,'food','Riz',null,{g:'m',art:'part',q:'riz'}),C(18,'food','Pâtes',null,{g:'f',art:'part',pl:true,q:'pâtes'}),
-C(19,'food','Viande',null,{g:'f',art:'part',q:'viande'}),C(110,'food','Poisson',null,{g:'m',art:'part',q:'poisson cuit'}),C(111,'food','Légumes',null,{g:'m',art:'part',pl:true,q:'légumes'}),
-C(112,'food','Œuf',null,{g:'m',art:'ind',q:'œuf'}),C(113,'food','Biscuit',null,{g:'m',art:'ind',q:'biscuit'}),C(114,'food','Compote',null,{g:'f',art:'part',q:'compote'}),
-C(115,'food','Fromage',null,{g:'m',art:'part',q:'fromage'}),C(116,'food','Céréales',null,{g:'f',art:'part',pl:true,q:'céréales'}),
-C(20,'thing','Aide',12252,{g:'f',art:'part'}),C(21,'thing','Tablette',9165,{g:'f',art:'def'}),C(22,'thing','Téléphone',2585,{g:'m',art:'def'}),
-C(23,'thing','Poupée',2482,{g:'f',art:'def'}),C(24,'thing','Voiture',2339,{g:'f',art:'def'}),C(25,'thing','Livre',2450,{g:'m',art:'def'}),
-C(26,'thing','Ballon',2269,{g:'m',art:'def'}),C(27,'thing','Puzzle',2540,{g:'m',art:'def'}),C(28,'thing','Chien',2517,{g:'m',art:'def',see:true}),
-C(29,'thing','Chat',2406,{g:'m',art:'def',see:true}),C(120,'thing','Doudou',null,{g:'m',art:'def',q:'doudou'}),C(121,'thing','Télé',null,{g:'f',art:'def',q:'télévision'}),
-C(122,'thing','Casque',null,{g:'m',art:'def',q:'casque audio'}),C(123,'thing','Crayons',null,{g:'m',art:'def',pl:true,q:'crayons'}),C(124,'thing','Couverture',null,{g:'f',art:'def',q:'couverture'}),
-C(125,'thing','Silence',null,{g:'m',art:'part',q:'silence'}),C(126,'thing','Bruit',null,{g:'m',art:'part',q:'bruit'}),C(127,'thing','Lumière',null,{g:'f',art:'part',q:'lumière'}),
-C(128,'thing','Médicament',null,{g:'m',art:'ind',q:'médicament'}),C(129,'thing','Pansement',null,{g:'m',art:'ind',q:'pansement'}),
-C(40,'verb','Boire',2276,{inf:'boire',follow:'drink'}),C(41,'verb','Manger',2349,{inf:'manger',follow:'food'}),C(42,'verb','Dormir',2369,{inf:'dormir'}),
-C(43,'verb','Câlin',27407,{inf:'faire un câlin'}),C(44,'verb','Jouer',2439,{inf:'jouer',follow:'play'}),C(45,'verb','Dessiner',5506,{inf:'dessiner'}),
-C(46,'verb','Musique',24795,{inf:'écouter de la musique'}),C(47,'verb','Vélo',2277,{inf:'faire du vélo'}),C(48,'verb','Peinture',2360,{inf:'faire de la peinture'}),
-C(49,'verb','Danse',2652,{inf:'danser'}),C(50,'verb',"S'habiller",2781,{inf:'habiller',refl:true}),C(51,'verb','Se laver',3323,{inf:'laver',refl:true}),
-C(52,'verb','Brosser dents',2694,{inf:'brosser les dents',refl:true}),C(53,'verb','Pyjama',2522,{inf:'mettre {mon} pyjama'}),
-C(54,'verb','Attendre',8109,{inf:'attendre'}),C(55,'verb','Arrêter',7195,{inf:'arrêter'}),
-C(130,'verb','Regarder',null,{inf:'regarder',follow:'watch',req:true,q:'regarder'}),C(131,'verb','Appeler',null,{inf:'appeler',follow:'person',req:true,q:'téléphoner'}),
-C(132,'verb','Vêtements',null,{inf:'mettre',follow:'cloth',req:true,q:'vêtements'}),C(133,'verb','Pause',null,{inf:'faire une pause',q:'se reposer'}),
-C(134,'verb','Lire',null,{inf:'lire',q:'lire'}),C(135,'verb','Chanter',null,{inf:'chanter',q:'chanter'}),C(136,'verb','Courir',null,{inf:'courir',q:'courir'}),
-C(137,'verb','Sortir',null,{inf:'sortir',q:'sortir'}),
-C(60,'place','Piscine',3142,{g:'f'}),C(61,'place','Plage',2826,{g:'f'}),C(62,'place','Jardin',2434,{g:'m'}),C(63,'place','Dehors',5475,{adv:true}),
-C(64,'place','Maison',2317,{g:'f'}),C(65,'place','École',3082,{g:'f'}),C(66,'place','Toilettes',2430,{g:'f',pl:true}),
-C(140,'place','Cuisine',null,{g:'f',q:'cuisine'}),C(141,'place','Chambre',null,{g:'f',q:'chambre'}),C(142,'place','Salon',null,{g:'m',q:'salon'}),
-C(143,'place','Salle de bain',null,{g:'f',q:'salle de bain'}),C(144,'place','Parc',null,{g:'m',q:'parc'}),C(145,'place','Magasin',null,{g:'m',q:'magasin'}),
-C(70,'person','Maman',2458,{g:'f',det:'none'}),C(71,'person','Papa',2497,{g:'m',det:'none'}),C(72,'person','Frère',2423,{g:'m',det:'mon'}),
-C(73,'person','Sœur',2422,{g:'f',det:'ma'}),C(74,'person','Mamie',2243,{g:'f',det:'none'}),C(75,'person','Papi',2244,{g:'m',det:'none'}),
-C(76,'person','Docteur',2467,{g:'m',det:'le'}),C(77,'person','Copain',2392,{g:'m',det:'mon'}),C(78,'person','Maîtresse',null,{g:'f',det:'la',q:'maîtresse'}),
-C(79,'person','Tonton',null,{g:'m',det:'none',q:'oncle'}),C(69,'person','Tata',null,{g:'f',det:'none',q:'tante'}),
-C(80,'emotion','Content',3245,{}),C(81,'emotion','Triste',2606,{}),C(82,'emotion','Fâché',35567,{}),C(83,'emotion','Fatigué',2314,{}),
-C(84,'emotion','Calme',31310,{}),C(85,'emotion','Surpris',2574,{}),C(86,'emotion','Malade',3308,{}),
-C(150,'emotion','En colère',null,{q:'colère'}),C(151,'emotion','Inquiet',null,{f:'inquiète',q:'inquiet'}),C(152,'emotion','Excité',null,{q:'excité'}),
-C(153,'emotion','Seul',null,{f:'seule',q:'seul'}),C(154,'emotion','Ennuyé',null,{q:'ennui'}),
-C(90,'state','Peur',10261,{}),C(92,'state','Faim',null,{q:'avoir faim'}),C(93,'state','Soif',null,{q:'avoir soif'}),
-C(94,'state','Chaud',null,{q:'avoir chaud'}),C(95,'state','Froid',null,{q:'avoir froid'}),C(96,'state','Sommeil',null,{q:'avoir sommeil'}),
-C(160,'body','Tête',null,{g:'f',q:'tête'}),C(161,'body','Ventre',null,{g:'m',q:'ventre'}),C(162,'body','Gorge',null,{g:'f',q:'gorge'}),
-C(163,'body','Dents',null,{g:'f',pl:true,q:'dents'}),C(164,'body','Oreille',null,{g:'f',q:'oreille'}),C(165,'body','Dos',null,{g:'m',q:'dos'}),
-C(166,'body','Bras',null,{g:'m',q:'bras'}),C(167,'body','Main',null,{g:'f',q:'main'}),C(168,'body','Jambe',null,{g:'f',q:'jambe'}),
-C(169,'body','Pied',null,{g:'m',q:'pied'}),C(170,'body','Yeux',null,{g:'m',pl:true,q:'yeux'}),C(171,'body','Nez',null,{g:'m',q:'nez'}),
-C(172,'body','Genou',null,{g:'m',q:'genou'}),C(173,'body','Cou',null,{g:'m',q:'cou'}),C(174,'body','Épaule',null,{g:'f',q:'épaule'}),
-C(175,'body','Doigt',null,{g:'m',q:'doigt'}),C(176,'body','Cœur',null,{g:'m',q:'cœur'}),C(177,'body','Cheville',null,{g:'f',q:'cheville'}),
-C(178,'body','Partout',null,{adv:true,q:'partout'}),
-C(180,'play','Ballon',2269,{ph:'au ballon'}),C(181,'play','Voiture',2339,{ph:'avec la voiture'}),C(182,'play','Poupée',2482,{ph:'à la poupée'}),
-C(183,'play','Cache-cache',null,{ph:'à cache-cache',q:'cache-cache'}),C(184,'play','Cartes',null,{ph:'aux cartes',q:'jeu de cartes'}),C(185,'play','Constructions',null,{ph:'aux constructions',q:'jeu de construction'}),
-C(186,'play','Tablette',9165,{ph:'sur la tablette'}),C(187,'play','Dehors',5475,{ph:'dehors'}),
-C(190,'watch','Télé',null,{ph:'la télé',q:'télévision'}),C(191,'watch','Dessin animé',null,{ph:'un dessin animé',q:'dessin animé'}),C(192,'watch','Film',null,{ph:'un film',q:'film'}),
-C(193,'watch','Photos',null,{ph:'des photos',q:'photo'}),
-C(200,'cloth','Manteau',null,{g:'m',q:'manteau'}),C(201,'cloth','Pull',null,{g:'m',q:'pull'}),C(202,'cloth','Pantalon',null,{g:'m',q:'pantalon'}),
-C(203,'cloth','T-shirt',null,{g:'m',q:'tee-shirt'}),C(204,'cloth','Chaussures',null,{g:'f',pl:true,q:'chaussures'}),C(205,'cloth','Chaussettes',null,{g:'f',pl:true,q:'chaussettes'}),
-C(206,'cloth','Bonnet',null,{g:'m',q:'bonnet'}),C(207,'cloth','Écharpe',null,{g:'f',q:'écharpe'}),
-C(100,'word','Oui',5583,{}),C(101,'word','Non',5525,{}),C(102,'word','Merci',8128,{}),C(103,'word',"S'il te plaît",38907,{}),
-C(104,'word','Stop',8289,{}),C(105,'word','Pardon',11625,{}),C(106,'word','Encore',37163,{}),C(107,'word','Fini',5358,{}),
-C(108,'word','Bonjour',null,{q:'bonjour'}),C(109,'word','Au revoir',null,{q:'au revoir'})
-];
-var GROUPS={food:{label:'Manger / Boire',pic:2527,color:'vert'},verb:{label:'Actions',pic:2439,color:'orange'},thing:{label:'Objets',pic:9165,color:'bleu'},
-person:{label:'Personnes',pic:2458,color:'violet'},place:{label:'Lieux',pic:2317,color:'rouge'},emotion:{label:'Émotions',pic:3245,color:'jaune'},
-state:{label:'Mon corps',pic:10261,color:'bleu'},word:{label:'Mots rapides',pic:5583,color:'jaune'},
-body:{label:'Corps',pic:28765,color:'rouge'},play:{label:'Jeux',pic:2439,color:'orange'},watch:{label:'Écran',pic:9165,color:'bleu'},cloth:{label:'Vêtements',pic:null,color:'vert',q:'vêtements'}};
-var TYPES=[
-{k:'food',label:'Aliment',ex:'Je veux du pain',pic:2527},{k:'drink',label:'Boisson',ex:"Je veux de l'eau",pic:2248},
-{k:'thing',label:'Objet ou animal',ex:'Je veux la tablette',pic:9165},{k:'verb',label:'Action',ex:'Je veux jouer',pic:2439},
-{k:'person',label:'Personne',ex:'Maman, …',pic:2458},{k:'place',label:'Lieu',ex:'Je veux aller à la plage',pic:2317},
-{k:'body',label:'Partie du corps',ex:"J'ai mal à la tête",pic:28765},{k:'emotion',label:'Émotion',ex:'Je suis content',pic:3245},
-{k:'state',label:'Besoin du corps',ex:"J'ai faim",pic:10261},{k:'word',label:'Mot rapide',ex:'Oui, merci…',pic:5583}];
+C(1,'food','Pain',2494,{g:'m',art:'part'}),C(2,'food','Eau',2248,{g:'f',art:'part',drink:true}),C(3,'food','Lait',2445,{g:'m',art:'part',drink:true}),C(4,'food','Jus',11461,{g:'m',art:'part',drink:true}),C(5,'food','Soupe',2573,{g:'f',art:'part'}),C(6,'food','Glace',2385,{g:'f',art:'part'}),C(7,'food','Pizza',2527,{g:'f',art:'part'}),C(8,'food','Gâteau',2502,{g:'m',art:'part'}),C(9,'food','Chocolat',2334,{g:'m',art:'part'}),C(10,'food','Frites',2505,{g:'f',art:'part',pl:true}),C(11,'food','Fruit',28339,{g:'m',art:'ind'}),C(12,'food','Pomme',2462,{g:'f',art:'ind'}),C(13,'food','Banane',2530,{g:'f',art:'ind'}),C(14,'food','Yaourt',2618,{g:'m',art:'ind'}),C(15,'food','Bonbon',2686,{g:'m',art:'ind'}),C(16,'food','Sirop',null,{g:'m',art:'part',drink:true,q:'sirop'}),C(17,'food','Riz',null,{g:'m',art:'part',q:'riz'}),C(18,'food','Pâtes',null,{g:'f',art:'part',pl:true,q:'pâtes'}),C(19,'food','Viande',null,{g:'f',art:'part',q:'viande'}),C(110,'food','Poisson',null,{g:'m',art:'part',q:'poisson cuit'}),C(111,'food','Légumes',null,{g:'m',art:'part',pl:true,q:'légumes'}),C(112,'food','Œuf',null,{g:'m',art:'ind',q:'œuf'}),C(113,'food','Biscuit',null,{g:'m',art:'ind',q:'biscuit'}),C(114,'food','Compote',null,{g:'f',art:'part',q:'compote'}),C(115,'food','Fromage',null,{g:'m',art:'part',q:'fromage'}),C(116,'food','Céréales',null,{g:'f',art:'part',pl:true,q:'céréales'}),
+C(20,'thing','Aide',12252,{g:'f',art:'part',nosee:true,noadj:true}),C(21,'thing','Tablette',9165,{g:'f',art:'def'}),C(22,'thing','Téléphone',2585,{g:'m',art:'def'}),C(23,'thing','Poupée',2482,{g:'f',art:'def'}),C(24,'thing','Voiture',2339,{g:'f',art:'def'}),C(25,'thing','Livre',2450,{g:'m',art:'def'}),C(26,'thing','Ballon',2269,{g:'m',art:'def'}),C(27,'thing','Puzzle',2540,{g:'m',art:'def'}),C(28,'thing','Chien',2517,{g:'m',art:'def',see:true}),C(29,'thing','Chat',2406,{g:'m',art:'def',see:true}),C(120,'thing','Doudou',null,{g:'m',art:'def',q:'doudou'}),C(121,'thing','Télé',null,{g:'f',art:'def',q:'télévision'}),C(122,'thing','Casque',null,{g:'m',art:'def',q:'casque audio'}),C(123,'thing','Crayons',null,{g:'m',art:'def',pl:true,q:'crayons'}),C(124,'thing','Couverture',null,{g:'f',art:'def',q:'couverture'}),C(125,'thing','Silence',null,{g:'m',art:'part',nosee:true,noadj:true,q:'silence'}),C(126,'thing','Bruit',null,{g:'m',art:'part',nosee:true,noadj:true,q:'bruit'}),C(127,'thing','Lumière',null,{g:'f',art:'part',nosee:true,noadj:true,q:'lumière'}),C(128,'thing','Médicament',null,{g:'m',art:'ind',q:'médicament'}),C(129,'thing','Pansement',null,{g:'m',art:'ind',q:'pansement'}),
+C(210,'thing','Arbre',null,{g:'m',art:'def',onlySee:true,q:'arbre'}),C(211,'thing','Fleur',null,{g:'f',art:'def',onlySee:true,q:'fleur'}),C(212,'thing','Oiseau',null,{g:'m',art:'def',onlySee:true,q:'oiseau'}),C(213,'thing','Avion',null,{g:'m',art:'def',onlySee:true,q:'avion'}),C(214,'thing','Camion',null,{g:'m',art:'def',onlySee:true,q:'camion'}),C(215,'thing','Bus',null,{g:'m',art:'def',onlySee:true,q:'bus'}),C(216,'thing','Moto',null,{g:'f',art:'def',onlySee:true,q:'moto'}),C(217,'thing','Tracteur',null,{g:'m',art:'def',onlySee:true,q:'tracteur'}),C(218,'thing','Soleil',null,{g:'m',art:'def',onlySee:true,q:'soleil'}),C(219,'thing','Nuage',null,{g:'m',art:'def',onlySee:true,q:'nuage'}),C(220,'thing','Lune',null,{g:'f',art:'def',onlySee:true,q:'lune'}),C(221,'thing','Étoile',null,{g:'f',art:'def',onlySee:true,q:'étoile'}),C(222,'thing','Cheval',null,{g:'m',art:'def',onlySee:true,q:'cheval'}),C(223,'thing','Vache',null,{g:'f',art:'def',onlySee:true,q:'vache'}),C(224,'thing','Mouton',null,{g:'m',art:'def',onlySee:true,q:'mouton'}),C(225,'thing','Canard',null,{g:'m',art:'def',onlySee:true,q:'canard'}),C(226,'thing','Papillon',null,{g:'m',art:'def',onlySee:true,q:'papillon'}),C(227,'thing','Bateau',null,{g:'m',art:'def',onlySee:true,q:'bateau'}),C(228,'thing','Train',null,{g:'m',art:'def',onlySee:true,q:'train'}),C(229,'thing','Pont',null,{g:'m',art:'def',onlySee:true,q:'pont'}),C(230,'thing','Hélicoptère',null,{g:'m',art:'def',onlySee:true,q:'hélicoptère'}),
+C(40,'verb','Boire',2276,{inf:'boire',follow:'drink'}),C(41,'verb','Manger',2349,{inf:'manger',follow:'food'}),C(42,'verb','Dormir',2369,{inf:'dormir'}),C(43,'verb','Câlin',27407,{inf:'faire un câlin'}),C(44,'verb','Jouer',2439,{inf:'jouer',follow:'play'}),C(45,'verb','Dessiner',5506,{inf:'dessiner'}),C(46,'verb','Musique',24795,{inf:'écouter de la musique'}),C(47,'verb','Vélo',2277,{inf:'faire du vélo'}),C(48,'verb','Peinture',2360,{inf:'faire de la peinture'}),C(49,'verb','Danse',2652,{inf:'danser'}),C(50,'verb',"S'habiller",2781,{inf:'habiller',refl:true}),C(51,'verb','Se laver',3323,{inf:'laver',refl:true}),C(52,'verb','Brosser dents',2694,{inf:'brosser les dents',refl:true}),C(53,'verb','Pyjama',2522,{inf:'mettre {mon} pyjama'}),C(54,'verb','Attendre',8109,{inf:'attendre'}),C(55,'verb','Arrêter',7195,{inf:'arrêter'}),C(130,'verb','Regarder',null,{inf:'regarder',follow:'watch',req:true,q:'regarder'}),C(131,'verb','Appeler',null,{inf:'appeler',follow:'person',req:true,q:'téléphoner'}),C(132,'verb','Vêtements',null,{inf:'mettre',follow:'cloth',req:true,q:'vêtements'}),C(133,'verb','Pause',null,{inf:'faire une pause',q:'se reposer'}),C(134,'verb','Lire',null,{inf:'lire',q:'lire'}),C(135,'verb','Chanter',null,{inf:'chanter',q:'chanter'}),C(136,'verb','Courir',null,{inf:'courir',q:'courir'}),C(137,'verb','Sortir',null,{inf:'sortir',q:'sortir'}),
+C(60,'place','Piscine',3142,{g:'f'}),C(61,'place','Plage',2826,{g:'f'}),C(62,'place','Jardin',2434,{g:'m'}),C(63,'place','Dehors',5475,{adv:true}),C(64,'place','Maison',2317,{g:'f'}),C(65,'place','École',3082,{g:'f'}),C(66,'place','Toilettes',2430,{g:'f',pl:true}),C(140,'place','Cuisine',null,{g:'f',q:'cuisine'}),C(141,'place','Chambre',null,{g:'f',q:'chambre'}),C(142,'place','Salon',null,{g:'m',q:'salon'}),C(143,'place','Salle de bain',null,{g:'f',q:'salle de bain'}),C(144,'place','Parc',null,{g:'m',q:'parc'}),C(145,'place','Magasin',null,{g:'m',q:'magasin'}),
+C(70,'person','Maman',2458,{g:'f',det:'none'}),C(71,'person','Papa',2497,{g:'m',det:'none'}),C(72,'person','Frère',2423,{g:'m',det:'mon'}),C(73,'person','Sœur',2422,{g:'f',det:'ma'}),C(74,'person','Mamie',2243,{g:'f',det:'none'}),C(75,'person','Papi',2244,{g:'m',det:'none'}),C(76,'person','Docteur',2467,{g:'m',det:'le'}),C(77,'person','Copain',2392,{g:'m',det:'mon'}),C(78,'person','Maîtresse',null,{g:'f',det:'la',q:'maîtresse'}),C(79,'person','Tonton',null,{g:'m',det:'none',q:'oncle'}),C(69,'person','Tata',null,{g:'f',det:'none',q:'tante'}),
+C(80,'emotion','Content',3245,{}),C(81,'emotion','Triste',2606,{}),C(82,'emotion','Fâché',35567,{}),C(83,'emotion','Fatigué',2314,{}),C(84,'emotion','Calme',31310,{}),C(85,'emotion','Surpris',2574,{}),C(86,'emotion','Malade',3308,{}),C(150,'emotion','En colère',null,{q:'colère'}),C(151,'emotion','Inquiet',null,{f:'inquiète',q:'inquiet'}),C(152,'emotion','Excité',null,{q:'excité'}),C(153,'emotion','Seul',null,{f:'seule',q:'seul'}),C(154,'emotion','Ennuyé',null,{q:'ennui'}),
+C(90,'state','Peur',10261,{}),C(92,'state','Faim',null,{q:'avoir faim'}),C(93,'state','Soif',null,{q:'avoir soif'}),C(94,'state','Chaud',null,{q:'avoir chaud'}),C(95,'state','Froid',null,{q:'avoir froid'}),C(96,'state','Sommeil',null,{q:'avoir sommeil'}),
+C(160,'body','Tête',null,{g:'f',q:'tête'}),C(161,'body','Ventre',null,{g:'m',q:'ventre'}),C(162,'body','Gorge',null,{g:'f',q:'gorge'}),C(163,'body','Dents',null,{g:'f',pl:true,q:'dents'}),C(164,'body','Oreille',null,{g:'f',q:'oreille'}),C(165,'body','Dos',null,{g:'m',q:'dos'}),C(166,'body','Bras',null,{g:'m',q:'bras'}),C(167,'body','Main',null,{g:'f',q:'main'}),C(168,'body','Jambe',null,{g:'f',q:'jambe'}),C(169,'body','Pied',null,{g:'m',q:'pied'}),C(170,'body','Yeux',null,{g:'m',pl:true,q:'yeux'}),C(171,'body','Nez',null,{g:'m',q:'nez'}),C(172,'body','Genou',null,{g:'m',q:'genou'}),C(173,'body','Cou',null,{g:'m',q:'cou'}),C(174,'body','Épaule',null,{g:'f',q:'épaule'}),C(175,'body','Doigt',null,{g:'m',q:'doigt'}),C(176,'body','Cœur',null,{g:'m',q:'cœur'}),C(177,'body','Cheville',null,{g:'f',q:'cheville'}),C(178,'body','Partout',null,{adv:true,q:'partout'}),
+C(180,'play','Ballon',2269,{ph:'au ballon'}),C(181,'play','Voiture',2339,{ph:'avec la voiture'}),C(182,'play','Poupée',2482,{ph:'à la poupée'}),C(183,'play','Cache-cache',null,{ph:'à cache-cache',q:'cache-cache'}),C(184,'play','Cartes',null,{ph:'aux cartes',q:'jeu de cartes'}),C(185,'play','Constructions',null,{ph:'aux constructions',q:'jeu de construction'}),C(186,'play','Tablette',9165,{ph:'sur la tablette'}),C(187,'play','Dehors',5475,{ph:'dehors'}),
+C(190,'watch','Télé',null,{ph:'la télé',q:'télévision'}),C(191,'watch','Dessin animé',null,{ph:'un dessin animé',q:'dessin animé'}),C(192,'watch','Film',null,{ph:'un film',q:'film'}),C(193,'watch','Photos',null,{ph:'des photos',q:'photo'}),
+C(200,'cloth','Manteau',null,{g:'m',q:'manteau'}),C(201,'cloth','Pull',null,{g:'m',q:'pull'}),C(202,'cloth','Pantalon',null,{g:'m',q:'pantalon'}),C(203,'cloth','T-shirt',null,{g:'m',q:'tee-shirt'}),C(204,'cloth','Chaussures',null,{g:'f',pl:true,q:'chaussures'}),C(205,'cloth','Chaussettes',null,{g:'f',pl:true,q:'chaussettes'}),C(206,'cloth','Bonnet',null,{g:'m',q:'bonnet'}),C(207,'cloth','Écharpe',null,{g:'f',q:'écharpe'}),
+C(300,'adj','Rouge',null,{m:'rouge',f:'rouge',pos:'after',cat:'color',swatch:'#d64545'}),C(301,'adj','Bleu',null,{m:'bleu',f:'bleue',pos:'after',cat:'color',swatch:'#2f7dd1'}),C(302,'adj','Vert',null,{m:'vert',f:'verte',pos:'after',cat:'color',swatch:'#3d9c4a'}),C(303,'adj','Jaune',null,{m:'jaune',f:'jaune',pos:'after',cat:'color',swatch:'#e8c020'}),C(304,'adj','Orange',null,{m:'orange',f:'orange',inv:true,pos:'after',cat:'color',swatch:'#e07a2c'}),C(305,'adj','Noir',null,{m:'noir',f:'noire',pos:'after',cat:'color',swatch:'#26241f'}),C(306,'adj','Blanc',null,{m:'blanc',f:'blanche',pos:'after',cat:'color',swatch:'#ffffff'}),C(307,'adj','Rose',null,{m:'rose',f:'rose',pos:'after',cat:'color',swatch:'#f2a0b8'}),C(308,'adj','Violet',null,{m:'violet',f:'violette',pos:'after',cat:'color',swatch:'#8a5cc9'}),C(309,'adj','Marron',null,{m:'marron',f:'marron',inv:true,pos:'after',cat:'color',swatch:'#8a5a3c'}),C(310,'adj','Gris',null,{m:'gris',f:'grise',pos:'after',cat:'color',swatch:'#9a9a9a'}),
+C(320,'adj','Grand',null,{m:'grand',f:'grande',pos:'before',cat:'size',glyph:'big'}),C(321,'adj','Petit',null,{m:'petit',f:'petite',pos:'before',cat:'size',glyph:'small'}),C(322,'adj','Gros',null,{m:'gros',f:'grosse',mp:'gros',pos:'before',cat:'size',glyph:'fat'}),
+C(330,'adj','Beau',null,{m:'beau',f:'belle',mv:'bel',mp:'beaux',pos:'before',cat:'other',q:'beau'}),C(331,'adj','Bon',null,{m:'bon',f:'bonne',pos:'before',cat:'other',q:'bon'}),C(332,'adj','Chaud',null,{m:'chaud',f:'chaude',pos:'after',cat:'other',q:'chaud'}),C(333,'adj','Froid',null,{m:'froid',f:'froide',pos:'after',cat:'other',q:'froid'}),C(334,'adj','Nouveau',null,{m:'nouveau',f:'nouvelle',mv:'nouvel',mp:'nouveaux',pos:'before',cat:'other',q:'nouveau'}),
+C(100,'word','Oui',5583,{}),C(101,'word','Non',5525,{}),C(102,'word','Merci',8128,{}),C(103,'word',"S'il te plaît",38907,{}),C(104,'word','Stop',8289,{}),C(105,'word','Pardon',11625,{}),C(106,'word','Encore',37163,{}),C(107,'word','Fini',5358,{}),C(108,'word','Bonjour',null,{q:'bonjour'}),C(109,'word','Au revoir',null,{q:'au revoir'})];
+var GROUPS={food:{label:'Manger / Boire',pic:2527,color:'vert'},verb:{label:'Actions',pic:2439,color:'orange'},thing:{label:'Objets',pic:9165,color:'bleu'},person:{label:'Personnes',pic:2458,color:'violet'},place:{label:'Lieux',pic:2317,color:'rouge'},emotion:{label:'Émotions',pic:3245,color:'jaune'},state:{label:'Mon corps',pic:10261,color:'bleu'},word:{label:'Mots rapides',pic:5583,color:'jaune'},body:{label:'Corps',pic:28765,color:'rouge'},play:{label:'Jeux',pic:2439,color:'orange'},watch:{label:'Écran',pic:9165,color:'bleu'},cloth:{label:'Vêtements',pic:null,color:'vert',q:'vêtements'},adj:{label:'Précisions',pic:null,color:'violet',q:'couleur'}};
+var TYPES=[{k:'food',label:'Aliment',ex:'Je veux du pain',pic:2527},{k:'drink',label:'Boisson',ex:"Je veux de l'eau",pic:2248},{k:'thing',label:'Objet ou animal',ex:'Je veux la tablette',pic:9165},{k:'seen',label:'Ce que je vois',ex:'Je vois un arbre',pic:null,q:'arbre'},{k:'verb',label:'Action',ex:'Je veux jouer',pic:2439},{k:'person',label:'Personne',ex:'Maman, …',pic:2458},{k:'place',label:'Lieu',ex:'Je veux aller à la plage',pic:2317},{k:'body',label:'Partie du corps',ex:"J'ai mal à la tête",pic:28765},{k:'emotion',label:'Émotion',ex:'Je suis content',pic:3245},{k:'state',label:'Besoin du corps',ex:"J'ai faim",pic:10261},{k:'word',label:'Mot rapide',ex:'Oui, merci…',pic:5583},{k:'adj',label:'Couleur, taille…',ex:'une voiture rouge',pic:null}];
 var EXTRA_TYPES={play:'Jeu',watch:'Écran',cloth:'Vêtement'};
-function typeOf(c){return (c.kind==='food'&&c.drink)?'drink':c.kind;}
-function typeLabel(k){for(var i=0;i<TYPES.length;i++)if(TYPES[i].k===k)return TYPES[i].label;return EXTRA_TYPES[k]||k;}
-
-var ICONS={
-speaker:'<path d="M3 10v4h4l5 4V6L7 10H3z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/>',
-back:'<path d="M15 18l-6-6 6-6"/>',next:'<path d="M9 18l6-6-6-6"/>',
-reset:'<path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/>',
-sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-moon:'<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>',
-chat:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
-user:'<circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>',
-sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
-lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>',
-trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',
-pencil:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',
-plus:'<path d="M12 5v14M5 12h14"/>',up:'<path d="M18 15l-6-6-6 6"/>',down:'<path d="M6 9l6 6 6-6"/>'};
-function ic(n,sz){return '<svg viewBox="0 0 24 24" width="'+(sz||22)+'" height="'+(sz||22)+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>';}
-var STORAGEKEY='je-parle-avec-toi-state-v5',PICKEY='je-parle-avec-toi-pics-v1';
-var COLORS=['#0d7a72','#2f7dd1','#8a5cc9','#d64545','#e07a2c','#3d9c4a'];
-var state={theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light',profiles:[{id:1,name:'Lina',gender:'f',color:COLORS[0]}],activeProfile:1,kidMode:false,voiceRate:0.9,cards:[],deleted:[],edits:{},intentEdits:{},customIntents:[],intentOrder:[],voiceName:'',voicePitch:1.05};
-var flow={dest:null,intent:null,target:null,detail:null,tab:null};
-var idCounter=1000,picCache={},picFailed={},picPending={},picTimer=null;
+function typeOf(c){if(c.kind==='food'&&c.drink)return'drink';if(c.kind==='thing'&&c.onlySee)return'seen';return c.kind}
+function typeLabel(k){for(var i=0;i<TYPES.length;i++)if(TYPES[i].k===k)return TYPES[i].label;return EXTRA_TYPES[k]||k}
+var ICONS={speaker:'<path d="M3 10v4h4l5 4V6L7 10H3z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/>',back:'<path d="M15 18l-6-6 6-6"/>',next:'<path d="M9 18l6-6-6-6"/>',reset:'<path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',moon:'<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>',chat:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',user:'<circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>',sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>',trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',pencil:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',plus:'<path d="M12 5v14M5 12h14"/>',up:'<path d="M18 15l-6-6-6 6"/>',down:'<path d="M6 9l6 6 6-6"/>'};
+function ic(n,sz){return'<svg viewBox="0 0 24 24" width="'+(sz||22)+'" height="'+(sz||22)+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>'}
+var APP_VERSION='6',STORAGEKEY='je-parle-avec-toi-state-v5',PICKEY='je-parle-avec-toi-pics-v1',COLORS=['#0d7a72','#2f7dd1','#8a5cc9','#d64545','#e07a2c','#3d9c4a'];
+var state={theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light',profiles:[{id:1,name:'Lina',gender:'f',color:COLORS[0],level:2}],activeProfile:1,kidMode:false,voiceRate:.9,cards:[],deleted:[],edits:{},intentEdits:{},customIntents:[],intentOrder:[],voiceName:'',voicePitch:1.05};
+var flow={dest:null,intent:null,target:null,detail:null,adj:null,tab:null,adjTab:null};
+var idCounter=1000,picCache={},picFailed={},picPending={},picTimer=null,searchCache={};
 var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
 function byId(i){return document.getElementById(i)}
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
 function clone(o){return JSON.parse(JSON.stringify(o))}
-function saveState(){if(!lsSet(STORAGEKEY,JSON.stringify({theme:state.theme,profiles:state.profiles,activeProfile:state.activeProfile,kidMode:state.kidMode,voiceRate:state.voiceRate,deleted:state.deleted,edits:state.edits,intentEdits:state.intentEdits,customIntents:state.customIntents,intentOrder:state.intentOrder,voiceName:state.voiceName,voicePitch:state.voicePitch,custom:state.cards.filter(function(c){return c.id>=1000})})))toast("Mémoire de l'appareil pleine : supprime des photos")}
-function guessKind(c){var m={nourriture:'food',emotions:'emotion',famille:'person',activites:'verb',besoins:'verb',routine:'verb'};return m[c.cat]||'thing';}
+function saveState(){if(!lsSet(STORAGEKEY,JSON.stringify({theme:state.theme,profiles:state.profiles,activeProfile:state.activeProfile,kidMode:state.kidMode,voiceRate:state.voiceRate,voiceName:state.voiceName,voicePitch:state.voicePitch,deleted:state.deleted,edits:state.edits,intentEdits:state.intentEdits,customIntents:state.customIntents,intentOrder:state.intentOrder,custom:state.cards.filter(function(c){return c.id>=1000})})))toast("Mémoire de l'appareil pleine : supprime des photos")}
+function guessKind(c){return{nourriture:'food',emotions:'emotion',famille:'person',activites:'verb',besoins:'verb',routine:'verb'}[c.cat]||'thing'}
 function buildCards(custom){state.cards=clone(CARDS).filter(function(c){return state.deleted.indexOf(c.id)<0}).map(function(c){return state.edits[c.id]?clone(state.edits[c.id]):c}).concat(custom)}
-function loadState(){
- var custom=[],raw=null,keys=[STORAGEKEY,'je-parle-avec-toi-state-v4','je-parle-avec-toi-state-v3','je-parle-avec-toi-state-v2'];
- for(var i=0;i<keys.length&&!raw;i++)raw=lsGet(keys[i]);
- try{
-  if(raw){var d=JSON.parse(raw);
-   ['theme','activeProfile','kidMode','voiceRate'].forEach(function(k){if(d[k]!==undefined)state[k]=d[k]});
-   if(Array.isArray(d.profiles))state.profiles=d.profiles;
-   if(Array.isArray(d.deleted))state.deleted=d.deleted;
-   if(d.edits&&typeof d.edits==='object')state.edits=d.edits;
-   if(d.intentEdits&&typeof d.intentEdits==='object')state.intentEdits=d.intentEdits;
-   if(Array.isArray(d.customIntents))state.customIntents=d.customIntents;
-   if(Array.isArray(d.intentOrder))state.intentOrder=d.intentOrder;
-   if(typeof d.voiceName==='string')state.voiceName=d.voiceName;
-   if(typeof d.voicePitch==='number')state.voicePitch=d.voicePitch;
-   if(Array.isArray(d.custom))custom=d.custom;
-   else if(Array.isArray(d.cards))custom=d.cards.filter(function(c){return c.id>=1000});
-  }else{var o=lsGet('je-parle-avec-toi-state-v1');if(o){var v1=JSON.parse(o);
-   ['theme','activeProfile','kidMode','voiceRate'].forEach(function(k){if(v1[k]!==undefined)state[k]=v1[k]});
-   if(Array.isArray(v1.profiles))state.profiles=v1.profiles.map(function(p){return {id:p.id,name:p.name,gender:p.gender||(p.name==='Lina'?'f':'m')}});
-   if(Array.isArray(v1.cards))v1.cards.forEach(function(c){if(c.id>=1000){var k=guessKind(c);var n={id:c.id,kind:k,label:c.label,pic:c.pic,photo:c.photo,g:'m'};
-    if(k==='food')n.art='part';if(k==='thing')n.art='def';if(k==='verb')n.inf=c.label.toLowerCase();if(k==='person')n.det='none';custom.push(n)}})}}
- }catch(e){}
- state.profiles.forEach(function(p,i){if(!p.gender)p.gender='m';if(!p.color)p.color=COLORS[i%COLORS.length]});
+function loadState(){var custom=[],raw=null,keys=[STORAGEKEY,'je-parle-avec-toi-state-v4','je-parle-avec-toi-state-v3','je-parle-avec-toi-state-v2'];for(var i=0;i<keys.length&&!raw;i++)raw=lsGet(keys[i]);
+ try{if(raw){var d=JSON.parse(raw);['theme','activeProfile','kidMode','voiceRate'].forEach(function(k){if(d[k]!==undefined)state[k]=d[k]});
+  if(Array.isArray(d.profiles))state.profiles=d.profiles;if(Array.isArray(d.deleted))state.deleted=d.deleted;if(d.edits&&typeof d.edits==='object')state.edits=d.edits;
+  if(d.intentEdits&&typeof d.intentEdits==='object')state.intentEdits=d.intentEdits;if(Array.isArray(d.customIntents))state.customIntents=d.customIntents;if(Array.isArray(d.intentOrder))state.intentOrder=d.intentOrder;
+  if(typeof d.voiceName==='string')state.voiceName=d.voiceName;if(typeof d.voicePitch==='number')state.voicePitch=d.voicePitch;
+  if(Array.isArray(d.custom))custom=d.custom;else if(Array.isArray(d.cards))custom=d.cards.filter(function(c){return c.id>=1000})}
+ else{var o=lsGet('je-parle-avec-toi-state-v1');if(o){var v1=JSON.parse(o);['theme','activeProfile','kidMode','voiceRate'].forEach(function(k){if(v1[k]!==undefined)state[k]=v1[k]});
+  if(Array.isArray(v1.profiles))state.profiles=v1.profiles.map(function(p){return{id:p.id,name:p.name,gender:p.gender||(p.name==='Lina'?'f':'m')}});
+  if(Array.isArray(v1.cards))v1.cards.forEach(function(c){if(c.id>=1000){var k=guessKind(c),n={id:c.id,kind:k,label:c.label,pic:c.pic,photo:c.photo,g:'m'};if(k==='food')n.art='part';if(k==='thing')n.art='def';if(k==='verb')n.inf=c.label.toLowerCase();if(k==='person')n.det='none';custom.push(n)}})}}}catch(e){}
+ state.profiles.forEach(function(p,i){if(!p.gender)p.gender='m';if(!p.color)p.color=COLORS[i%COLORS.length];if(!p.level)p.level=3});
  buildCards(custom);
+ state.cards.forEach(function(c){if(c.id>=idCounter)idCounter=c.id+1});state.profiles.forEach(function(p){if(p.id>=idCounter)idCounter=p.id+1});
  state.customIntents.forEach(function(i){var n=parseInt(String(i.id).slice(1),10);if(n>=idCounter)idCounter=n+1});
- state.cards.forEach(function(c){if(c.id>=idCounter)idCounter=c.id+1});
- state.profiles.forEach(function(p){if(p.id>=idCounter)idCounter=p.id+1});
- try{picCache=JSON.parse(lsGet(PICKEY)||'{}')||{}}catch(e){picCache={}}
-}
-function esc(s){return String(s).replace(/[&<>"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]})}
+ try{picCache=JSON.parse(lsGet(PICKEY)||'{}')||{}}catch(e){picCache={}}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(ch){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]})}
 function toast(m){var t=byId('toast');t.textContent=m;t.classList.add('show');clearTimeout(t.timer);t.timer=setTimeout(function(){t.classList.remove('show')},2400)}
 function norm(s){s=String(s).toLowerCase();return s.normalize?s.normalize('NFD').replace(/[\u0300-\u036f]/g,''):s}
 
-function refreshAll(){renderFlow();renderQuick();if(byId('screen-settings').classList.contains('active'))renderCardsList();}
+/* ---------- pictogrammes ---------- */
+function refreshAll(){renderFlow();renderQuick();if(byId('screen-settings').classList.contains('active'))renderCardsList()}
 function schedulePics(){clearTimeout(picTimer);picTimer=setTimeout(refreshAll,350)}
 function fetchPicIds(q,cb){if(typeof fetch==='undefined'){cb([]);return}
  function tryPath(path,next){fetch(API+'fr/'+path+'/'+encodeURIComponent(q)).then(function(r){return r.ok?r.json():[]}).then(function(a){var ids=(Array.isArray(a)?a:[]).map(function(x){return x._id}).filter(Boolean);if(ids.length)cb(ids.slice(0,15));else next()}).catch(next)}
  tryPath('bestsearch',function(){tryPath('search',function(){cb([])})})}
-function ensurePic(q){
- if(!q||picCache[q]||picPending[q]||picFailed[q])return;
- picPending[q]=1;
- fetchPicIds(q,function(ids){if(ids.length){picCache[q]=ids[0];lsSet(PICKEY,JSON.stringify(picCache))}else picFailed[q]=1;delete picPending[q];schedulePics()});
-}
-function imgHTML(url,label){var l=esc((label||'?').charAt(0).toUpperCase());return url?'<img src="'+url+'" alt="" data-l="'+l+'" loading="lazy" draggable="false">':'<span class="ph">'+l+'</span>';}
-function cardUrl(c){if(c.photo)return c.photo;if(c.pic)return API+c.pic;var q=(c.q||c.label).toLowerCase();if(picCache[q])return API+picCache[q];ensurePic(q);return null;}
-function visual(c){return imgHTML(cardUrl(c),c.label)}
+function ensurePic(q){if(!q||picCache[q]||picPending[q]||picFailed[q])return;picPending[q]=1;fetchPicIds(q,function(ids){if(ids.length){picCache[q]=ids[0];lsSet(PICKEY,JSON.stringify(picCache))}else picFailed[q]=1;delete picPending[q];schedulePics()})}
+function searchPics(q,cb){if(!q){cb([]);return}if(searchCache[q]){cb(searchCache[q]);return}fetchPicIds(q,function(ids){searchCache[q]=ids;cb(ids)})}
+function imgHTML(url,label){var l=esc((label||'?').charAt(0).toUpperCase());return url?'<img src="'+url+'" alt="" data-l="'+l+'" loading="lazy" draggable="false">':'<span class="ph">'+l+'</span>'}
+function glyphSvg(c){var o='<svg class="isvg" viewBox="0 0 100 100" aria-hidden="true">';
+ if(c.swatch)return o+'<circle cx="50" cy="50" r="36" fill="'+c.swatch+'" stroke="rgba(0,0,0,.3)" stroke-width="4"/></svg>';
+ if(c.glyph==='big')return o+'<circle cx="50" cy="50" r="42" fill="#9dbbd1" stroke="#4d6f88" stroke-width="4"/></svg>';
+ if(c.glyph==='small')return o+'<circle cx="50" cy="50" r="15" fill="#9dbbd1" stroke="#4d6f88" stroke-width="4"/></svg>';
+ if(c.glyph==='fat')return o+'<ellipse cx="50" cy="52" rx="44" ry="32" fill="#9dbbd1" stroke="#4d6f88" stroke-width="4"/></svg>';return''}
+function cardUrl(c){if(c.photo)return c.photo;if(c.pic)return API+c.pic;var q=(c.q||c.label).toLowerCase();if(picCache[q])return API+picCache[q];ensurePic(q);return null}
+function visual(c){var gs=glyphSvg(c);if(gs)return gs;return imgHTML(cardUrl(c),c.label)}
 function visualQ(q,label){var u=null;if(picCache[q])u=API+picCache[q];else ensurePic(q);return imgHTML(u,label)}
-function intentVis(it){var lab=intentMenu(it);if(it.photo)return imgHTML(it.photo,lab);if(it.pic)return imgHTML(API+it.pic,lab);if(it.q&&picCache[it.q])return imgHTML(API+picCache[it.q],lab);return intentSvg(it)}
 document.addEventListener('error',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.getAttribute('data-l')){var sp=document.createElement('span');sp.className='ph';sp.textContent=t.getAttribute('data-l');if(t.replaceWith)t.replaceWith(sp);else if(t.parentNode)t.parentNode.replaceChild(sp,t)}},true);
 
+/* ---------- logique ---------- */
 function activeProfile(){return state.profiles.filter(function(p){return p.id===state.activeProfile})[0]||state.profiles[0]}
+function lvl(){return activeProfile().level||3}
 function cardById(id){return state.cards.filter(function(c){return c.id===id})[0]}
-function destCard(){return (flow.dest&&flow.dest!=='all')?cardById(flow.dest):null}
+function destCard(){return(flow.dest&&flow.dest!=='all')?cardById(flow.dest):null}
 function allIntents(){var base=INTENTS.map(function(i){var e=state.intentEdits[i.id];return e?Object.assign({},i,e):i}),all=base.concat(state.customIntents),out=[],seen={};
- state.intentOrder.forEach(function(id){all.forEach(function(i){if(i.id===id&&!seen[id]){seen[id]=1;out.push(i)}})});
- all.forEach(function(i){if(!seen[i.id]){seen[i.id]=1;out.push(i)}});return out}
-function visibleIntents(){return allIntents().filter(function(i){return !i.hidden})}
+ state.intentOrder.forEach(function(id){all.forEach(function(i){if(i.id===id&&!seen[id]){seen[id]=1;out.push(i)}})});all.forEach(function(i){if(!seen[i.id]){seen[i.id]=1;out.push(i)}});return out}
+function visibleIntents(){var l=lvl(),v=allIntents().filter(function(i){return!i.hidden&&(i.lvl||1)<=l});return v.length?v:allIntents().filter(function(i){return!i.hidden}).slice(0,1)}
 function getIntent(){return allIntents().filter(function(i){return i.id===flow.intent})[0]||null}
-function allowedKinds(mode){return mode==='feel'?['emotion','state']:mode==='pain'?['body']:['food','verb','thing','person','place']}
-function intentListCards(it){var ak=allowedKinds(it.mode||it.id);return (it.list||[]).map(cardById).filter(function(c){return c&&ak.indexOf(c.kind)>-1})}
-function listLabel(it){return {need:'Mes besoins',envie:'Mes envies',want:'Mes demandes',like:'Mes goûts',notwant:'Mes refus',pain:'Mes douleurs',feel:'Mes émotions'}[it.id]||'Mes choix'}
-function intentLabel(it){var m=it.mode||it.id;if(m==='feel')return "Je suis … / J'ai …";if(m==='pain')return "J'ai mal …";return cap(jeVerb(it.vtext||V[it.v],it.neg))+(it.de?' de …':' …');}
+function intentListCards(it){var ak=allowedKinds(it.mode||it.id);return(it.list||[]).map(cardById).filter(function(c){return c&&ak.indexOf(c.kind)>-1})}
+function listLabel(it){return{need:'Mes besoins',envie:'Mes envies',want:'Mes demandes',like:'Mes goûts',notwant:'Mes refus',see:'Autour de moi'}[it.id]||'Mes choix'}
+function intentLabel(it){var m=it.mode||it.id;if(m==='feel')return"Je suis … / J'ai …";if(m==='pain')return"J'ai mal …";return cap(jeVerb(it.vtext||V[it.v],it.neg))+(it.de?' de …':' …')}
 function intentMenu(it){return it.menu||intentLabel(it).replace(' …','')}
-function intentCrumb(it){return (it.mode||it.id)==='feel'?'Je ressens':intentMenu(it)}
+function intentCrumb(it){return(it.mode||it.id)==='feel'?'Je ressens':intentMenu(it)}
+function targetCard(){return flow.target?cardById(flow.target):null}
+function adjCards(){return state.cards.filter(function(c){return c.kind==='adj'})}
+function adjOK(t){var it=getIntent();return lvl()>=3&&!!it&&['pain','feel'].indexOf(it.mode)<0&&!!t&&t.kind==='thing'&&!t.noadj&&adjCards().length>0}
+function stage(){if(!flow.dest)return 1;if(!flow.intent)return 2;var t=targetCard();if(!t)return 3;if(t.follow&&flow.detail===null)return 4;if(adjOK(t)&&flow.adj===null)return 5;return 6}
 function hintFor(st){var it=getIntent();
- if(st===1)return 'Touche la personne à qui tu veux parler.';
- if(st===2)return "Touche l'image qui montre ce que tu veux dire.";
- if(st===3){var m=it?(it.mode||it.id):'';return m==='pain'?"Touche l'endroit où tu as mal.":m==='feel'?'Touche ce que tu ressens.':'Touche ce que tu veux dire.'}
- if(st===4)return 'Touche pour préciser.';
- return "Ta phrase est prête. Touche Redire pour l'écouter."}
-function ico(inner){return '<svg class="isvg" viewBox="0 0 100 100" aria-hidden="true">'+inner+'</svg>'}
+ if(st===1)return'Touche la personne à qui tu veux parler.';
+ if(st===2)return"Touche l'image qui montre ce que tu veux dire.";
+ if(st===3){var m=it?(it.mode||it.id):'';return m==='pain'?"Touche l'endroit où tu as mal.":m==='feel'?'Touche ce que tu ressens.':m==='see'?'Touche ce que tu vois.':'Touche ce que tu veux dire.'}
+ if(st===4)return'Touche pour préciser.';
+ if(st===5)return'Touche une couleur ou une taille, ou termine ta phrase.';
+ return"Ta phrase est prête. Touche Redire pour l'écouter."}
+function currentSentence(){if(!flow.dest)return'';var d=destCard(),it=getIntent(),t=targetCard(),g=activeProfile().gender||'m';
+ if(!it)return d?d.label+', …':'';
+ if(!t){var base=intentLabel(it).replace("Je suis … / J'ai …",'…');if(d)base=base.replace(/^Je /,'je ').replace(/^J'ai /,"j'ai ");return withDest(d,base)}
+ var det=flow.detail?cardById(flow.detail):null,adj=flow.adj?cardById(flow.adj):null,txt=withDest(d,jeSentence(it,t,g,det,adj));
+ var st=stage();return(st===4||st===5)?txt+' …':txt}
+
+/* ---------- voix ---------- */
+var uttRef=null,speechReady=false;
+function voiceScore(v){var n=(v.name||'').toLowerCase(),sc=0;
+ if(/(eddy|flo|grandma|grandpa|rocko|sandy|shelley|reed|jester|bad news|bahh|bells|boing|bubbles|cellos|good news|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph|bruce|agnes)/.test(n))return-100;
+ if(/(eloquence|espeak|compact|robot)/.test(n))sc-=40;
+ if(/(premium|enhanced|améliorée|amelioree|optimisée|optimisee|natural|neural|wavenet|studio|online|en ligne)/.test(n))sc+=50;
+ if(/google/.test(n))sc+=25;if(/(amélie|amelie|audrey|aurélie|aurelie|marie|virginie|julie|denise|eloise|vivienne|thomas|henri|paul)/.test(n))sc+=10;
+ if((v.lang||'').replace('_','-').toLowerCase()==='fr-fr')sc+=5;if(v.localService===false)sc+=5;return sc}
+function frVoices(){if(!('speechSynthesis' in window))return[];var vs=speechSynthesis.getVoices()||[];return vs.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf('fr')===0}).sort(function(a,b){return voiceScore(b)-voiceScore(a)})}
+function pickVoice(){var list=frVoices();if(state.voiceName){var m=list.filter(function(v){return v.name===state.voiceName})[0];if(m)return m}return list[0]||null}
+function speakText(text,quiet){if(!('speechSynthesis' in window)){if(!quiet)toast('Voix non disponible sur cet appareil');return}
+ text=String(text).replace(/…/g,'').replace(/\s+/g,' ').trim();if(!text)return;
+ var m=text.match(/^([^,]{1,24}), (.+)$/),parts=m?[m[1]+',',m[2]]:[text],v=pickVoice();
+ var us=parts.map(function(p,i){var u=new SpeechSynthesisUtterance(p);u.lang='fr-FR';var first=(m&&i===0);u.rate=Math.max(.5,state.voiceRate*(first?.92:1));u.pitch=state.voicePitch+(first?.05:0);u.volume=1;if(v)u.voice=v;return u});
+ uttRef=us;var go=function(){us.forEach(function(u){speechSynthesis.speak(u)})};if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,80)}else go()}
+function renderVoiceList(){var sel=byId('voiceSel');if(!sel)return;var list=frVoices();sel.innerHTML='';var o0=document.createElement('option');o0.value='';o0.textContent='Automatique (meilleure voix trouvée)';sel.appendChild(o0);
+ list.forEach(function(v){var o=document.createElement('option');o.value=v.name;o.textContent=v.name+(voiceScore(v)>=40?' (haute qualité)':'');sel.appendChild(o)});sel.value=state.voiceName||'';
+ byId('voiceHint').textContent=list.length?"Pour une voix plus naturelle : sur iPhone ou iPad, Réglages > Accessibilité > Contenu énoncé > Voix > Français, télécharge une voix « Optimisée » ou « Premium ». Sur Android, installe les données vocales françaises du moteur Google. Les menus varient selon l'appareil. Reviens ensuite ici choisir la voix.":"Aucune voix française trouvée sur cet appareil. Installe des données vocales françaises dans les réglages du téléphone, puis rouvre l'application."}
+function unlockSpeech(){if(speechReady||!('speechSynthesis' in window))return;speechReady=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+document.addEventListener('touchend',unlockSpeech,{passive:true});document.addEventListener('click',unlockSpeech);
+
+/* ---------- icônes des grands choix ---------- */
+function ico(inner){return'<svg class="isvg" viewBox="0 0 100 100" aria-hidden="true">'+inner+'</svg>'}
 var INTENT_ICONS={
- want:function(c){var f='fill:var(--cat-'+c+')';return ico('<path style="'+f+'" d="M50 8l12.3 25 27.6 4-20 19.5 4.7 27.5L50 71.100 25.4 84l4.7-27.5-20-19.5 27.6-4z"/><circle cx="85" cy="14" r="4" style="'+f+'"/><circle cx="14" cy="82" r="3" style="'+f+'"/>')},
- need:function(c){var s='stroke:var(--cat-'+c+');fill:none;stroke-width:16';return ico('<circle cx="50" cy="50" r="34" style="'+s+'"/><circle cx="50" cy="50" r="34" style="stroke:#fff;fill:none;stroke-width:16;stroke-dasharray:26.7 26.7;stroke-dashoffset:13.35"/>')},
+ want:function(c){var f='fill:var(--cat-'+c+')';return ico('<path style="'+f+'" d="M50 8l12.3 25 27.6 4-20 19.5 4.7 27.5L50 71 25.4 84l4.7-27.5-20-19.5 27.6-4z"/><circle cx="85" cy="14" r="4" style="'+f+'"/><circle cx="14" cy="82" r="3" style="'+f+'"/>')},
+ need:function(c){return ico('<circle cx="50" cy="50" r="34" style="stroke:var(--cat-'+c+');fill:none;stroke-width:16"/><circle cx="50" cy="50" r="34" style="stroke:#fff;fill:none;stroke-width:16;stroke-dasharray:26.7 26.7;stroke-dashoffset:13.35"/>')},
  envie:function(c){var f='fill:var(--cat-'+c+'-bg);stroke:var(--cat-'+c+');stroke-width:4';return ico('<g style="'+f+'"><circle cx="34" cy="38" r="16"/><circle cx="54" cy="30" r="18"/><circle cx="72" cy="42" r="14"/><ellipse cx="52" cy="46" rx="30" ry="14"/></g><circle cx="26" cy="72" r="6" style="'+f+'"/><circle cx="14" cy="88" r="4" style="'+f+'"/><path style="fill:var(--cat-'+c+')" d="M52 54C38 46 40 34 47 34c3 0 5 2 5 5 0-3 2-5 5-5 7 0 9 12-5 20z"/>')},
  notwant:function(c){var s='stroke:var(--cat-'+c+');fill:none;stroke-width:10;stroke-linecap:round';return ico('<circle cx="50" cy="50" r="36" style="'+s+'"/><path d="M25 75L75 25" style="'+s+'"/>')},
  like:function(c){return ico('<path style="fill:var(--cat-'+c+')" d="M50 85C12 58 14 22 36 20c8-1 14 5 14 11 0-6 6-12 14-11 22 2 24 38-14 65z"/>')},
  feel:function(c){return ico('<circle cx="50" cy="50" r="38" style="fill:var(--cat-'+c+'-bg);stroke:var(--cat-'+c+');stroke-width:5"/><circle cx="37" cy="42" r="5" style="fill:#26241f"/><circle cx="63" cy="42" r="5" style="fill:#26241f"/><path d="M32 60c6 12 30 12 36 0" style="stroke:#26241f;fill:none;stroke-width:5;stroke-linecap:round"/>')},
- pain:function(c){return ico('<g transform="rotate(-35 50 50)"><rect x="8" y="34" width="84" height="32" rx="16" style="fill:var(--cat-'+c+')"/><rect x="34" y="34" width="32" height="32" style="fill:#fff;opacity:.85"/><circle cx="20" cy="45" r="2.500" fill="#fff"/><circle cx="20" cy="55" r="2.500" fill="#fff"/><circle cx="80" cy="45" r="2.500" fill="#fff"/><circle cx="80" cy="55" r="2.500" fill="#fff"/></g>')},
+ pain:function(c){return ico('<g transform="rotate(-35 50 50)"><rect x="8" y="34" width="84" height="32" rx="16" style="fill:var(--cat-'+c+')"/><rect x="34" y="34" width="32" height="32" style="fill:#fff;opacity:.85"/><circle cx="20" cy="45" r="2.5" fill="#fff"/><circle cx="20" cy="55" r="2.5" fill="#fff"/><circle cx="80" cy="45" r="2.5" fill="#fff"/><circle cx="80" cy="55" r="2.5" fill="#fff"/></g>')},
+ see:function(c){return ico('<path d="M6 50C20 28 38 20 50 20s30 8 44 30C80 72 62 80 50 80S20 72 6 50z" style="fill:#fff;stroke:var(--cat-'+c+');stroke-width:6"/><circle cx="50" cy="50" r="16" style="fill:var(--cat-'+c+')"/><circle cx="56" cy="44" r="5" fill="#fff"/>')},
  custom:function(c){return ico('<path style="fill:var(--cat-'+c+')" d="M16 18h68a7 7 0 017 7v40a7 7 0 01-7 7H44L26 90V72H16a7 7 0 01-7-7V25a7 7 0 017-7z"/><circle cx="32" cy="45" r="5" fill="#fff"/><circle cx="50" cy="45" r="5" fill="#fff"/><circle cx="68" cy="45" r="5" fill="#fff"/>')}};
 function intentSvg(it){var f=INTENT_ICONS[it.id]||INTENT_ICONS[it.mode]||INTENT_ICONS.custom;return f(it.color||'vert')}
-function targetCard(){return flow.target?cardById(flow.target):null}
-function stage(){if(!flow.dest)return 1;if(!flow.intent)return 2;var t=targetCard();if(!t)return 3;if(t.follow&&flow.detail===null)return 4;return 5}
-function currentSentence(){
- if(!flow.dest)return '';
- var d=destCard(),it=getIntent(),t=targetCard(),g=activeProfile().gender||'m';
- if(!it)return d?d.label+', …':'';
- if(!t){var base=intentLabel(it).replace("Je suis … / J'ai …",'…');if(d)base=base.replace(/^Je /,'je ').replace(/^J'ai /,"j'ai ");return withDest(d,base);}
- var det=flow.detail?cardById(flow.detail):null;
- var txt=withDest(d,jeSentence(it,t,g,det));
- return stage()===4?txt+' …':txt;}
+function allSvg(){return ico('<circle cx="50" cy="30" r="13" fill="var(--cat-vert)"/><path d="M26 74c0-14 10-22 24-22s24 8 24 22z" fill="var(--cat-vert)"/><circle cx="22" cy="42" r="10" fill="var(--cat-bleu)"/><path d="M4 76c0-11 7-18 18-18 4 0 7 1 9 3-4 4-6 9-6 15z" fill="var(--cat-bleu)"/><circle cx="78" cy="42" r="10" fill="var(--cat-orange)"/><path d="M96 76c0-11-7-18-18-18-4 0-7 1-9 3 4 4 6 9 6 15z" fill="var(--cat-orange)"/>')}
+function intentVis(it){var lab=intentMenu(it);if(it.photo)return imgHTML(it.photo,lab);if(it.pic)return imgHTML(API+it.pic,lab);if(it.q&&picCache[it.q])return imgHTML(API+picCache[it.q],lab);return intentSvg(it)}
 
-var uttRef=null,speechReady=false;
-function voiceScore(v){var n=(v.name||'').toLowerCase(),sc=0;
- if(/(eddy|flo|grandma|grandpa|rocko|sandy|shelley|reed|jester|bad news|bahh|bells|boing|bubbles|cellos|good news|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph|bruce|agnes)/.test(n))return -100;
- if(/(eloquence|espeak|compact|robot)/.test(n))sc-=40;
- if(/(premium|enhanced|améliorée|amelioree|optimisée|optimisee|natural|neural|wavenet|studio|online|en ligne)/.test(n))sc+=50;
- if(/google/.test(n))sc+=25;
- if(/(amélie|amelie|audrey|aurélie|aurelie|marie|virginie|julie|denise|eloise|vivienne|thomas|henri|paul)/.test(n))sc+=10;
- if((v.lang||'').replace('_','-').toLowerCase()==='fr-fr')sc+=5;
- if(v.localService===false)sc+=5;
- return sc}
-function frVoices(){if(!('speechSynthesis' in window))return [];var vs=speechSynthesis.getVoices()||[];
- return vs.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf('fr')===0}).sort(function(a,b){return voiceScore(b)-voiceScore(a)})}
-function pickVoice(){var list=frVoices();if(state.voiceName){var m=list.filter(function(v){return v.name===state.voiceName})[0];if(m)return m}return list[0]||null}
-function speakText(text,quiet){
- if(!('speechSynthesis' in window)){if(!quiet)toast('Voix non disponible sur cet appareil');return}
- text=String(text).replace(/…/g,'').replace(/\s+/g,' ').trim();if(!text)return;
- var m=text.match(/^([^,]{1,24}), (.+)$/),parts=m?[m[1]+',',m[2]]:[text],v=pickVoice();
- var us=parts.map(function(p,i){var u=new SpeechSynthesisUtterance(p);u.lang='fr-FR';var first=(m&&i===0);u.rate=Math.max(0.5,state.voiceRate*(first?0.92:1));u.pitch=state.voicePitch+(first?0.05:0);u.volume=1;if(v)u.voice=v;return u});
- uttRef=us;var go=function(){us.forEach(function(u){speechSynthesis.speak(u)})};
- if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,80)}else go()}
-function renderVoiceList(){var sel=byId('voiceSel');if(!sel)return;var list=frVoices();sel.innerHTML='';
- var o0=document.createElement('option');o0.value='';o0.textContent='Automatique (meilleure voix trouvée)';sel.appendChild(o0);
- list.forEach(function(v){var o=document.createElement('option');o.value=v.name;o.textContent=v.name+(voiceScore(v)>=40?' (haute qualité)':'');sel.appendChild(o)});
- sel.value=state.voiceName||'';
- byId('voiceHint').textContent=list.length?"Pour une voix plus naturelle : iPhone/iPad, Réglages > Accessibilité > Contenu énoncé > Voix > Français, télécharge une voix « Optimisée » ou « Premium ». Android, Réglages > Langues > Synthèse vocale, installe les données vocales françaises du moteur Google. Les menus varient selon l'appareil, puis reviens ici et choisis la voix.":"Aucune voix française n'a été trouvée sur cet appareil. Installe des données vocales françaises dans les réglages du téléphone, puis rouvre l'application.";}
-function unlockSpeech(){if(speechReady||!('speechSynthesis' in window))return;speechReady=true;try{var u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}}
-document.addEventListener('touchend',unlockSpeech,{passive:true});document.addEventListener('click',unlockSpeech);
-
-function pickCard(vis,color,label,sub,fn){var b=document.createElement('button');b.className='pic-card';b.setAttribute('role','listitem');b.setAttribute('aria-label',label);
- b.innerHTML='<span class="strip" style="background:var(--cat-'+color+')"></span><span class="pic-img-wrap">'+vis+'</span><span class="pic-label">'+esc(label)+'</span>'+(sub?'<span class="pic-sub">'+esc(sub)+'</span>':'');
- b.addEventListener('click',fn);return b;}
-function resetFlow(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;flow.tab=null;renderFlow();}
-function renderCrumbs(){var wrap=byId('crumbs');wrap.innerHTML='';var it=getIntent();
- function add(vis,label,color,fn){var b=document.createElement('button');b.className='crumb';b.style.color='var(--cat-'+color+')';b.style.background='var(--cat-'+color+'-bg)';b.innerHTML='<span class="ci">'+vis+'</span>'+esc(label);b.addEventListener('click',fn);wrap.appendChild(b);}
- if(flow.dest){var d=destCard();add(d?visual(d):visualQ('tout le monde','T'),d?d.label:'Tout le monde','violet',function(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;renderFlow()});}
- if(it)add(intentVis(it),intentCrumb(it),it.color,function(){flow.intent=null;flow.target=null;flow.detail=null;renderFlow()});
- var t=targetCard();
- if(t)add(visual(t),t.label,GROUPS[t.kind].color,function(){flow.target=null;flow.detail=null;renderFlow()});
- if(t&&flow.detail){var dd=cardById(flow.detail);if(dd)add(visual(dd),dd.label,GROUPS[dd.kind].color,function(){flow.detail=null;renderFlow()});}}
+/* ---------- parcours ---------- */
+function pickCard(vis,color,label,sub,fn){var b=document.createElement('button');b.className='pic-card';b.setAttribute('role','listitem');b.setAttribute('aria-label',label);b.innerHTML='<span class="strip" style="background:var(--cat-'+color+')"></span><span class="pic-img-wrap">'+vis+'</span><span class="pic-label">'+esc(label)+'</span>'+(sub?'<span class="pic-sub">'+esc(sub)+'</span>':'');b.addEventListener('click',fn);return b}
+function resetFlow(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;flow.adj=null;flow.tab=null;renderFlow()}
+function renderCrumbs(){var wrap=byId('crumbs');wrap.innerHTML='';if(lvl()>=2)return;var it=getIntent();
+ function add(vis,label,color,fn){var b=document.createElement('button');b.className='crumb';b.style.color='var(--cat-'+color+')';b.style.background='var(--cat-'+color+'-bg)';b.innerHTML='<span class="ci">'+vis+'</span>'+esc(label);b.addEventListener('click',fn);wrap.appendChild(b)}
+ if(flow.dest){var d=destCard();add(d?visual(d):allSvg(),d?d.label:'Tout le monde','violet',function(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;flow.adj=null;renderFlow()})}
+ if(it)add(intentVis(it),intentCrumb(it),it.color,function(){flow.intent=null;flow.target=null;flow.detail=null;flow.adj=null;renderFlow()});
+ var t=targetCard();if(t)add(visual(t),t.label,GROUPS[t.kind].color,function(){flow.target=null;flow.detail=null;flow.adj=null;renderFlow()});
+ if(t&&flow.detail){var dd=cardById(flow.detail);if(dd)add(visual(dd),dd.label,GROUPS[dd.kind].color,function(){flow.detail=null;flow.adj=null;renderFlow()})}
+ if(t&&flow.adj){var aa=cardById(flow.adj);if(aa)add(visual(aa),adjForm(aa,t),'violet',function(){flow.adj=null;renderFlow()})}}
 function finishSentence(){renderFlow();speakText(currentSentence(),true)}
-function renderFlow(){
- var st=stage(),grid=byId('boardGrid'),tabs=byId('catTabs'),title=byId('flowTitle'),back=byId('backBtn'),txt=byId('sentenceText');
- grid.className='board-grid'+(st===2?' big':'');byId('flowHint').textContent=hintFor(st);var sent=currentSentence();txt.textContent=sent||'Choisis à qui tu veux parler';txt.classList.toggle('empty',!sent);
- renderCrumbs();back.style.display=st>1?'inline-flex':'none';grid.innerHTML='';tabs.innerHTML='';tabs.style.display='none';
- var t=targetCard();
+function tabButton(k,label,color,vis){var b=document.createElement('button');b.className='cat-tab'+(flow.tab===k?' active':'');b.style.background='var(--cat-'+color+'-bg)';b.style.color='var(--cat-'+color+')';b.setAttribute('role','tab');b.innerHTML=vis+'<span>'+esc(label)+'</span>';return b}
+function renderFlow(){var st=stage(),grid=byId('boardGrid'),tabs=byId('catTabs'),title=byId('flowTitle'),back=byId('backBtn'),txt=byId('sentenceText'),sent=currentSentence();
+ txt.innerHTML=sent?esc(sent).replace(/…/g,'<span class="blank"></span>'):'<span class="placeholder">Choisis à qui tu veux parler</span>';txt.classList.toggle('empty',!sent);
+ grid.className='board-grid'+(st===2?' big':'');byId('flowHint').textContent=hintFor(st);
+ renderCrumbs();back.style.display=st>1?'inline-flex':'none';grid.innerHTML='';tabs.innerHTML='';tabs.style.display='none';var t=targetCard();
  if(st===1){title.textContent='1. À qui tu parles ?';
+  grid.appendChild(pickCard(allSvg(),'vert','Tout le monde','',function(){flow.dest='all';renderFlow()}));
   state.cards.filter(function(c){return c.kind==='person'}).forEach(function(c){grid.appendChild(pickCard(visual(c),'violet',c.label,'',function(){flow.dest=c.id;renderFlow()}))});
-  grid.appendChild(pickCard(visualQ('tout le monde','T'),'vert','Tout le monde','',function(){flow.dest='all';renderFlow()}));
  }else if(st===2){title.textContent='2. Que veux-tu dire ?';
   visibleIntents().forEach(function(it){grid.appendChild(pickCard(intentVis(it),it.color,intentMenu(it),it.sub||'',function(){flow.intent=it.id;flow.tab=null;renderFlow()}))});
- }else if(st===3){var it=getIntent();title.textContent='3. '+(it.mode==='feel'?'Comment tu te sens ?':it.mode==='pain'?'Où as-tu mal ?':'Quoi ?');
-  var kinds=allowedKinds(it.mode),
-   avail=kinds.filter(function(k){return state.cards.some(function(c){return c.kind===k})}),
-   mine=intentListCards(it).filter(function(c){return c.id!==flow.dest}),
-   tabKeys=(mine.length?['list']:[]).concat(avail);
-  if(!flow.tab||tabKeys.indexOf(flow.tab)<0)flow.tab=tabKeys[0];
-  if(tabKeys.length>1){tabs.style.display='flex';
-   tabKeys.forEach(function(k){var isL=k==='list',g=isL?{label:listLabel(it),color:it.color}:GROUPS[k];var b=document.createElement('button');b.className='cat-tab'+(flow.tab===k?' active':'');b.style.background='var(--cat-'+g.color+'-bg)';b.style.color='var(--cat-'+g.color+')';b.setAttribute('role','tab');
-    b.innerHTML=(isL?intentVis(it):(g.pic?imgHTML(API+g.pic,g.label):visualQ(g.q,g.label)))+'<span>'+g.label+'</span>';b.addEventListener('click',function(){flow.tab=k;renderFlow()});tabs.appendChild(b)});}
-  var list=flow.tab==='list'?mine:state.cards.filter(function(c){return c.kind===flow.tab&&c.id!==flow.dest});
+ }else if(st===3){var it=getIntent(),mode=it.mode||it.id;title.textContent='3. '+(mode==='feel'?'Comment tu te sens ?':mode==='pain'?'Où as-tu mal ?':mode==='see'?'Que vois-tu ?':'Quoi ?');
+  var avail=allowedKinds(mode).filter(function(k){return state.cards.some(function(c){return c.kind===k&&usable(c,mode)})}),mine=intentListCards(it).filter(function(c){return c.id!==flow.dest&&usable(c,mode)}),keys=(mine.length?['list']:[]).concat(avail);
+  if(!flow.tab||keys.indexOf(flow.tab)<0)flow.tab=keys[0];
+  if(keys.length>1){tabs.style.display='flex';keys.forEach(function(k){var b;if(k==='list')b=tabButton(k,listLabel(it),it.color,intentVis(it));else{var g=GROUPS[k],lab=(mode==='see'&&k==='thing')?'Objets et animaux':g.label;b=tabButton(k,lab,g.color,g.pic?imgHTML(API+g.pic,lab):visualQ(g.q,lab))}b.addEventListener('click',function(){flow.tab=k;renderFlow()});tabs.appendChild(b)})}
+  var list=flow.tab==='list'?mine:state.cards.filter(function(c){return c.kind===flow.tab&&c.id!==flow.dest&&usable(c,mode)});
   if(!list.length)grid.innerHTML='<div class="empty-state"><h3>Aucune image ici</h3><p>Ajoute des images depuis Réglages.</p></div>';
-  list.forEach(function(c){grid.appendChild(pickCard(visual(c),GROUPS[c.kind].color,c.label,'',function(){flow.target=c.id;flow.detail=null;if(c.follow)renderFlow();else finishSentence()}))});
+  list.forEach(function(c){grid.appendChild(pickCard(visual(c),GROUPS[c.kind].color,c.label,'',function(){flow.target=c.id;flow.detail=null;flow.adj=null;if(c.follow||adjOK(c))renderFlow();else finishSentence()}))});
  }else if(st===4){title.textContent='4. '+FOLLOW_TITLE[t.follow];
-  var items=state.cards.filter(function(x){return followMatch(t.follow,x)&&x.id!==flow.dest&&x.id!==t.id});
-  items.forEach(function(x){grid.appendChild(pickCard(visual(x),GROUPS[x.kind].color,x.label,'',function(){flow.detail=x.id;finishSentence()}))});
-  if(!t.req){var sk=document.createElement('div');sk.className='skip-box';sk.innerHTML='<button class="btn btn-ghost" id="skipDetail">Terminer sans préciser</button>';grid.appendChild(sk);
-   byId('skipDetail').addEventListener('click',function(){flow.detail=0;finishSentence()});}
- }else{title.textContent='Ta phrase';
-  var box=document.createElement('div');box.className='done-box';
-  box.innerHTML='<button class="btn btn-primary" id="againSpeak" style="font-size:1.2rem;padding:1rem 2rem">'+ic('speaker')+'Redire</button><button class="btn btn-ghost" id="newSentence" style="font-size:1.1rem;padding:1rem 2rem">Nouvelle phrase</button><button class="btn btn-ghost" id="changeLast">'+ic('pencil')+'Modifier le dernier mot</button>';
-  grid.appendChild(box);
-  byId('againSpeak').addEventListener('click',function(){speakText(currentSentence())});
-  byId('newSentence').addEventListener('click',resetFlow);
-  byId('changeLast').addEventListener('click',goBack);}
-}
+  state.cards.filter(function(x){return followMatch(t.follow,x)&&x.id!==flow.dest&&x.id!==t.id}).forEach(function(x){grid.appendChild(pickCard(visual(x),GROUPS[x.kind].color,x.label,'',function(){flow.detail=x.id;finishSentence()}))});
+  if(!t.req){var sk=document.createElement('div');sk.className='skip-box';sk.innerHTML='<button class="btn btn-ghost" id="skipDetail">Terminer sans préciser</button>';grid.appendChild(sk);byId('skipDetail').addEventListener('click',function(){flow.detail=0;finishSentence()})}
+ }else if(st===5){title.textContent='Tu veux préciser ?';
+  var adjs=adjCards(),cats=[['color','Couleurs'],['size','Tailles'],['other','Autres']].filter(function(x){return adjs.some(function(a){return(a.cat||'other')===x[0]})});
+  if(!flow.adjTab||!cats.some(function(x){return x[0]===flow.adjTab}))flow.adjTab=cats[0][0];
+  if(cats.length>1){tabs.style.display='flex';cats.forEach(function(x){var b=document.createElement('button');b.className='cat-tab'+(flow.adjTab===x[0]?' active':'');b.style.background='var(--cat-violet-bg)';b.style.color='var(--cat-violet)';b.setAttribute('role','tab');b.innerHTML='<span>'+x[1]+'</span>';b.addEventListener('click',function(){flow.adjTab=x[0];renderFlow()});tabs.appendChild(b)})}
+  adjs.filter(function(a){return(a.cat||'other')===flow.adjTab}).forEach(function(a){grid.appendChild(pickCard(visual(a),'violet',cap(adjForm(a,t)),'',function(){flow.adj=a.id;finishSentence()}))});
+  var sk2=document.createElement('div');sk2.className='skip-box';sk2.innerHTML='<button class="btn btn-ghost" id="skipAdj">Terminer sans préciser</button>';grid.appendChild(sk2);byId('skipAdj').addEventListener('click',function(){flow.adj=0;finishSentence()});
+ }else{title.textContent='Ta phrase';var box=document.createElement('div');box.className='done-box';
+  box.innerHTML='<p class="final-sentence">'+esc(sent)+'</p><button class="btn btn-primary" id="againSpeak" style="font-size:1.2rem;padding:1rem 2rem">'+ic('speaker')+'Redire</button><button class="btn btn-ghost" id="newSentence" style="font-size:1.1rem;padding:1rem 2rem">Nouvelle phrase</button><button class="btn btn-ghost" id="changeLast">'+ic('pencil')+'Modifier le dernier mot</button>';
+  grid.appendChild(box);byId('againSpeak').addEventListener('click',function(){speakText(currentSentence())});byId('newSentence').addEventListener('click',resetFlow);byId('changeLast').addEventListener('click',goBack)}}
 function goBack(){var st=stage(),t=targetCard();
- if(st===5){if(t&&t.follow)flow.detail=null;else flow.target=null}
- else if(st===4){flow.target=null;flow.detail=null}
- else if(st===3)flow.intent=null;else if(st===2)flow.dest=null;
- renderFlow();}
-byId('backBtn').addEventListener('click',goBack);
-byId('clearSentence').addEventListener('click',resetFlow);
-byId('speakSentence').addEventListener('click',function(){if(stage()<5){toast("Termine ta phrase d'abord");return}speakText(currentSentence())});
+ if(st===6){if(t&&t.follow)flow.detail=null;else if(t&&adjOK(t))flow.adj=null;else flow.target=null}
+ else if(st===5){flow.target=null;flow.adj=null}else if(st===4){flow.target=null;flow.detail=null}else if(st===3)flow.intent=null;else if(st===2)flow.dest=null;
+ renderFlow()}
+byId('backBtn').addEventListener('click',goBack);byId('clearSentence').addEventListener('click',resetFlow);
+byId('speakSentence').addEventListener('click',function(){if(stage()<6){toast("Termine ta phrase d'abord");return}speakText(currentSentence())});
+byId('hintSpeak').addEventListener('click',function(){speakText(hintFor(stage()))});
 byId('testVoice').addEventListener('click',function(){speakText("Maman, j'ai besoin d'aide")});
-function renderQuick(){var row=byId('quickRow');row.innerHTML='';state.cards.filter(function(c){return c.kind==='word'}).forEach(function(c){
- var b=document.createElement('button');b.setAttribute('aria-label',c.label);b.innerHTML='<span class="qi">'+visual(c)+'</span>'+esc(c.label);
- b.addEventListener('click',function(){speakText(c.label);toast(c.label)});row.appendChild(b)});}
-function applyTheme(){document.documentElement.setAttribute('data-theme',state.theme);byId('themeIcon').innerHTML=ic(state.theme==='dark'?'sun':'moon',24);
- var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',state.theme==='dark'?'#181a19':'#0d7a72');}
+function renderQuick(){var row=byId('quickRow');row.innerHTML='';state.cards.filter(function(c){return c.kind==='word'}).forEach(function(c){var b=document.createElement('button');b.setAttribute('aria-label',c.label);b.innerHTML='<span class="qi">'+visual(c)+'</span>'+esc(c.label);b.addEventListener('click',function(){speakText(c.label);toast(c.label)});row.appendChild(b)})}
+function applyTheme(){document.documentElement.setAttribute('data-theme',state.theme);byId('themeIcon').innerHTML=ic(state.theme==='dark'?'sun':'moon',24);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',state.theme==='dark'?'#14181a':'#0d7a72')}
 byId('themeToggle').addEventListener('click',function(){state.theme=state.theme==='dark'?'light':'dark';applyTheme();saveState()});
-byId('lightModeBtn').addEventListener('click',function(){state.theme='light';applyTheme();saveState()});
-byId('darkModeBtn').addEventListener('click',function(){state.theme='dark';applyTheme();saveState()});
+byId('lightModeBtn').addEventListener('click',function(){state.theme='light';applyTheme();saveState()});byId('darkModeBtn').addEventListener('click',function(){state.theme='dark';applyTheme();saveState()});
 byId('voiceRate').addEventListener('input',function(e){state.voiceRate=parseFloat(e.target.value);saveState()});
 byId('voicePitch').addEventListener('input',function(e){state.voicePitch=parseFloat(e.target.value);saveState()});
-byId('voiceSel').addEventListener('change',function(e){state.voiceName=e.target.value;saveState();speakText('Bonjour, Maman, je veux boire de l\'eau')});
-function goScreen(name){$$('.screen').forEach(function(s){s.classList.remove('active')});byId('screen-'+name).classList.add('active');
- $$('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===name)});if(name==='settings')renderSettings();window.scrollTo(0,0);}
+byId('voiceSel').addEventListener('change',function(e){state.voiceName=e.target.value;saveState();speakText("Bonjour Maman, je veux de l'eau")});
+function goScreen(name){$$('.screen').forEach(function(s){s.classList.remove('active')});byId('screen-'+name).classList.add('active');$$('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===name)});if(name==='settings')renderSettings();window.scrollTo(0,0)}
 $$('.nav-btn').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.screen==='settings'&&state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen(b.dataset.screen)})});
-function avatar(p){return '<span class="profile-avatar" style="background:'+p.color+'">'+esc(p.name.charAt(0).toUpperCase())+'</span>'}
+/* ---------- profils ---------- */
+function avatar(p){return'<span class="profile-avatar" style="background:'+p.color+'">'+esc(p.name.charAt(0).toUpperCase())+'</span>'}
 function renderProfiles(){var grid=byId('profileGrid');grid.innerHTML='';
- state.profiles.forEach(function(p){var c=document.createElement('button');c.className='profile-card'+(p.id===state.activeProfile?' current':'');
-  c.innerHTML=avatar(p)+'<span class="profile-name">'+esc(p.name)+'</span>';
-  c.addEventListener('click',function(){state.activeProfile=p.id;saveState();renderProfiles();resetFlow();goScreen('board');toast('Bonjour '+p.name)});grid.appendChild(c)});
+ state.profiles.forEach(function(p){var c=document.createElement('button');c.className='profile-card'+(p.id===state.activeProfile?' current':'');c.innerHTML=avatar(p)+'<span class="profile-name">'+esc(p.name)+'</span><span class="hint">Niveau '+p.level+'</span>';c.addEventListener('click',function(){state.activeProfile=p.id;saveState();renderProfiles();resetFlow();goScreen('board');toast('Bonjour '+p.name)});grid.appendChild(c)});
  var a=document.createElement('button');a.className='profile-card add-profile-card';a.innerHTML='<span class="profile-avatar" style="background:var(--color-surface-offset);color:var(--color-text-muted)">+</span><span class="profile-name">Ajouter</span>';
- a.addEventListener('click',function(){if(state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen('settings');byId('newProfileName').focus()});grid.appendChild(a);}
+ a.addEventListener('click',function(){if(state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen('settings');byId('newProfileName').focus()});grid.appendChild(a)}
 function renderProfileList(){var list=byId('profileList');list.innerHTML='';
  state.profiles.forEach(function(p){var row=document.createElement('div');row.className='card-list-item';
-  row.innerHTML='<span class="profile-avatar" style="background:'+p.color+';width:40px;height:40px;font-size:1.1rem">'+esc(p.name.charAt(0).toUpperCase())+'</span><span class="meta"><span class="n">'+esc(p.name)+'</span></span><select aria-label="Genre"><option value="m">Garçon</option><option value="f">Fille</option></select><button class="del" aria-label="Supprimer '+esc(p.name)+'">'+ic('trash')+'</button>';
-  var sel=row.querySelector('select');sel.value=p.gender||'m';sel.addEventListener('change',function(){p.gender=sel.value;saveState();renderFlow()});
-  row.querySelector('.del').addEventListener('click',function(){if(state.profiles.length===1){toast('Il faut garder au moins un profil');return}
-   state.profiles=state.profiles.filter(function(x){return x.id!==p.id});if(state.activeProfile===p.id)state.activeProfile=state.profiles[0].id;saveState();renderProfileList();renderProfiles();renderFlow()});
-  list.appendChild(row)});}
+  row.innerHTML='<span class="profile-avatar" style="background:'+p.color+';width:40px;height:40px;font-size:1.1rem">'+esc(p.name.charAt(0).toUpperCase())+'</span><span class="meta"><span class="n">'+esc(p.name)+'</span></span><span class="pf-row"><select data-f="g" aria-label="Genre"><option value="m">Garçon</option><option value="f">Fille</option></select><select data-f="l" aria-label="Niveau"><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option></select></span><button class="del" aria-label="Supprimer '+esc(p.name)+'">'+ic('trash')+'</button>';
+  var sg=row.querySelector('select[data-f=g]'),sl=row.querySelector('select[data-f=l]');sg.value=p.gender||'m';sl.value=String(p.level||3);
+  sg.addEventListener('change',function(){p.gender=sg.value;saveState();renderFlow()});sl.addEventListener('change',function(){p.level=parseInt(sl.value,10);saveState();renderProfiles();resetFlow();renderIntentList();toast('Niveau '+p.level+' pour '+p.name)});
+  row.querySelector('.del').addEventListener('click',function(){if(state.profiles.length===1){toast('Il faut garder au moins un profil');return}state.profiles=state.profiles.filter(function(x){return x.id!==p.id});if(state.activeProfile===p.id)state.activeProfile=state.profiles[0].id;saveState();renderProfileList();renderProfiles();resetFlow()});list.appendChild(row)})}
 byId('addProfileBtn').addEventListener('click',function(){var name=byId('newProfileName').value.trim();if(!name){toast('Écris un prénom');return}
- state.profiles.push({id:idCounter++,name:name,gender:byId('newProfileGender').value,color:COLORS[state.profiles.length%COLORS.length]});saveState();byId('newProfileName').value='';renderProfileList();renderProfiles();toast('Profil ajouté')});
+ state.profiles.push({id:idCounter++,name:name,gender:byId('newProfileGender').value,level:parseInt(byId('newProfileLevel').value,10),color:COLORS[state.profiles.length%COLORS.length]});saveState();byId('newProfileName').value='';renderProfileList();renderProfiles();toast('Profil ajouté')});
 
-/* ---------- Pictogrammes : liste ---------- */
-var cardFilter='all',cardQuery='',edit=null,searchCache={},edTimer=null;
-function renderKindFilter(){var wrap=byId('kindFilter');wrap.innerHTML='';var counts={};
- state.cards.forEach(function(c){var k=typeOf(c);counts[k]=(counts[k]||0)+1});
+/* ---------- pictogrammes : liste ---------- */
+var cardFilter='all',cardQuery='',edit=null,edTimer=null,lePending=null;
+function allTypeKeys(){return TYPES.map(function(t){return t.k}).concat(['play','watch','cloth'])}
+function renderKindFilter(){var wrap=byId('kindFilter');wrap.innerHTML='';var counts={};state.cards.forEach(function(c){var k=typeOf(c);counts[k]=(counts[k]||0)+1});
  function chip(k,label){var b=document.createElement('button');b.className='chip'+(cardFilter===k?' on':'');b.textContent=label;b.addEventListener('click',function(){cardFilter=k;renderKindFilter();renderCardsList()});wrap.appendChild(b)}
- chip('all','Tous ('+state.cards.length+')');
- TYPES.concat([{k:'play',label:'Jeu'},{k:'watch',label:'Écran'},{k:'cloth',label:'Vêtement'}]).forEach(function(t){if(counts[t.k])chip(t.k,t.label+' ('+counts[t.k]+')')});}
+ chip('all','Tous ('+state.cards.length+')');allTypeKeys().forEach(function(k){if(counts[k])chip(k,typeLabel(k)+' ('+counts[k]+')')})}
 function cardRow(c){var row=document.createElement('div');row.className='card-list-item';
  row.innerHTML='<span class="ci2">'+visual(c)+'</span><span class="meta"><span class="n">'+esc(c.label)+'</span></span><button class="act" aria-label="Modifier '+esc(c.label)+'">'+ic('pencil')+'</button><button class="del" aria-label="Supprimer '+esc(c.label)+'">'+ic('trash')+'</button>';
- row.querySelector('.act').addEventListener('click',function(){openEditor(c)});
- row.querySelector('.meta').addEventListener('click',function(){openEditor(c)});
- row.querySelector('.del').addEventListener('click',function(){if(typeof confirm==='function'&&!confirm('Supprimer « '+c.label+' » ?'))return;
-  state.cards=state.cards.filter(function(x){return x.id!==c.id});if(c.id<1000&&state.deleted.indexOf(c.id)<0)state.deleted.push(c.id);delete state.edits[c.id];saveState();renderKindFilter();renderCardsList();renderQuick();resetFlow()});
- return row;}
+ row.querySelector('.act').addEventListener('click',function(){openEditor(c)});row.querySelector('.meta').addEventListener('click',function(){openEditor(c)});
+ row.querySelector('.del').addEventListener('click',function(){if(typeof confirm==='function'&&!confirm('Supprimer « '+c.label+' » ?'))return;state.cards=state.cards.filter(function(x){return x.id!==c.id});if(c.id<1000&&state.deleted.indexOf(c.id)<0)state.deleted.push(c.id);delete state.edits[c.id];saveState();renderKindFilter();renderCardsList();renderQuick();resetFlow()});return row}
 function renderCardsList(){var list=byId('cardsList');list.innerHTML='';var q=norm(cardQuery.trim()),groups={};
- state.cards.forEach(function(c){var k=typeOf(c);if(cardFilter!=='all'&&k!==cardFilter)return;if(q&&norm(c.label).indexOf(q)<0)return;(groups[k]=groups[k]||[]).push(c)});
- var any=false;TYPES.map(function(t){return t.k}).concat(['play','watch','cloth']).forEach(function(k){var arr=groups[k];if(!arr)return;any=true;
-  var d=document.createElement('details');d.className='grp';if(q||cardFilter!=='all')d.setAttribute('open','');
-  d.innerHTML='<summary><span>'+typeLabel(k)+'</span><span>'+arr.length+'</span></summary>';
-  var rows=document.createElement('div');rows.className='rows';arr.forEach(function(c){rows.appendChild(cardRow(c))});d.appendChild(rows);list.appendChild(d)});
- if(!any)list.innerHTML='<p class="hint">Aucun mot trouvé.</p>';}
+ state.cards.forEach(function(c){var k=typeOf(c);if(cardFilter!=='all'&&k!==cardFilter)return;if(q&&norm(c.label).indexOf(q)<0)return;(groups[k]=groups[k]||[]).push(c)});var any=false;
+ allTypeKeys().forEach(function(k){var arr=groups[k];if(!arr)return;any=true;var d=document.createElement('details');d.className='grp';if(q||cardFilter!=='all')d.setAttribute('open','');d.innerHTML='<summary><span>'+typeLabel(k)+'</span><span>'+arr.length+'</span></summary>';var rows=document.createElement('div');rows.className='rows';arr.forEach(function(c){rows.appendChild(cardRow(c))});d.appendChild(rows);list.appendChild(d)});
+ if(!any)list.innerHTML='<p class="hint">Aucun mot trouvé.</p>'}
 byId('cardSearch').addEventListener('input',function(e){cardQuery=e.target.value;renderCardsList()});
-byId('restoreDeleted').addEventListener('click',function(){state.deleted=[];var custom=state.cards.filter(function(c){return c.id>=1000});buildCards(custom);saveState();renderKindFilter();renderCardsList();renderQuick();resetFlow();toast('Mots rétablis')});
+byId('restoreDeleted').addEventListener('click',function(){state.deleted=[];buildCards(state.cards.filter(function(c){return c.id>=1000}));saveState();renderKindFilter();renderCardsList();renderQuick();resetFlow();toast('Mots rétablis')});
+byId('repairPics').addEventListener('click',function(){picCache={};picFailed={};picPending={};searchCache={};lsSet(PICKEY,'{}');refreshAll();toast('Recherche des images relancée')});
 
-/* ---------- Pictogrammes : création / modification ---------- */
-function guessGender(l){l=l.toLowerCase();return (/(e|ion|té)$/.test(l)&&!/(age|isme)$/.test(l))?'f':'m'}
+/* ---------- pictogrammes : création / modification ---------- */
+function guessGender(l){l=l.toLowerCase();return(/(e|ion|té)$/.test(l)&&!/(age|isme)$/.test(l))?'f':'m'}
 function guessPlural(l){l=l.toLowerCase();return l.length>3&&/s$/.test(l)&&!/(bras|dos|riz|jus|pas|cours|bois|fois|repas|mais)$/.test(l)}
-function openEditor(c){
- var locked=!!(c&&EXTRA_TYPES[c.kind]);
- edit={id:c?c.id:null,orig:c?clone(c):null,locked:locked,label:c?c.label:'',type:c?typeOf(c):'food',g:c?(c.g||'m'):'m',pl:c?!!c.pl:false,art:c?(c.art||'part'):'part',inf:c?(c.inf||''):'',det:c?(c.det||'none'):'none',q:c?(c.q||''):'',pic:c?c.pic:null,photo:c?c.photo:null,pics:[],pi:0,manual:!!c&&!!(c.pic||c.photo),gTouched:!!c,searchQ:''};
- byId('edTitle').textContent=c?'Modifier « '+c.label+' »':'Nouveau mot';
- byId('edLabel').value=edit.label;byId('edQ').value='';byId('edTypeWrap').style.display=locked?'none':'block';
- byId('editor').style.display='block';renderTypes();renderOpts();renderImg();updatePreview();runSearch();
- var el=byId('editor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'});}
-function closeEditor(){lePending=null;edit=null;byId('editor').style.display='none';}
-function renderTypes(){var w=byId('edTypes');w.innerHTML='';
- TYPES.forEach(function(t){var b=document.createElement('button');b.className='type-btn'+(edit.type===t.k?' on':'');
-  b.innerHTML='<span class="ti">'+imgHTML(API+t.pic,t.label)+'</span>'+esc(t.label)+'<small>'+esc(t.ex)+'</small>';
-  b.addEventListener('click',function(){edit.type=t.k;renderTypes();renderOpts();updatePreview()});w.appendChild(b)});}
-function seg(name,label,opts,cur){var h='<label>'+label+'</label><div class="seg" style="margin-bottom:.8rem">';
- opts.forEach(function(o){h+='<button type="button" data-opt="'+name+'" data-val="'+o[0]+'" class="'+(String(cur)===String(o[0])?'on':'')+'">'+o[1]+'</button>'});return h+'</div>';}
-function renderOpts(){var t=edit.type,h='';
- if(edit.locked){byId('edOpts').innerHTML='<p class="hint">Tu peux changer le nom et l\'image de ce mot.</p>';return}
- var hasG=['food','drink','thing','place','body','person'].indexOf(t)>-1,hasPl=['food','drink','thing','place','body'].indexOf(t)>-1;
+function openEditor(c){var locked=!!(c&&EXTRA_TYPES[c.kind]);
+ edit={id:c?c.id:null,orig:c?clone(c):null,locked:locked,label:c?c.label:'',type:c?typeOf(c):'food',g:c?(c.g||'m'):'m',pl:c?!!c.pl:false,art:c?(c.art||'part'):'part',inf:c?(c.inf||''):'',det:c?(c.det||'none'):'none',q:c?(c.q||''):'',pic:c?c.pic:null,photo:c?c.photo:null,
+  apos:c&&c.kind==='adj'?(c.pos||'after'):'after',acat:c&&c.kind==='adj'?(c.cat||'other'):'other',af:c&&c.kind==='adj'&&c.f&&c.f!==feminize((c.m||'').toLowerCase())?c.f:'',
+  pics:[],pi:0,manual:!!c&&!!(c.pic||c.photo),gTouched:!!c,searchQ:''};
+ byId('edTitle').textContent=c?'Modifier « '+c.label+' »':'Nouveau mot';byId('edLabel').value=edit.label;byId('edQ').value='';byId('edTypeWrap').style.display=locked?'none':'block';byId('editor').style.display='block';
+ renderTypes();renderOpts();renderImg();updatePreview();runSearch();var el=byId('editor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function closeEditor(){lePending=null;edit=null;byId('editor').style.display='none'}
+function renderTypes(){var w=byId('edTypes');w.innerHTML='';TYPES.forEach(function(t){var b=document.createElement('button');b.className='type-btn'+(edit.type===t.k?' on':'');b.innerHTML='<span class="ti">'+(t.pic?imgHTML(API+t.pic,t.label):t.q?visualQ(t.q,t.label):imgHTML(null,t.label))+'</span>'+esc(t.label)+'<small>'+esc(t.ex)+'</small>';b.addEventListener('click',function(){edit.type=t.k;renderTypes();renderOpts();updatePreview()});w.appendChild(b)})}
+function seg(name,label,opts,cur){var h='<label>'+label+'</label><div class="seg" style="margin-bottom:.8rem">';opts.forEach(function(o){h+='<button type="button" data-opt="'+name+'" data-val="'+o[0]+'" class="'+(String(cur)===String(o[0])?'on':'')+'">'+o[1]+'</button>'});return h+'</div>'}
+function renderOpts(){var t=edit.type,h='';if(edit.locked){byId('edOpts').innerHTML='<p class="hint">Tu peux changer le nom et l\'image de ce mot.</p>';return}
+ var hasG=['food','drink','thing','seen','place','body','person'].indexOf(t)>-1,hasPl=['food','drink','thing','seen','place','body'].indexOf(t)>-1;
  if(hasG)h+=seg('g',t==='person'?'Garçon ou fille (pour les accords)':'Genre du mot',[['m',t==='person'?'Garçon / homme':'Masculin (le, un)'],['f',t==='person'?'Fille / femme':'Féminin (la, une)']],edit.g);
  if(hasPl)h+=seg('pl','Nombre',[['0','Un seul'],['1','Plusieurs (des, les)']],edit.pl?'1':'0');
  if(t==='food')h+=seg('art','Quantité',[['part','Du, de la (du pain)'],['ind','Un, une (une pomme)']],edit.art);
- if(t==='person')h+=seg('det','Comment on l\'appelle ?',[['none','Par son prénom'],['mon','mon …'],['ma','ma …'],['le','le …'],['la','la …']],edit.det);
+ if(t==='person')h+=seg('det',"Comment on l'appelle ?",[['none','Par son prénom'],['mon','mon …'],['ma','ma …'],['le','le …'],['la','la …']],edit.det);
  if(t==='verb')h+='<label for="edInf">Le verbe à l\'infinitif</label><input type="text" id="edInf" value="'+esc(edit.inf)+'" placeholder="'+esc((edit.label||'jouer').toLowerCase())+'" autocapitalize="none"><p class="hint">Exemples : jouer au foot, faire du vélo, se laver.</p>';
- byId('edOpts').innerHTML=h;}
-byId('edOpts').addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-opt]'):null;if(!b||!edit)return;
- var o=b.getAttribute('data-opt'),v=b.getAttribute('data-val');
- if(o==='pl')edit.pl=(v==='1');else{edit[o]=v;if(o==='g')edit.gTouched=true}
- renderOpts();updatePreview();});
-byId('edOpts').addEventListener('input',function(e){if(edit&&e.target.id==='edInf'){edit.inf=e.target.value;updatePreview()}});
-function previewCard(){var e=edit;if(e.locked)return clone(e.orig);
- var t=e.type,c={id:-1,label:e.label.trim()||'…',g:e.g,pl:e.pl};c.kind=(t==='drink')?'food':t;
- if(t==='drink'){c.drink=true;c.art='part'}if(t==='food')c.art=e.art;if(t==='thing')c.art='def';
- if(t==='verb')c.inf=(e.inf.trim()||c.label).toLowerCase();if(t==='person')c.det=e.det;return c;}
-function updatePreview(){if(!edit)return;var c=previewCard(),t=edit.type,txt='',g=activeProfile().gender||'m';
- function I(id){return INTENTS.filter(function(i){return i.id===id})[0]}
- if(edit.locked||c.kind==='play'||c.kind==='watch'||c.kind==='cloth')txt=c.label;
- else if(t==='word')txt=c.label;
- else if(t==='emotion'||t==='state')txt=jeSentence(I('feel'),c,g);
- else if(t==='body')txt=jeSentence(I('pain'),c,g);
- else if(t==='person')txt=jeSentence(I('want'),c,g)+' ou « '+c.label+', … »';
- else txt=jeSentence(I('want'),c,g);
- byId('edPreview').textContent='Exemple : '+cap(txt);}
-function searchPics(q,cb){if(!q){cb([]);return}
- if(searchCache[q]){cb(searchCache[q]);return}
- fetchPicIds(q,function(ids){searchCache[q]=ids;cb(ids)});}
+ if(t==='adj'){h+='<p class="hint" style="margin-bottom:.6rem">Le mot ci-dessus est écrit au masculin (rouge, grand, beau…).</p>'+seg('apos','Où se place-t-il ?',[['after','Après le mot (une voiture rouge)'],['before','Avant le mot (une grosse voiture)']],edit.apos)+seg('acat','Famille',[['color','Couleur'],['size','Taille'],['other','Autre']],edit.acat)+'<label for="edF">Au féminin (si différent)</label><input type="text" id="edF" value="'+esc(edit.af)+'" placeholder="'+esc(feminize((edit.label||'rouge').toLowerCase()))+'" autocapitalize="none">'}
+ byId('edOpts').innerHTML=h}
+byId('edOpts').addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-opt]'):null;if(!b||!edit)return;var o=b.getAttribute('data-opt'),v=b.getAttribute('data-val');if(o==='pl')edit.pl=(v==='1');else{edit[o]=v;if(o==='g')edit.gTouched=true}renderOpts();updatePreview()});
+byId('edOpts').addEventListener('input',function(e){if(!edit)return;if(e.target.id==='edInf')edit.inf=e.target.value;if(e.target.id==='edF')edit.af=e.target.value;updatePreview()});
+function kindOfType(t){return t==='drink'?'food':t==='seen'?'thing':t}
+function previewCard(){var e=edit;if(e.locked)return clone(e.orig);var t=e.type,c={id:-1,label:e.label.trim()||'…',g:e.g,pl:e.pl};c.kind=kindOfType(t);if(t==='drink'){c.drink=true;c.art='part'}if(t==='food')c.art=e.art;if(t==='thing'||t==='seen')c.art='def';if(t==='verb')c.inf=(e.inf.trim()||c.label).toLowerCase();if(t==='person')c.det=e.det;return c}
+function updatePreview(){if(!edit)return;var c=previewCard(),t=edit.type,txt='',g=activeProfile().gender||'m';function I(id){return INTENTS.filter(function(i){return i.id===id})[0]}
+ if(t==='adj'){var m=(edit.label.trim()||'rouge').toLowerCase(),a={m:m,f:(edit.af.trim()||feminize(m)).toLowerCase(),pos:edit.apos},n1={kind:'thing',label:'voiture',g:'f',art:'def'},n2={kind:'thing',label:'chat',g:'m',art:'def'};
+  txt=[jeSentence(I('see'),n1,g,null,a),jeSentence(I('see'),n2,g,null,a)].map(cap).join('  •  ')}
+ else if(edit.locked||c.kind==='play'||c.kind==='watch'||c.kind==='cloth'||t==='word')txt=c.label;
+ else if(t==='emotion'||t==='state')txt=jeSentence(I('feel'),c,g);else if(t==='body')txt=jeSentence(I('pain'),c,g);
+ else if(t==='seen')txt=jeSentence(I('see'),c,g);else if(t==='person')txt=jeSentence(I('want'),c,g)+' ou « '+c.label+', … »';else txt=jeSentence(I('want'),c,g);
+ byId('edPreview').textContent='Exemple : '+cap(txt)}
 function runSearch(){if(!edit)return;var q=(byId('edQ').value.trim()||edit.q||edit.label.trim()).toLowerCase();edit.searchQ=q;
- searchPics(q,function(ids){if(!edit||edit.searchQ!==q)return;edit.pics=ids.slice();
-  if(edit.pic&&edit.pics.indexOf(edit.pic)<0)edit.pics.unshift(edit.pic);
-  if(!edit.manual&&!edit.photo&&ids.length)edit.pic=ids[0];
-  edit.pi=Math.max(0,edit.pics.indexOf(edit.pic));renderImg();});}
-function renderImg(){if(!edit)return;var url=edit.photo||(edit.pic?API+edit.pic:null);
- byId('edImg').innerHTML=imgHTML(url,edit.label||'?');
- byId('edHint').textContent=edit.photo?'Photo personnelle.':edit.pics.length?('Image '+(edit.pi+1)+' sur '+edit.pics.length+' : utilise les flèches pour en voir d\'autres.'):'Aucune image trouvée (une connexion est nécessaire). Tu peux utiliser ta photo.';}
-function stepPic(d){if(!edit||!edit.pics.length)return;edit.photo=null;edit.manual=true;edit.pi=(edit.pi+d+edit.pics.length)%edit.pics.length;edit.pic=edit.pics[edit.pi];renderImg();}
+ searchPics(q,function(ids){if(!edit||edit.searchQ!==q)return;edit.pics=ids.slice();if(edit.pic&&edit.pics.indexOf(edit.pic)<0)edit.pics.unshift(edit.pic);if(!edit.manual&&!edit.photo&&ids.length)edit.pic=ids[0];edit.pi=Math.max(0,edit.pics.indexOf(edit.pic));renderImg()})}
+function renderImg(){if(!edit)return;var url=edit.photo||(edit.pic?API+edit.pic:null),sw=edit.orig&&(edit.orig.swatch||edit.orig.glyph)&&!url?visual(edit.orig):null;byId('edImg').innerHTML=sw||imgHTML(url,edit.label||'?');
+ byId('edHint').textContent=edit.photo?'Photo personnelle.':edit.pics.length?('Image '+(edit.pi+1)+' sur '+edit.pics.length+" : utilise les flèches pour en voir d'autres."):'Aucune image trouvée (une connexion est nécessaire). Tu peux utiliser ta photo.'}
+function stepPic(d){if(!edit||!edit.pics.length)return;edit.photo=null;edit.manual=true;edit.pi=(edit.pi+d+edit.pics.length)%edit.pics.length;edit.pic=edit.pics[edit.pi];renderImg()}
 byId('edPrev').addEventListener('click',function(){stepPic(-1)});byId('edNext').addEventListener('click',function(){stepPic(1)});
-byId('edSearch').addEventListener('click',function(){if(!edit)return;var v=byId('edQ').value.trim();if(v){edit.q=v.toLowerCase();edit.manual=false;edit.photo=null}runSearch();});
-byId('edLabel').addEventListener('input',function(e){if(!edit)return;edit.label=e.target.value;
- if(!edit.gTouched&&!edit.id){edit.g=guessGender(edit.label);edit.pl=guessPlural(edit.label);renderOpts()}
- updatePreview();clearTimeout(edTimer);if(!edit.manual)edTimer=setTimeout(runSearch,600);});
-function resizePhoto(data,max,cb){var im=new Image();im.onload=function(){try{var r=Math.min(1,max/Math.max(im.width,im.height)),w=Math.round(im.width*r),h=Math.round(im.height*r),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);cb(cv.toDataURL('image/jpeg',0.85))}catch(e){cb(data)}};im.onerror=function(){cb(data)};im.src=data;}
-byId('edPhoto').addEventListener('change',function(e){var f=e.target.files[0];if(!f||!edit)return;var r=new FileReader();
- r.onload=function(ev){resizePhoto(ev.target.result,256,function(d){if(!edit)return;edit.photo=d;edit.manual=true;renderImg()})};r.readAsDataURL(f);e.target.value='';});
-byId('edCancel').addEventListener('click',closeEditor);
-byId('openAdd').addEventListener('click',function(){openEditor(null)});
+byId('edSearch').addEventListener('click',function(){if(!edit)return;var v=byId('edQ').value.trim();if(v){edit.q=v.toLowerCase();edit.manual=false;edit.photo=null}runSearch()});
+byId('edLabel').addEventListener('input',function(e){if(!edit)return;edit.label=e.target.value;if(!edit.gTouched&&!edit.id){edit.g=guessGender(edit.label);edit.pl=guessPlural(edit.label);renderOpts()}updatePreview();clearTimeout(edTimer);if(!edit.manual)edTimer=setTimeout(runSearch,600)});
+function resizePhoto(data,max,cb){var im=new Image();im.onload=function(){try{var r=Math.min(1,max/Math.max(im.width,im.height)),w=Math.round(im.width*r),h=Math.round(im.height*r),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);cb(cv.toDataURL('image/jpeg',.85))}catch(e){cb(data)}};im.onerror=function(){cb(data)};im.src=data}
+byId('edPhoto').addEventListener('change',function(e){var f=e.target.files[0];if(!f||!edit)return;var r=new FileReader();r.onload=function(ev){resizePhoto(ev.target.result,256,function(d){if(!edit)return;edit.photo=d;edit.manual=true;renderImg()})};r.readAsDataURL(f);e.target.value=''});
+byId('edCancel').addEventListener('click',closeEditor);byId('openAdd').addEventListener('click',function(){lePending=null;openEditor(null)});
 byId('edSave').addEventListener('click',function(){var e=edit;if(!e)return;var label=e.label.trim();if(!label){toast('Écris le mot');byId('edLabel').focus();return}
  var isNew=!e.id,c=isNew?{id:idCounter++}:cardById(e.id);if(!c){closeEditor();return}
  if(!e.locked){var t=e.type,oldT=e.orig?typeOf(e.orig):null;
-  if(oldT!==t)['drink','art','inf','det','g','pl','follow','req','refl','see','adv','f','m'].forEach(function(k){delete c[k]});
-  c.kind=(t==='drink')?'food':t;
-  if(t==='drink'){c.drink=true;c.art='part'}else if(t==='food'){delete c.drink;c.art=e.art}else if(t==='thing'&&oldT!=='thing'){c.art='def'}
-  if(['food','drink','thing','place','body','person'].indexOf(t)>-1)c.g=e.g;
-  if(['food','drink','thing','place','body'].indexOf(t)>-1){if(e.pl)c.pl=true;else delete c.pl}
-  if(t==='verb')c.inf=(e.inf.trim()||label).toLowerCase();
-  if(t==='person')c.det=e.det;}
+  if(oldT!==t)['drink','art','inf','det','g','pl','follow','req','refl','see','adv','f','m','mv','mp','fp','pos','cat','swatch','glyph','inv','onlySee','nosee','noadj'].forEach(function(k){delete c[k]});
+  c.kind=kindOfType(t);
+  if(t==='drink'){c.drink=true;c.art='part'}else if(t==='food'){delete c.drink;c.art=e.art}else if((t==='thing'||t==='seen')&&oldT!=='thing'&&oldT!=='seen')c.art='def';
+  if(t==='seen'){c.onlySee=true;c.art='def'}else if(t==='thing')delete c.onlySee;
+  if(['food','drink','thing','seen','place','body','person'].indexOf(t)>-1)c.g=e.g;
+  if(['food','drink','thing','seen','place','body'].indexOf(t)>-1){if(e.pl)c.pl=true;else delete c.pl}
+  if(t==='verb')c.inf=(e.inf.trim()||label).toLowerCase();if(t==='person')c.det=e.det;
+  if(t==='adj'){c.m=label.toLowerCase();c.f=(e.af.trim()||feminize(c.m)).toLowerCase();c.pos=e.apos;c.cat=e.acat}}
  c.label=label;c.pic=e.pic||null;c.photo=e.photo||null;if(e.q)c.q=e.q;else if(isNew||c.q===undefined)delete c.q;
- if(isNew){state.cards.push(c);attachToPending(c)}
- if(c.id<1000)state.edits[c.id]=clone(c);
- saveState();closeEditor();renderKindFilter();renderCardsList();renderQuick();resetFlow();toast(isNew?'Mot ajouté':'Modifications enregistrées');});
-
+ if(isNew){state.cards.push(c);attachToPending(c)}if(c.id<1000)state.edits[c.id]=clone(c);
+ saveState();closeEditor();renderKindFilter();renderCardsList();renderQuick();renderIntentList();resetFlow();toast(isNew?'Mot ajouté':'Modifications enregistrées')});
 
 /* ---------- Que veux-tu dire : gestion ---------- */
-var iedit=null,leIntent=null,lePending=null,leKind='all',INT_COLORS=[['vert','Vert'],['bleu','Bleu'],['rouge','Rouge'],['jaune','Jaune'],['violet','Violet'],['orange','Orange']];
-var INT_PRESETS=[['voudrais','Je voudrais','want','vouloir'],['préfère','Je préfère','like','préférer'],['adore',"J'adore",'like','adorer'],['déteste','Je déteste','like','détester'],['ai peur',"J'ai peur de",'need','peur'],['ai besoin',"J'ai besoin de",'need','avoir besoin'],['ai envie',"J'ai envie de",'envie','avoir envie']];
-var INT_STYLES=[['want','Une demande',"du pain, jouer, voir Maman"],['like','Un goût',"le pain, jouer, Maman"],['need','Un besoin avec « de »',"de l'eau, de jouer"]];
+var iedit=null,leIntent=null,leKind='all',INT_COLORS=[['vert','Vert'],['bleu','Bleu'],['rouge','Rouge'],['jaune','Jaune'],['violet','Violet'],['orange','Orange']];
+var INT_PRESETS=[['voudrais','Je voudrais','want','vouloir'],['préfère','Je préfère','like','préférer'],['adore',"J'adore",'like','adorer'],['déteste','Je déteste','like','détester'],['ai peur',"J'ai peur de",'need','peur'],['regarde','Je regarde','see','regarder'],['ai besoin',"J'ai besoin de",'need','avoir besoin'],['ai envie',"J'ai envie de",'envie','avoir envie']];
+var INT_STYLES=[['want','Une demande',"du pain, jouer, voir Maman"],['like','Un goût',"le pain, jouer, Maman"],['need','Un besoin avec « de »',"de l'eau, de jouer"],['see','Un commentaire',"un chat, la plage"]];
 function saveIntents(){saveState();renderIntentList();renderFlow()}
 function intentById(id){return allIntents().filter(function(i){return i.id===id})[0]}
-function setIntentList(it,ids){if(it.custom){state.customIntents.forEach(function(x){if(x.id===it.id)x.list=ids})}else{var e=state.intentEdits[it.id]||{};e.list=ids;state.intentEdits[it.id]=e}}
-function setIntentHidden(it,h){if(it.custom){state.customIntents.forEach(function(x){if(x.id===it.id)x.hidden=h})}else{var e=state.intentEdits[it.id]||{};e.hidden=h;state.intentEdits[it.id]=e}}
+function setIntentField(it,k,v){if(it.custom){state.customIntents.forEach(function(x){if(x.id===it.id)x[k]=v})}else{var e=state.intentEdits[it.id]||{};e[k]=v;state.intentEdits[it.id]=e}}
 function renderIntentList(){var list=byId('intentsList');if(!list)return;list.innerHTML='';var all=allIntents();
  all.forEach(function(it,idx){var row=document.createElement('div');row.className='card-list-item int-row'+(it.hidden?' off':'');var n=intentListCards(it).length;
-  row.innerHTML='<span class="ci2">'+intentVis(it)+'</span><span class="meta"><span class="n">'+esc(intentMenu(it))+'</span><span class="c">'+esc(it.hidden?"Masqué pour l'enfant":(n+' image'+(n>1?'s':'')+' à l\'étape 3'))+'</span></span>'+
-   '<span class="acts"><button class="btn btn-primary small" data-a="list">Images</button><button class="btn btn-ghost small" data-a="up" aria-label="Monter">'+ic('up',18)+'</button><button class="btn btn-ghost small" data-a="down" aria-label="Descendre">'+ic('down',18)+'</button>'+
-   '<button class="btn btn-ghost small" data-a="hide">'+(it.hidden?'Afficher':'Masquer')+'</button><button class="btn btn-ghost small" data-a="edit">Modifier</button>'+(it.custom?'<button class="btn btn-ghost small" data-a="del" aria-label="Supprimer">'+ic('trash',18)+'</button>':'')+'</span>';
+  row.innerHTML='<span class="ci2">'+intentVis(it)+'</span><span class="meta"><span class="n">'+esc(intentMenu(it))+'</span><span class="c">'+esc((it.hidden?"Masqué · ":"")+'Niveau '+(it.lvl||1)+' · '+n+' image'+(n>1?'s':''))+'</span></span>'+
+   '<span class="acts"><button class="btn btn-primary small" data-a="list">Images</button><button class="btn btn-ghost small" data-a="up" aria-label="Monter">'+ic('up',18)+'</button><button class="btn btn-ghost small" data-a="down" aria-label="Descendre">'+ic('down',18)+'</button><button class="btn btn-ghost small" data-a="hide">'+(it.hidden?'Afficher':'Masquer')+'</button><button class="btn btn-ghost small" data-a="edit">Modifier</button>'+(it.custom?'<button class="btn btn-ghost small" data-a="del" aria-label="Supprimer">'+ic('trash',18)+'</button>':'')+'</span>';
   row.addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-a]'):null;if(!b)return;var a=b.getAttribute('data-a');
    if(a==='list')openListEditor(it);
    else if(a==='up'||a==='down'){var ids=all.map(function(x){return x.id}),k=a==='up'?idx-1:idx+1;if(k<0||k>=ids.length)return;var t=ids[idx];ids[idx]=ids[k];ids[k]=t;state.intentOrder=ids;saveIntents()}
-   else if(a==='hide'){if(!it.hidden&&visibleIntents().length<=1){toast('Garde au moins une image visible');return}setIntentHidden(it,!it.hidden);saveIntents()}
+   else if(a==='hide'){setIntentField(it,'hidden',!it.hidden);saveIntents()}
    else if(a==='edit')openIntentEditor(it);
    else if(a==='del'){if(typeof confirm==='function'&&!confirm('Supprimer « '+intentMenu(it)+' » ?'))return;state.customIntents=state.customIntents.filter(function(x){return x.id!==it.id});state.intentOrder=state.intentOrder.filter(function(x){return x!==it.id});if(flow.intent===it.id)resetFlow();saveIntents()}});
-  list.appendChild(row)});}
-
-/* liste des images d'une phrase (étape 3) */
-function openListEditor(it){leIntent=it.id;leKind='all';byId('leTitle').textContent='Images de « '+intentMenu(it)+' »';byId('listEditor').style.display='block';byId('lePicker').style.display='none';byId('leSearch').value='';renderLE();
- var el=byId('listEditor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
+  list.appendChild(row)})}
+function openListEditor(it){leIntent=it.id;leKind='all';byId('leTitle').textContent='Images de « '+intentMenu(it)+' »';byId('listEditor').style.display='block';byId('lePicker').style.display='none';byId('leSearch').value='';renderLE();var el=byId('listEditor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function closeListEditor(){leIntent=null;byId('listEditor').style.display='none'}
 function renderLE(){var it=intentById(leIntent);if(!it)return;var wrap=byId('leItems');wrap.innerHTML='';var cards=intentListCards(it);
  if(!cards.length)wrap.innerHTML='<p class="hint">Aucune image pour l\'instant. Ajoutes-en avec les boutons ci-dessous.</p>';
@@ -859,60 +741,44 @@ function renderLE(){var it=intentById(leIntent);if(!it)return;var wrap=byId('leI
   row.innerHTML='<span class="ci2">'+visual(c)+'</span><span class="meta">'+esc(c.label)+'<small>'+esc(typeLabel(typeOf(c)))+'</small></span><button class="btn btn-ghost small" data-a="up" aria-label="Monter">'+ic('up',18)+'</button><button class="btn btn-ghost small" data-a="down" aria-label="Descendre">'+ic('down',18)+'</button><button class="btn btn-ghost small" data-a="rm">Retirer</button>';
   row.addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-a]'):null;if(!b)return;var a=b.getAttribute('data-a'),ids=cards.map(function(x){return x.id});
    if(a==='rm')ids.splice(idx,1);else{var k=a==='up'?idx-1:idx+1;if(k<0||k>=ids.length)return;var t=ids[idx];ids[idx]=ids[k];ids[k]=t}
-   setIntentList(it,ids);saveState();renderLE();renderIntentList();renderFlow()});
-  wrap.appendChild(row)});
+   setIntentField(it,'list',ids);saveState();renderLE();renderIntentList();renderFlow()});wrap.appendChild(row)});
  if(byId('lePicker').style.display!=='none')renderPicker()}
-function renderPicker(){var it=intentById(leIntent);if(!it)return;var ak=allowedKinds(it.mode||it.id),have=(it.list||[]),q=norm(byId('leSearch').value.trim()),kw=byId('leKinds');kw.innerHTML='';
+function renderPicker(){var it=intentById(leIntent);if(!it)return;var mode=it.mode||it.id,ak=allowedKinds(mode),have=(it.list||[]),q=norm(byId('leSearch').value.trim()),kw=byId('leKinds');kw.innerHTML='';
  function chip(k,label){var b=document.createElement('button');b.className='chip'+(leKind===k?' on':'');b.textContent=label;b.addEventListener('click',function(){leKind=k;renderPicker()});kw.appendChild(b)}
- chip('all','Tous');ak.forEach(function(k){chip(k,typeLabel(k))});
- var out=byId('leCandidates');out.innerHTML='';
- var cands=state.cards.filter(function(c){return ak.indexOf(c.kind)>-1&&have.indexOf(c.id)<0&&(leKind==='all'||c.kind===leKind)&&(!q||norm(c.label).indexOf(q)>-1)}).slice(0,80);
+ chip('all','Tous');ak.forEach(function(k){chip(k,typeLabel(k))});var out=byId('leCandidates');out.innerHTML='';
+ var cands=state.cards.filter(function(c){return ak.indexOf(c.kind)>-1&&usable(c,mode)&&have.indexOf(c.id)<0&&(leKind==='all'||c.kind===leKind)&&(!q||norm(c.label).indexOf(q)>-1)}).slice(0,80);
  if(!cands.length)out.innerHTML='<p class="hint">Aucun mot à ajouter. Utilise « Créer un nouveau mot ».</p>';
- cands.forEach(function(c){var row=document.createElement('div');row.className='le-row';
-  row.innerHTML='<span class="ci2">'+visual(c)+'</span><span class="meta">'+esc(c.label)+'<small>'+esc(typeLabel(typeOf(c)))+'</small></span><button class="btn btn-primary small">Ajouter</button>';
-  row.querySelector('button').addEventListener('click',function(){var cur=intentById(leIntent);var ids=(cur.list||[]).slice();ids.push(c.id);setIntentList(cur,ids);saveState();renderLE();renderIntentList();renderFlow();toast(c.label+' ajouté')});
-  out.appendChild(row)})}
+ cands.forEach(function(c){var row=document.createElement('div');row.className='le-row';row.innerHTML='<span class="ci2">'+visual(c)+'</span><span class="meta">'+esc(c.label)+'<small>'+esc(typeLabel(typeOf(c)))+'</small></span><button class="btn btn-primary small">Ajouter</button>';
+  row.querySelector('button').addEventListener('click',function(){var cur=intentById(leIntent),ids=(cur.list||[]).slice();ids.push(c.id);setIntentField(cur,'list',ids);saveState();renderLE();renderIntentList();renderFlow();toast(c.label+' ajouté')});out.appendChild(row)})}
 byId('leAddExisting').addEventListener('click',function(){var p=byId('lePicker');p.style.display=p.style.display==='none'?'block':'none';if(p.style.display==='block')renderPicker()});
-byId('leSearch').addEventListener('input',function(){renderPicker()});
-byId('leDone').addEventListener('click',closeListEditor);
-byId('leCreate').addEventListener('click',function(){var it=intentById(leIntent);if(!it)return;lePending=leIntent;openEditor(null);byId('edTitle').textContent='Nouveau mot pour « '+intentMenu(it)+' »'});
-function attachToPending(c){if(!lePending)return;var it=intentById(lePending);lePending=null;if(!it)return;
- if(allowedKinds(it.mode||it.id).indexOf(c.kind)<0){toast("Ce type de mot ne va pas avec « "+intentMenu(it)+" »");return}
- var ids=(it.list||[]).slice();ids.push(c.id);setIntentList(it,ids);renderLE();renderIntentList()}
-
-/* édition d'un « Que veux-tu dire » */
+byId('leSearch').addEventListener('input',renderPicker);byId('leDone').addEventListener('click',closeListEditor);
+byId('leCreate').addEventListener('click',function(){var it=intentById(leIntent);if(!it)return;openEditor(null);lePending=leIntent;byId('edTitle').textContent='Nouveau mot pour « '+intentMenu(it)+' »'});
+function attachToPending(c){if(!lePending)return;var it=intentById(lePending);lePending=null;if(!it)return;var mode=it.mode||it.id;
+ if(allowedKinds(mode).indexOf(c.kind)<0||!usable(c,mode)){toast("Ce type de mot ne va pas avec « "+intentMenu(it)+" »");return}
+ var ids=(it.list||[]).slice();ids.push(c.id);setIntentField(it,'list',ids);renderLE();renderIntentList()}
 function segHTML(name,opts,cur){var h='';opts.forEach(function(o){h+='<button type="button" data-k="'+name+'" data-v="'+o[0]+'" class="'+(String(cur)===String(o[0])?'on':'')+'">'+o[1]+'</button>'});return h}
 function openIntentEditor(it){var custom=!it||it.custom;
- iedit={id:it?it.id:null,builtin:!!it&&!it.custom,verb:it&&it.custom?(it.vtext||''):'',style:it&&it.custom?(it.mode==='envie'?'need':it.mode):'want',neg:it?!!it.neg:false,color:it?it.color:'vert',sub:it?(it.sub||''):'',q:it?(it.q||''):'',pic:it?(it.pic||null):null,photo:it?(it.photo||null):null,pics:[],pi:0,manual:!!it&&!!(it.pic||it.photo),searchQ:'',custom:custom,orig:it||null,resetImg:false};
- byId('inTitle').textContent=it?'Modifier « '+intentMenu(it)+' »':'Nouveau « Que veux-tu dire ? »';
- byId('inCustom').style.display=custom?'block':'none';byId('inVerb').value=iedit.verb;byId('inSub').value=iedit.sub;byId('inQ').value='';
- byId('intEditor').style.display='block';renderIntentOpts();renderIntentImg();updateIntentPreview();runIntentSearch();
- var el=byId('intEditor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
+ iedit={id:it?it.id:null,builtin:!!it&&!it.custom,verb:it&&it.custom?(it.vtext||''):'',style:it&&it.custom?(it.mode==='envie'?'need':it.mode):'want',neg:it?!!it.neg:false,color:it?it.color:'vert',lvl:it?(it.lvl||1):2,sub:it?(it.sub||''):'',q:it?(it.q||''):'',pic:it?(it.pic||null):null,photo:it?(it.photo||null):null,pics:[],pi:0,manual:!!it&&!!(it.pic||it.photo),searchQ:'',custom:custom,orig:it||null,resetImg:false};
+ byId('inTitle').textContent=it?'Modifier « '+intentMenu(it)+' »':'Nouveau « Que veux-tu dire ? »';byId('inCustom').style.display=custom?'block':'none';byId('inVerb').value=iedit.verb;byId('inSub').value=iedit.sub;byId('inQ').value='';
+ byId('intEditor').style.display='block';renderIntentOpts();renderIntentImg();updateIntentPreview();runIntentSearch();var el=byId('intEditor');if(el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function closeIntentEditor(){iedit=null;byId('intEditor').style.display='none'}
 function renderIntentOpts(){if(!iedit)return;
- byId('inPresets').innerHTML=INT_PRESETS.map(function(p){return '<button type="button" data-k="preset" data-v="'+p[0]+'" class="'+(iedit.verb===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('');
- byId('inStyle').innerHTML=INT_STYLES.map(function(p){return '<button type="button" data-k="style" data-v="'+p[0]+'" class="'+(iedit.style===p[0]?'on':'')+'">'+p[1]+'<br><small style="font-weight:500">'+p[2]+'</small></button>'}).join('');
- byId('inNeg').innerHTML=segHTML('neg',[['0','Non'],['1','Oui : « ne … pas »']],iedit.neg?'1':'0');
- byId('inColor').innerHTML=segHTML('color',INT_COLORS,iedit.color);}
+ byId('inPresets').innerHTML=INT_PRESETS.map(function(p){return'<button type="button" data-k="preset" data-v="'+p[0]+'" class="'+(iedit.verb===p[0]?'on':'')+'">'+p[1]+'</button>'}).join('');
+ byId('inStyle').innerHTML=INT_STYLES.map(function(p){return'<button type="button" data-k="style" data-v="'+p[0]+'" class="'+(iedit.style===p[0]?'on':'')+'">'+p[1]+'<br><small style="font-weight:500">'+p[2]+'</small></button>'}).join('');
+ byId('inNeg').innerHTML=segHTML('neg',[['0','Non'],['1','Oui : « ne … pas »']],iedit.neg?'1':'0');byId('inColor').innerHTML=segHTML('color',INT_COLORS,iedit.color);byId('inLvl').innerHTML=segHTML('lvl',[['1','Niveau 1'],['2','Niveau 2'],['3','Niveau 3']],iedit.lvl)}
 function intentFromEditor(){var e=iedit,mode=e.style;if(mode==='need'&&/envie/.test(e.verb))mode='envie';
- return {id:e.id||'tmp',custom:true,mode:mode,vtext:(e.verb||'').trim().toLowerCase(),neg:e.neg,de:(mode==='need'||mode==='envie')?1:0,color:e.color,sub:e.sub,q:e.q,pic:e.pic,photo:e.photo}}
-function updateIntentPreview(){if(!iedit)return;var out;
+ return{id:e.id||'tmp',custom:true,mode:mode,vtext:(e.verb||'').trim().toLowerCase(),neg:e.neg,de:(mode==='need'||mode==='envie')?1:0,color:e.color,lvl:e.lvl,sub:e.sub,q:e.q,pic:e.pic,photo:e.photo}}
+function updateIntentPreview(){if(!iedit)return;
  if(iedit.custom){if(!iedit.verb.trim()){byId('inPreview').textContent='Choisis ou écris le début de la phrase.';return}
-  var it=intentFromEditor(),g=activeProfile().gender||'m',food=cardById(1),act=state.cards.filter(function(c){return c.kind==='verb'})[0];
-  out=[];if(food)out.push(jeSentence(it,food,g));if(act)out.push(jeSentence(it,act,g));
-  byId('inPreview').textContent='Exemple : '+out.map(cap).join('  •  ')}
- else byId('inPreview').textContent='Exemple : '+intentMenu(iedit.orig)+' …'}
+  var it=intentFromEditor(),g=activeProfile().gender||'m',sample=cardById(it.mode==='see'?28:1),act=state.cards.filter(function(c){return c.kind==='verb'})[0],out=[];if(sample)out.push(jeSentence(it,sample,g));if(act&&it.mode!=='see')out.push(jeSentence(it,act,g));
+  byId('inPreview').textContent='Exemple : '+out.map(cap).join('  •  ')}else byId('inPreview').textContent='Exemple : '+intentMenu(iedit.orig)+' …'}
 byId('intEditor').addEventListener('click',function(e){var b=e.target.closest?e.target.closest('button[data-k]'):null;if(!b||!iedit)return;var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');
  if(k==='preset'){var p=INT_PRESETS.filter(function(x){return x[0]===v})[0];iedit.verb=p[0];iedit.style=p[2]==='envie'?'need':p[2];byId('inVerb').value=p[0];if(!iedit.manual){iedit.q=p[3];byId('inQ').value=''}runIntentSearch()}
- else if(k==='style')iedit.style=v;else if(k==='neg')iedit.neg=(v==='1');else if(k==='color'){iedit.color=v;renderIntentImg()}
- renderIntentOpts();updateIntentPreview();});
-byId('inVerb').addEventListener('input',function(e){if(!iedit)return;iedit.verb=e.target.value;renderIntentOpts();updateIntentPreview()});
-byId('inSub').addEventListener('input',function(e){if(iedit)iedit.sub=e.target.value});
-function runIntentSearch(){if(!iedit)return;var q=(byId('inQ').value.trim()||iedit.q||'').toLowerCase();iedit.searchQ=q;
- searchPics(q,function(ids){if(!iedit||iedit.searchQ!==q)return;iedit.pics=ids.slice();if(iedit.pic&&iedit.pics.indexOf(iedit.pic)<0)iedit.pics.unshift(iedit.pic);
-  if(!iedit.manual&&!iedit.photo&&ids.length&&!iedit.pic&&iedit.custom)iedit.pic=ids[0];iedit.pi=Math.max(0,iedit.pics.indexOf(iedit.pic));renderIntentImg()})}
-function renderIntentImg(){if(!iedit)return;var url=iedit.photo||(iedit.pic?API+iedit.pic:null);
- var fake=iedit.orig?Object.assign({},iedit.orig,{color:iedit.color}):{id:'custom',color:iedit.color};
+ else if(k==='style')iedit.style=v;else if(k==='neg')iedit.neg=(v==='1');else if(k==='lvl')iedit.lvl=parseInt(v,10);else if(k==='color'){iedit.color=v;renderIntentImg()}
+ renderIntentOpts();updateIntentPreview()});
+byId('inVerb').addEventListener('input',function(e){if(!iedit)return;iedit.verb=e.target.value;renderIntentOpts();updateIntentPreview()});byId('inSub').addEventListener('input',function(e){if(iedit)iedit.sub=e.target.value});
+function runIntentSearch(){if(!iedit)return;var q=(byId('inQ').value.trim()||iedit.q||'').toLowerCase();iedit.searchQ=q;searchPics(q,function(ids){if(!iedit||iedit.searchQ!==q)return;iedit.pics=ids.slice();if(iedit.pic&&iedit.pics.indexOf(iedit.pic)<0)iedit.pics.unshift(iedit.pic);if(!iedit.manual&&!iedit.photo&&ids.length&&!iedit.pic&&iedit.custom)iedit.pic=ids[0];iedit.pi=Math.max(0,iedit.pics.indexOf(iedit.pic));renderIntentImg()})}
+function renderIntentImg(){if(!iedit)return;var url=iedit.photo||(iedit.pic?API+iedit.pic:null),fake=iedit.orig?Object.assign({},iedit.orig,{color:iedit.color}):{id:'custom',color:iedit.color};
  byId('inImg').innerHTML=url?imgHTML(url,iedit.verb||'?'):intentSvg(fake);
  byId('inHint').textContent=iedit.photo?'Photo personnelle.':iedit.pic?('Image '+(iedit.pi+1)+' sur '+iedit.pics.length+" : utilise les flèches pour en voir d'autres."):"Dessin de l'application. Tape un mot (ex : besoin) puis « Chercher » pour voir des pictogrammes, ou utilise ta photo."}
 function stepIntentPic(d){if(!iedit||!iedit.pics.length)return;iedit.photo=null;iedit.manual=true;iedit.resetImg=false;iedit.pi=(iedit.pi+d+iedit.pics.length)%iedit.pics.length;iedit.pic=iedit.pics[iedit.pi];renderIntentImg()}
@@ -920,32 +786,26 @@ byId('inPrev').addEventListener('click',function(){stepIntentPic(-1)});byId('inN
 byId('inSearch').addEventListener('click',function(){if(!iedit)return;var v=byId('inQ').value.trim();if(!v){toast('Écris un mot à chercher');return}iedit.q=v.toLowerCase();iedit.manual=true;iedit.photo=null;iedit.resetImg=false;iedit.pic=null;iedit.pics=[];searchPics(iedit.q,function(ids){if(!iedit)return;iedit.pics=ids.slice();if(ids.length){iedit.pic=ids[0];iedit.pi=0}else toast('Aucun pictogramme trouvé');renderIntentImg()})});
 byId('inResetImg').addEventListener('click',function(){if(!iedit)return;iedit.pic=null;iedit.photo=null;iedit.manual=false;iedit.resetImg=true;renderIntentImg()});
 byId('inPhoto').addEventListener('change',function(e){var f=e.target.files[0];if(!f||!iedit)return;var r=new FileReader();r.onload=function(ev){resizePhoto(ev.target.result,256,function(d){if(!iedit)return;iedit.photo=d;iedit.manual=true;iedit.resetImg=false;renderIntentImg()})};r.readAsDataURL(f);e.target.value=''});
-byId('inCancel').addEventListener('click',closeIntentEditor);
-byId('openAddIntent').addEventListener('click',function(){openIntentEditor(null)});
+byId('inCancel').addEventListener('click',closeIntentEditor);byId('openAddIntent').addEventListener('click',function(){openIntentEditor(null)});
 byId('inSave').addEventListener('click',function(){var e=iedit;if(!e)return;
- if(e.custom){if(!e.verb.trim()){toast('Choisis le début de la phrase');return}
-  var it=intentFromEditor();it.id=e.id||('c'+(idCounter++));it.custom=true;it.hidden=e.orig?!!e.orig.hidden:false;it.list=e.orig&&e.orig.list?e.orig.list:[];
-  if(e.id){state.customIntents=state.customIntents.map(function(x){return x.id===e.id?it:x})}else state.customIntents.push(it)}
- else{var ed=state.intentEdits[e.id]||{};ed.color=e.color;ed.sub=e.sub;
-  if(e.resetImg){delete ed.pic;delete ed.photo;delete ed.q}
-  else if((e.pic||null)!==(e.orig.pic||null)||(e.photo||null)!==(e.orig.photo||null)){ed.pic=e.photo?null:e.pic;ed.photo=e.photo||null;if(e.q)ed.q=e.q}
-  state.intentEdits[e.id]=ed}
- saveState();closeIntentEditor();renderIntentList();renderFlow();toast('Enregistré');});
+ if(e.custom){if(!e.verb.trim()){toast('Choisis le début de la phrase');return}var it=intentFromEditor();it.id=e.id||('c'+(idCounter++));it.custom=true;it.hidden=e.orig?!!e.orig.hidden:false;it.list=e.orig&&e.orig.list?e.orig.list:[];
+  if(e.id)state.customIntents=state.customIntents.map(function(x){return x.id===e.id?it:x});else state.customIntents.push(it)}
+ else{var ed=state.intentEdits[e.id]||{};ed.color=e.color;ed.sub=e.sub;ed.lvl=e.lvl;if(e.resetImg){delete ed.pic;delete ed.photo;delete ed.q}else if((e.pic||null)!==(e.orig.pic||null)||(e.photo||null)!==(e.orig.photo||null)){ed.pic=e.photo?null:e.pic;ed.photo=e.photo||null;if(e.q)ed.q=e.q}state.intentEdits[e.id]=ed}
+ saveState();closeIntentEditor();renderIntentList();renderFlow();toast('Enregistré')});
 byId('resetIntents').addEventListener('click',function(){if(typeof confirm==='function'&&!confirm("Remettre toutes les images de l'étape 2 comme au départ ? Les créations seront supprimées."))return;state.intentEdits={};state.customIntents=[];state.intentOrder=[];saveState();closeIntentEditor();closeListEditor();renderIntentList();resetFlow();toast('Remis comme au départ')});
-byId('hintSpeak').addEventListener('click',function(){speakText(hintFor(stage()))});
-byId('repairPics').addEventListener('click',function(){picCache={};picFailed={};picPending={};searchCache={};lsSet(PICKEY,'{}');refreshAll();toast('Recherche des images relancée')});
-function renderSettings(){renderProfileList();renderIntentList();renderKindFilter();renderCardsList();renderVoiceList();}
+
+/* ---------- réglages divers ---------- */
+function renderSettings(){renderProfileList();renderIntentList();renderKindFilter();renderCardsList();renderVoiceList();byId('verTag').textContent='Je Parle Avec Toi · version '+APP_VERSION}
 byId('enableKidMode').addEventListener('click',function(){state.kidMode=true;saveState();goScreen('board');toast('Mode enfant activé')});
 $$('.pin-d').forEach(function(inp,i){inp.addEventListener('input',function(){if(inp.value&&$$('.pin-d')[i+1])$$('.pin-d')[i+1].focus()})});
-byId('unlockBtn').addEventListener('click',function(){var code=$$('.pin-d').map(function(i){return i.value}).join('');
- if(code==='1234'){state.kidMode=false;saveState();byId('lockBanner').classList.add('hidden');$$('.pin-d').forEach(function(i){i.value=''});goScreen('settings');toast('Déverrouillé')}
- else{toast('Code incorrect');$$('.pin-d').forEach(function(i){i.value=''});$$('.pin-d')[0].focus()}});
+byId('unlockBtn').addEventListener('click',function(){var code=$$('.pin-d').map(function(i){return i.value}).join('');if(code==='1234'){state.kidMode=false;saveState();byId('lockBanner').classList.add('hidden');$$('.pin-d').forEach(function(i){i.value=''});goScreen('settings');toast('Déverrouillé')}else{toast('Code incorrect');$$('.pin-d').forEach(function(i){i.value=''});$$('.pin-d')[0].focus()}});
 function setTB(){var t=byId('topbar');if(t)document.documentElement.style.setProperty('--tb',t.offsetHeight+'px')}
 $$('[data-ic]').forEach(function(el){el.innerHTML=ic(el.getAttribute('data-ic'),el.closest&&el.closest('.lock-icon')?48:22)});
-loadState();applyTheme();byId('voiceRate').value=state.voiceRate;byId('voicePitch').value=state.voicePitch;renderVoiceList();if('speechSynthesis' in window&&speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',renderVoiceList);renderQuick();renderProfiles();renderFlow();setTB();
+loadState();applyTheme();byId('voiceRate').value=state.voiceRate;byId('voicePitch').value=state.voicePitch;renderVoiceList();
+if('speechSynthesis' in window&&speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',renderVoiceList);
+renderQuick();renderProfiles();renderFlow();setTB();
 window.addEventListener('resize',setTB);window.addEventListener('orientationchange',setTB);window.addEventListener('load',setTB);
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./service-worker.js').catch(function(){})})}
-
 
 })();
 </script>
