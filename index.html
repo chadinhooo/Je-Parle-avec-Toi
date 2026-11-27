@@ -335,6 +335,41 @@ body.modeling .sentence-bar{background:#fff8e1}
 @keyframes shown{0%{transform:scale(1)}40%{transform:scale(1.07);box-shadow:0 0 0 6px #f5a400}100%{transform:scale(1)}}
 .done-box .btn{justify-content:center}
 .le-row .meta small{display:block}
+
+/* ===== v9 : écran sans défilement, en-tête compact, réglages en onglets ===== */
+[hidden]{display:none!important}
+.topbar{padding:.4rem 1rem;padding-top:calc(.4rem + env(safe-area-inset-top))}
+.topbar h1{font-size:1rem}.logo{width:34px;height:34px;touch-action:none}
+.topbar .icon-btn{width:42px;height:42px}
+.sentence-bar{padding:.4rem 1rem}
+.sentence-text{font-size:1.4rem;min-height:1.9rem}
+.sentence-row .btn{min-height:44px;padding:.55rem 1rem}
+.quick{padding:.35rem 1rem}
+.quick button{min-height:40px}
+.flow-head{padding:.25rem 1rem 0;gap:.5rem}
+.flow-title{font-size:1.1rem}
+.flow-head .icon-btn{width:42px;height:42px}
+#backBtn{min-height:42px;padding:.45rem .8rem}
+.flow-hint{font-size:.9rem}
+body.nonreader #flowHint{display:none}
+.cat-tabs{padding:.45rem 1rem}
+.cat-tab{min-height:42px;padding:.4rem .8rem}
+main{padding-top:.4rem}
+.board-grid.fit{grid-template-columns:repeat(var(--cols),minmax(0,1fr))!important;grid-auto-rows:var(--rowh);padding-top:0}
+.board-grid.fit .pic-card{min-height:0!important;height:var(--rowh);padding:5px 4px;gap:3px;justify-content:center;border-radius:14px}
+.board-grid.fit .pic-card .pic-img-wrap{width:var(--img)!important;height:var(--img)!important;flex-shrink:0}
+.board-grid.fit .pic-label{font-size:var(--fs);line-height:1.15;overflow:hidden;max-width:100%}
+.board-grid.fit .pic-sub{display:none}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:10px}
+.pager button{min-height:52px;min-width:110px;font-size:1.05rem;justify-content:center}
+.pager .pg{font-weight:700;color:var(--color-text-muted)}
+.pager button:disabled{opacity:.35}
+.set-tabs{display:flex;gap:.5rem;overflow-x:auto;margin:0 0 1rem;position:sticky;top:var(--tb,56px);background:var(--color-bg);padding:.5rem 0;z-index:20;scrollbar-width:none}
+.set-tabs::-webkit-scrollbar{display:none}
+.set-tabs .chip{font-size:.95rem}
+.model-banner{display:none;align-items:center;gap:.8rem}
+body.modeling .model-banner{display:flex}
+.model-banner span{flex:1}
 </style>
 </head>
 <body>
@@ -342,7 +377,7 @@ body.modeling .sentence-bar{background:#fff8e1}
 <header class="topbar" id="topbar">
 <svg class="logo" viewBox="0 0 48 48" fill="none" aria-label="Logo Je Parle Avec Toi"><circle cx="24" cy="24" r="22" fill="var(--color-primary-highlight)"/><path d="M14 20a10 10 0 0 1 20 0v4a10 10 0 0 1-6 9l-1 3-2-3a10 10 0 0 1-11-9z" fill="var(--color-primary)"/><circle cx="19" cy="21" r="1.8" fill="var(--color-surface)"/><circle cx="29" cy="21" r="1.8" fill="var(--color-surface)"/></svg>
 <h1>Je Parle Avec Toi</h1><div class="topbar-spacer"></div>
-<button class="icon-btn" id="modelBtn" aria-label="Mode montrer"><i class="ic" data-ic="eye"></i></button><button class="icon-btn" id="themeToggle" aria-label="Changer de thème"><i class="ic" id="themeIcon"></i></button>
+<button class="icon-btn" id="themeToggle" aria-label="Changer de thème"><i class="ic" id="themeIcon"></i></button>
 </header>
 <section class="screen active" id="screen-board">
 <div class="sentence-bar">
@@ -358,7 +393,7 @@ body.modeling .sentence-bar{background:#fff8e1}
 <div class="flow-head"><button class="btn btn-ghost" id="backBtn" style="display:none" aria-label="Retour"><i class="ic" data-ic="back"></i>Retour</button><div class="flow-title" id="flowTitle"></div><button class="icon-btn" id="hintSpeak" aria-label="Écouter la consigne"><i class="ic" data-ic="speaker"></i></button></div>
 <p class="flow-hint" id="flowHint"></p>
 <div class="cat-tabs" id="catTabs" role="tablist"></div>
-<main><div class="board-grid" id="boardGrid"></div></main>
+<main><div class="board-grid" id="boardGrid"></div><div class="pager" id="pager" hidden></div></main>
 </section>
 <section class="screen" id="screen-day"><div class="day-screen"><div class="day-head"><h2 id="dayTitle">Ma journée</h2><button class="btn btn-primary" id="daySay"></button></div>
 <div id="dayList" class="day-list"></div>
@@ -367,15 +402,15 @@ body.modeling .sentence-bar{background:#fff8e1}
 <section class="screen" id="screen-write"><div class="write-screen"><textarea id="wText" rows="3" autocapitalize="sentences"></textarea><div class="chips" id="wSugg"></div>
 <div class="row-flex"><button class="btn btn-primary" id="wSay"></button><button class="btn btn-ghost" id="wFav"></button><button class="btn btn-ghost" id="wClear"></button></div></div></section>
 <section class="screen" id="screen-profiles"><div class="profile-screen"><h2>Qui utilise l'application ?</h2><p class="sub">Touche ton profil pour commencer.</p><div class="profile-grid" id="profileGrid"></div></div></section>
-<section class="screen" id="screen-settings"><div class="settings-screen"><h2>Personnalisation</h2>
-<div class="settings-section" id="secBackup"><h3>Sauvegarde</h3><p class="hint" style="margin-bottom:.8rem">Enregistre tout (profils, mots, photos, voix, phrases, journée) dans un fichier. Garde-le en lieu sûr : il permet de tout récupérer sur un autre téléphone. En cas de restauration, l'ancienne version est gardée de côté.</p>
+<section class="screen" id="screen-settings"><div class="settings-screen"><h2>Personnalisation</h2><div class="set-tabs" id="setTabs" role="tablist"></div>
+<div class="settings-section" id="secBackup" data-tab="save"><h3>Sauvegarde</h3><p class="hint" style="margin-bottom:.8rem">Enregistre tout (profils, mots, photos, voix, phrases, journée) dans un fichier. Garde-le en lieu sûr : il permet de tout récupérer sur un autre téléphone. En cas de restauration, l'ancienne version est gardée de côté.</p>
 <div class="row-flex"><button class="btn btn-primary" id="bkSave">Créer une sauvegarde</button><label class="btn btn-ghost" for="bkFile">Restaurer une sauvegarde</label><input type="file" id="bkFile" accept=".json,application/json" style="display:none"></div><p class="hint" id="bkHint"></p>
 <div class="row-flex" style="margin-top:.8rem"><button class="btn btn-ghost" id="offBtn">Préparer les images pour le hors ligne</button></div><p class="hint" id="offHint"></p></div>
-<div class="settings-section" id="secPhrases"><h3>Mes phrases</h3><p class="hint" id="phrasesFor" style="margin-bottom:.6rem"></p><div id="favList"></div>
+<div class="settings-section" id="secPhrases" data-tab="phrases"><h3>Mes phrases</h3><p class="hint" id="phrasesFor" style="margin-bottom:.6rem"></p><div id="favList"></div>
 <div class="field" style="margin-top:.6rem"><label for="favNew">Ajouter une phrase toute prête</label><div class="row-flex"><input type="text" id="favNew" placeholder="Ex : Je veux mon doudou" style="flex:1;min-width:160px"><button class="btn btn-primary" id="favAdd">Ajouter</button></div></div>
 <h3 style="margin-top:1rem">Dernières phrases dites</h3><div id="histList"></div></div>
 
-<div class="settings-section" id="secIntents"><h3>Étape 2 : « Que veux-tu dire ? »</h3>
+<div class="settings-section" id="secIntents" data-tab="phrases"><h3>Étape 2 : « Que veux-tu dire ? »</h3>
 <p class="hint" style="margin-bottom:.8rem">Ce sont les grandes images de l'étape 2. Pour chacune : choisis les images de l'étape 3 (bouton « Images »), change son dessin, son niveau, masque-la, change l'ordre, ou crées-en de nouvelles.</p>
 <button class="btn btn-primary" id="openAddIntent"><i class="ic" data-ic="plus"></i>Ajouter un « Que veux-tu dire ? »</button>
 <div class="editor" id="listEditor" style="display:none"><h3 id="leTitle">Images</h3>
@@ -404,7 +439,7 @@ body.modeling .sentence-bar{background:#fff8e1}
 <div id="intentsList" style="margin-top:.8rem"></div>
 <button class="btn btn-ghost" id="resetIntents" style="margin-top:.6rem">Tout remettre comme au départ</button></div>
 
-<div class="settings-section"><h3>Pictogrammes</h3>
+<div class="settings-section" data-tab="words"><h3>Pictogrammes</h3>
 <div class="row-flex"><input type="search" id="cardSearch" placeholder="Rechercher un mot" style="flex:1;min-width:140px"><button class="btn btn-primary" id="openAdd"><i class="ic" data-ic="plus"></i>Ajouter un mot</button></div>
 <div class="chips" id="kindFilter"></div>
 
@@ -427,18 +462,19 @@ body.modeling .sentence-bar{background:#fff8e1}
 <div class="row-flex" style="margin-top:.8rem"><button class="btn btn-ghost" id="restoreDeleted">Rétablir les mots supprimés</button><button class="btn btn-ghost" id="repairPics">Relancer la recherche des images</button></div>
 </div>
 
-<div class="settings-section"><h3>Profils</h3>
+<div class="settings-section" data-tab="child"><h3>Profils</h3>
 <p class="hint" style="margin-bottom:.8rem">Garçon ou fille : sert aux accords (« Je suis content / contente »). Le niveau règle ce que l'enfant voit. Chaque profil a aussi ses propres réglages : taille des images, voix, façon de toucher.</p><div class="level-help"><p><b>Niveau 1</b> : Je veux, J'ai mal, Je ne veux pas, Je me sens. Grandes images conseillées.</p><p><b>Niveau 2</b> : ajoute Je vois, J'ai besoin de, J'ai envie de, J'aime, Je n'aime pas, Où est… ?</p><p><b>Niveau 3</b> : ajoute Je peux… ?, C'est…, J'ai fait, Je vais, et les précisions (couleurs, tailles) pour ceux qui lisent.</p><p><b>Défilement automatique</b> : les images s'allument une par une, on choisit en touchant l'écran n'importe où ou avec un contacteur.</p></div>
 <div class="card-list" id="profileList"></div>
 <div class="field" style="margin-top:1rem"><label for="newProfileName">Ajouter un profil enfant</label>
 <div class="row-flex"><input type="text" id="newProfileName" placeholder="Prénom de l'enfant" style="flex:1"><select id="newProfileGender" style="width:auto"><option value="m">Garçon</option><option value="f">Fille</option></select><select id="newProfileLevel" style="width:auto"><option value="1">Niveau 1</option><option value="2" selected>Niveau 2</option><option value="3">Niveau 3</option></select><button class="btn btn-primary" id="addProfileBtn">Ajouter</button></div></div></div>
 
-<div class="settings-section"><h3>Interface</h3><div class="field"><label>Thème</label><div class="row-flex"><button class="btn btn-ghost" id="lightModeBtn"><i class="ic" data-ic="sun"></i>Clair</button><button class="btn btn-ghost" id="darkModeBtn"><i class="ic" data-ic="moon"></i>Sombre</button></div></div>
+<div class="settings-section" data-tab="child" id="secModel"><h3>Montrer à l'enfant</h3><p class="hint" style="margin-bottom:.8rem">C'est la méthode conseillée par les orthophonistes : tu parles à ton enfant en touchant toi-même les images, pour qu'il voie où elles sont et comment on fait une phrase. Exemple : au goûter, tu dis « Tu veux du gâteau ? » en touchant « Je veux » puis « Gâteau ». La phrase que ton enfant était en train de faire est gardée de côté et revient à la fin.</p><button class="btn btn-primary" id="modelStart">Commencer à montrer</button><p class="hint">Raccourci : garde le doigt 2 secondes sur le logo en haut à gauche pour commencer ou arrêter, même en mode enfant.</p></div>
+<div class="settings-section" data-tab="display"><h3>Affichage et voix</h3><div class="field"><label>Thème</label><div class="row-flex"><button class="btn btn-ghost" id="lightModeBtn"><i class="ic" data-ic="sun"></i>Clair</button><button class="btn btn-ghost" id="darkModeBtn"><i class="ic" data-ic="moon"></i>Sombre</button></div></div>
 <div class="field"><label for="voiceRate">Vitesse de la voix</label><input type="range" id="voiceRate" min="0.5" max="1.5" step="0.1" value="0.9"></div>
 <div class="field"><label for="voicePitch">Ton de la voix</label><input type="range" id="voicePitch" min="0.8" max="1.3" step="0.05" value="1.05"></div>
 <div class="field"><label for="voiceSel">Voix</label><select id="voiceSel"></select><p class="hint" id="voiceHint"></p></div>
 <button class="btn btn-ghost" id="testVoice"><i class="ic" data-ic="speaker"></i>Écouter un exemple</button></div>
-<div class="settings-section"><h3>Mode enfant</h3><p style="color:var(--color-text-muted);margin-bottom:.8rem;font-size:.9rem">Une fois activé, l'enfant ne voit plus les réglages, les profils ni le bouton de thème. Le code parent permet de revenir ici.</p><div class="field"><label for="pinNew">Code parent (4 chiffres)</label><div class="row-flex"><input type="tel" inputmode="numeric" maxlength="4" id="pinNew" placeholder="Nouveau code" style="max-width:170px"><button class="btn btn-ghost" id="pinSave">Changer le code</button></div><p class="hint" id="pinHint"></p></div><button class="btn btn-primary" id="enableKidMode"><i class="ic" data-ic="lock"></i>Activer le mode enfant</button></div>
+<div class="settings-section" data-tab="safety"><h3>Mode enfant</h3><p style="color:var(--color-text-muted);margin-bottom:.8rem;font-size:.9rem">Une fois activé, l'enfant ne voit plus les réglages, les profils ni le bouton de thème. Le code parent permet de revenir ici.</p><div class="field"><label for="pinNew">Code parent (4 chiffres)</label><div class="row-flex"><input type="tel" inputmode="numeric" maxlength="4" id="pinNew" placeholder="Nouveau code" style="max-width:170px"><button class="btn btn-ghost" id="pinSave">Changer le code</button></div><p class="hint" id="pinHint"></p></div><button class="btn btn-primary" id="enableKidMode"><i class="ic" data-ic="lock"></i>Activer le mode enfant</button></div>
 <p class="hint" id="verTag" style="text-align:center;margin-top:1rem"></p><p class="hint" style="text-align:center">Pictogrammes : ARASAAC (Sergio Palao, Gouvernement d'Aragon), licence CC BY-NC-SA.</p>
 </div></section>
 <nav class="bottom-nav" aria-label="Navigation principale">
@@ -552,7 +588,7 @@ function typeOf(c){if(c.kind==='food'&&c.drink)return'drink';if(c.kind==='thing'
 function typeLabel(k){for(var i=0;i<TYPES.length;i++)if(TYPES[i].k===k)return TYPES[i].label;return EXTRA_TYPES[k]||k}
 var ICONS={speaker:'<path d="M3 10v4h4l5 4V6L7 10H3z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/>',back:'<path d="M15 18l-6-6 6-6"/>',next:'<path d="M9 18l6-6-6-6"/>',reset:'<path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',moon:'<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>',chat:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',user:'<circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>',sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>',trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',pencil:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',plus:'<path d="M12 5v14M5 12h14"/>',star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',keyboard:'<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',check:'<path d="M5 12l5 5 9-10"/>',up:'<path d="M18 15l-6-6-6 6"/>',down:'<path d="M6 9l6 6 6-6"/>'};
 function ic(n,sz){return'<svg viewBox="0 0 24 24" width="'+(sz||22)+'" height="'+(sz||22)+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>'}
-var APP_VERSION='8',STORAGEKEY='je-parle-avec-toi-state-v5',PICKEY='je-parle-avec-toi-pics-v1',COLORS=['#0d7a72','#2f7dd1','#8a5cc9','#d64545','#e07a2c','#3d9c4a'];
+var APP_VERSION='9',STORAGEKEY='je-parle-avec-toi-state-v5',PICKEY='je-parle-avec-toi-pics-v1',COLORS=['#0d7a72','#2f7dd1','#8a5cc9','#d64545','#e07a2c','#3d9c4a'];
 var state={theme:(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light',profiles:[{id:1,name:'Mon enfant',gender:'m',color:COLORS[0],level:2}],activeProfile:1,kidMode:false,pin:'1234',voiceRate:.9,cards:[],deleted:[],edits:{},intentEdits:{},customIntents:[],intentOrder:[],voiceName:'',voicePitch:1.05};
 var flow={dest:null,intent:null,target:null,detail:null,adj:null,tab:null,adjTab:null};
 var idCounter=1000,picCache={},picFailed={},picPending={},picTimer=null,searchCache={};
@@ -702,7 +738,7 @@ function guard(el,fn){var down=0;
  ['pointerup','pointerleave','pointercancel'].forEach(function(ev){el.addEventListener(ev,function(){el.classList.remove('pressing')})});
  el.addEventListener('click',function(e){var now=Date.now(),h=pset('hold'),r=pset('repeat');if(h&&down&&now-down<h)return;if(r&&now-lastTap<r)return;lastTap=now;if(model){el.classList.remove('shown');void el.offsetWidth;el.classList.add('shown')}fn(e)})}
 function pickCard(vis,color,label,sub,fn){var b=document.createElement('button');b.className='pic-card';b.setAttribute('aria-label',label);b.style.setProperty('--cc','var(--cat-'+color+')');b.style.setProperty('--cc-bg','var(--cat-'+color+'-bg)');b.innerHTML='<span class="pic-img-wrap">'+vis+'</span><span class="pic-label">'+esc(label)+'</span>'+(sub&&lvl()>=3?'<span class="pic-sub">'+esc(sub)+'</span>':'');guard(b,fn);return b}
-function resetFlow(){applyLang();applyScan();flow.dest=pset('askDest')?null:'all';flow.intent=null;flow.target=null;flow.detail=null;flow.adj=null;flow.tab=null;renderFlow()}
+function resetFlow(){if(typeof pageState==='object')pageState.key='';applyLang();applyScan();flow.dest=pset('askDest')?null:'all';flow.intent=null;flow.target=null;flow.detail=null;flow.adj=null;flow.tab=null;renderFlow()}
 function renderCrumbs(){var wrap=byId('crumbs');wrap.innerHTML='';if(lvl()>=2)return;var it=getIntent();
  function add(vis,label,color,fn){var b=document.createElement('button');b.className='crumb';b.style.color='var(--cat-'+color+')';b.style.background='var(--cat-'+color+'-bg)';b.innerHTML='<span class="ci">'+vis+'</span>'+esc(label);b.addEventListener('click',fn);wrap.appendChild(b)}
  if(flow.dest&&(flow.dest!=='all'||pset('askDest'))){var d=destCard();add(d?visual(d):allSvg(),d?lab(d):T('Tout le monde','Everyone'),'jaune',function(){flow.dest=null;flow.intent=null;flow.target=null;flow.detail=null;flow.adj=null;renderFlow()})}
@@ -712,7 +748,7 @@ function renderCrumbs(){var wrap=byId('crumbs');wrap.innerHTML='';if(lvl()>=2)re
  if(t&&flow.adj){var aa=cardById(flow.adj);if(aa)add(visual(aa),adjLabel(aa,t),'bleu',function(){flow.adj=null;renderFlow()})}}
 function finishSentence(){renderFlow();speakText(currentSentence(),true);addHistory()}
 function tabButton(k,label,color,vis){var b=document.createElement('button');b.className='cat-tab'+(flow.tab===k?' active':'');b.style.background='var(--cat-'+color+'-bg)';b.style.color='var(--cat-'+color+')';b.style.setProperty('--cc','var(--cat-'+color+')');b.setAttribute('role','tab');b.innerHTML=vis+'<span>'+esc(label)+'</span>';return b}
-function addSkip(grid,fn){var sk=document.createElement('div');sk.className='skip-box';var b=document.createElement('button');b.className='btn btn-ghost';b.textContent=T('Terminer sans préciser','Finish');b.addEventListener('click',fn);sk.appendChild(b);grid.appendChild(sk)}
+function addSkip(grid,fn){var b=pickCard('<svg class="isvg" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 52l20 20 42-44" style="fill:none;stroke:#2e8b3e;stroke-width:12;stroke-linecap:round;stroke-linejoin:round"/></svg>','vert',T('Terminer','Finish'),'',fn);b.classList.add('skip-card');grid.appendChild(b)}
 var T3={feel:['Comment tu te sens ?','How do you feel?'],pain:['Où as-tu mal ?','Where does it hurt?'],see:['Que vois-tu ?','What do you see?'],where:['Tu cherches quoi ?','What are you looking for?'],can:['Tu demandes quoi ?','What are you asking for?'],itis:['Tu en penses quoi ?','What do you think?'],past:["Qu'as-tu fait ?",'What did you do?'],future:['Que vas-tu faire ?','What are you going to do?']};
 var FOLLOW_EN={pain:'How much does it hurt?',drink:'What drink?',food:'What food?',play:'Play what?',watch:'Watch what?',cloth:'Which clothes?',person:'Who?'};
 var GROUPS_EN={food:'Food & drinks',verb:'Actions',thing:'Things',person:'People',place:'Places',emotion:'Feelings',state:'My body',word:'Quick words',body:'Body',play:'Games',watch:'Screen',cloth:'Clothes',adj:'Details',comment:'My opinion',intensity:'How much'};
@@ -761,14 +797,14 @@ byId('lightModeBtn').addEventListener('click',function(){state.theme='light';app
 byId('voiceRate').addEventListener('input',function(e){state.voiceRate=parseFloat(e.target.value);saveState()});
 byId('voicePitch').addEventListener('input',function(e){state.voicePitch=parseFloat(e.target.value);saveState()});
 byId('voiceSel').addEventListener('change',function(e){state.voiceName=e.target.value;saveState();speakText("Bonjour Maman, je veux de l'eau")});
-function goScreen(name){$$('.screen').forEach(function(s){s.classList.remove('active')});byId('screen-'+name).classList.add('active');$$('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===name)});if(name==='settings')renderSettings();if(name==='day')renderDay();if(name==='write')renderWrite();scanI=-1;window.scrollTo(0,0)}
+function goScreen(name){$$('.screen').forEach(function(s){s.classList.remove('active')});byId('screen-'+name).classList.add('active');$$('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.screen===name)});if(name==='settings')renderSettings();if(name==='board')layoutGrid(stage());if(name==='day')renderDay();if(name==='write')renderWrite();scanI=-1;window.scrollTo(0,0)}
 $$('.nav-btn').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.screen==='settings'&&state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen(b.dataset.screen)})});
 /* ---------- profils ---------- */
 function avatar(p){return'<span class="profile-avatar" style="background:'+p.color+'">'+esc(p.name.charAt(0).toUpperCase())+'</span>'}
 function renderProfiles(){var grid=byId('profileGrid');grid.innerHTML='';
  state.profiles.forEach(function(p){var c=document.createElement('button');c.className='profile-card'+(p.id===state.activeProfile?' current':'');c.innerHTML=avatar(p)+'<span class="profile-name">'+esc(p.name)+'</span><span class="hint">Niveau '+p.level+'</span>';c.addEventListener('click',function(){state.activeProfile=p.id;saveState();renderProfiles();resetFlow();goScreen('board');toast('Bonjour '+p.name)});grid.appendChild(c)});
  var a=document.createElement('button');a.className='profile-card add-profile-card';a.innerHTML='<span class="profile-avatar" style="background:var(--color-surface-offset);color:var(--color-text-muted)">+</span><span class="profile-name">Ajouter</span>';
- a.addEventListener('click',function(){if(state.kidMode){byId('lockBanner').classList.remove('hidden');return}goScreen('settings');byId('newProfileName').focus()});grid.appendChild(a)}
+ a.addEventListener('click',function(){if(state.kidMode){byId('lockBanner').classList.remove('hidden');return}setTab='child';goScreen('settings');byId('newProfileName').focus()});grid.appendChild(a)}
 function renderProfileList(){var list=byId('profileList');list.innerHTML='';
  var F=[['gender','Garçon ou fille',[['m','Garçon'],['f','Fille']]],['level','Niveau',[['1','Niveau 1'],['2','Niveau 2'],['3','Niveau 3']]],['size','Taille des images',[['s','Petites'],['m','Moyennes'],['l','Grandes']]],['lang','Langue de l\'enfant',[['fr','Français'],['en','English (anglais)']]],['askDest','Étape « À qui tu parles ? »',[['1','Oui'],['0','Non, commencer par « Que veux-tu dire ? »']]],['tapSpeak','La voix dit chaque image touchée',[['1','Oui'],['0','Non, seulement la phrase']]],['hold','Façon de toucher',[['0','Toucher normal'],['500','Garder appuyé ½ seconde'],['1000','Garder appuyé 1 seconde']]],['repeat','Ignorer les appuis répétés',[['300','Pendant 0,3 s'],['1000','Pendant 1 s'],['2000','Pendant 2 s'],['0','Jamais']]],['keyboard','Écran « Écrire » (clavier)',[['1','Affiché'],['0','Caché']]],['scan','Défilement automatique (contacteur)',[['0','Désactivé'],['1000','Toutes les 1 s'],['1500','Toutes les 1,5 s'],['2000','Toutes les 2 s'],['3000','Toutes les 3 s']]]];
  state.profiles.forEach(function(p){var box=document.createElement('div');box.className='pf-card';
@@ -940,7 +976,7 @@ byId('inSave').addEventListener('click',function(){var e=iedit;if(!e)return;
 byId('resetIntents').addEventListener('click',function(){if(typeof confirm==='function'&&!confirm("Remettre toutes les images de l'étape 2 comme au départ ? Les créations seront supprimées."))return;state.intentEdits={};state.customIntents=[];state.intentOrder=[];saveState();closeIntentEditor();closeListEditor();renderIntentList();resetFlow();toast('Remis comme au départ')});
 
 /* ---------- réglages divers ---------- */
-function renderSettings(){renderProfileList();renderIntentList();renderKindFilter();renderCardsList();renderVoiceList();renderPinHint();renderPhrases();renderBk();renderOffline();byId('verTag').textContent='Je Parle Avec Toi · version '+APP_VERSION}
+function renderSettings(){renderProfileList();renderIntentList();renderKindFilter();renderCardsList();renderSetTabs();renderVoiceList();renderPinHint();renderPhrases();renderBk();renderOffline();byId('verTag').textContent='Je Parle Avec Toi · version '+APP_VERSION}
 function applyKid(){document.body.classList.toggle('kid',!!state.kidMode);var m=document.querySelector('meta[name=viewport]');if(m)m.setAttribute('content','width=device-width, initial-scale=1.0'+(state.kidMode?', maximum-scale=1, user-scalable=no':'')+', viewport-fit=cover');setTB()}
 function renderPinHint(){var h=byId('pinHint');if(h)h.textContent=state.pin==='1234'?"Code actuel : 1234 (code de départ). Change-le avant de confier l'appareil à l'enfant.":"Ton code personnel est enregistré. Il ne s'affiche nulle part."}
 byId('pinSave').addEventListener('click',function(){var v=byId('pinNew').value.trim();if(!/^\d{4}$/.test(v)){toast('Le code doit avoir 4 chiffres');return}state.pin=v;saveState();byId('pinNew').value='';renderPinHint();toast('Code parent changé')});
@@ -1007,7 +1043,7 @@ function applyLang(){var en=EN();document.documentElement.lang=en?'en':'fr';
  byId('backBtn').innerHTML=ic('back')+(en?'Back':'Retour');
  var N={board:['Parler','Talk'],day:['Journée','My day'],write:['Écrire','Write'],profiles:['Profils','Profiles'],settings:['Réglages','Settings']};
  $$('.nav-btn').forEach(function(b){var n=N[b.dataset.screen];if(n){b.querySelector('span').textContent=en?n[1]:n[0];b.setAttribute('aria-label',en?n[1]:n[0])}});
- byId('modelBanner').textContent=en?'Show mode: touch the pictures to show an example. Touch the eye to go back.':"Mode montrer : touche les images pour montrer l'exemple à l'enfant. Touche l'œil pour revenir à sa phrase.";
+ byId('modelBanner').innerHTML='<span>'+(en?'Show mode: touch the pictures to show your child an example.':"Tu montres à l'enfant : touche les images en lui parlant.")+'</span><button class="btn btn-primary" id="modelStop">'+(en?'Stop':'Terminer')+'</button>';
  byId('navWrite').style.display=pset('keyboard')?'':'none';
  byId('wText').placeholder=en?'Write your sentence':'Écris ta phrase';byId('wSay').innerHTML=ic('speaker')+(en?'Say':'Dire');byId('wFav').innerHTML=ic('star')+(en?'Add to my sentences':'Ajouter à mes phrases');byId('wClear').textContent=en?'Clear':'Effacer';
  byId('daySay').innerHTML=ic('speaker')+(en?'Listen':'Écouter');byId('dayReset').textContent=en?'Start again':'Tout recommencer';
@@ -1065,7 +1101,7 @@ byId('wClear').addEventListener('click',function(){byId('wText').value='';render
 
 /* ---------- v8 : défilement automatique (contacteur) ---------- */
 var scanT=null,scanI=-1;
-function scanTargets(){if(byId('screen-day').classList.contains('active'))return $$('#dayList .day-item');if(!byId('screen-board').classList.contains('active'))return[];var a=[],bb=byId('backBtn');if(bb.style.display!=='none')a.push(bb);return a.concat($$('#boardGrid button'))}
+function scanTargets(){if(byId('screen-day').classList.contains('active'))return $$('#dayList .day-item');if(!byId('screen-board').classList.contains('active'))return[];var a=[],bb=byId('backBtn');if(bb.style.display!=='none')a.push(bb);return a.concat($$('#boardGrid button').filter(function(b){return b.offsetParent!==null})).concat($$('#pager button:not([disabled])'))}
 function scanTick(){$$('.scan-on').forEach(function(e){e.classList.remove('scan-on')});var a=scanTargets();if(!a.length)return;scanI=(scanI+1)%a.length;a[scanI].classList.add('scan-on');if(a[scanI].scrollIntoView)a[scanI].scrollIntoView({block:'nearest'})}
 function applyScan(){clearInterval(scanT);scanT=null;scanI=-1;$$('.scan-on').forEach(function(e){e.classList.remove('scan-on')});var ms=pset('scan');if(ms){scanT=setInterval(scanTick,ms);document.body.classList.add('scanning')}else document.body.classList.remove('scanning')}
 function scanSelect(){var el=document.querySelector('.scan-on');if(!el)return;el.classList.remove('scan-on');scanI=-1;el.click()}
@@ -1078,8 +1114,37 @@ document.addEventListener('click',function(e){if(scanT&&e.isTrusted&&!scanFree(e
 var model=null;
 function setModel(on){if(on&&!model){model={flow:JSON.parse(JSON.stringify(flow))};document.body.classList.add('modeling');if(!byId('screen-board').classList.contains('active'))goScreen('board');resetFlow();toast(T("Mode montrer : la phrase de l'enfant est mise de côté","Show mode: the child's sentence is kept aside"))}
  else if(!on&&model){var f=model.flow;model=null;Object.keys(f).forEach(function(k){flow[k]=f[k]});document.body.classList.remove('modeling');renderFlow();toast(T("Retour à la phrase de l'enfant","Back to the child's sentence"))}
- byId('modelBtn').classList.toggle('on',!!model);byId('modelBtn').setAttribute('aria-pressed',model?'true':'false')}
-byId('modelBtn').addEventListener('click',function(){setModel(!model)});
+ }
+byId('modelStart').addEventListener('click',function(){setModel(true)});
+byId('modelBanner').addEventListener('click',function(e){if(e.target.closest&&e.target.closest('#modelStop'))setModel(false)});
+(function(){var lg=document.querySelector('.logo'),lp=null;if(!lg)return;lg.addEventListener('pointerdown',function(){clearTimeout(lp);lp=setTimeout(function(){setModel(!model);if(navigator.vibrate)navigator.vibrate(60)},1500)});['pointerup','pointerleave','pointercancel'].forEach(function(ev){lg.addEventListener(ev,function(){clearTimeout(lp)})})})();
+/* ---------- v9 : grille qui tient dans l'écran, pages ---------- */
+var pageState={key:'',page:0};
+function layoutGrid(st){var grid=byId('boardGrid'),pager=byId('pager');document.body.classList.toggle('nonreader',lvl()<3);grid.classList.remove('fit');pager.innerHTML='';pager.hidden=true;
+ var cards=Array.prototype.filter.call(grid.children,function(el){return el.classList&&el.classList.contains('pic-card')});
+ cards.forEach(function(c){c.style.display=''});
+ if(st>=6||!cards.length||!byId('screen-board').classList.contains('active'))return;
+ var W=grid.clientWidth;if(!W)return;var gap=W<500?8:12,nav=document.querySelector('.bottom-nav'),navH=nav?nav.getBoundingClientRect().height+(window.innerWidth>=768?16:0):0;
+ var top=grid.getBoundingClientRect().top+window.scrollY,avail=window.innerHeight-top-navH-14,n=cards.length,best=null;
+ if(st===2){for(var c=2;c<=8;c++){var cw=(W-gap*(c-1))/c,rows=Math.ceil(n/c),rh=(avail-gap*(rows-1))/rows,h=Math.min(rh,cw*1.05);if(h<52)continue;if(!best||h>best.rh)best={cols:c,rh:h,cw:cw,per:n}}
+  if(!best){var c2=Math.max(3,Math.floor(W/100));best={cols:c2,rh:90,cw:(W-gap*(c2-1))/c2,per:n}}}
+ else{var minC={s:84,m:112,l:150}[pset('size')]||112,cols=Math.max(2,Math.floor((W+gap)/(minC+gap))),cw2=(W-gap*(cols-1))/cols,rowsAll=Math.ceil(n/cols),rhAll=(avail-gap*(rowsAll-1))/rowsAll,target=Math.min(minC,cw2);
+  if(rhAll>=target*0.9)best={cols:cols,rh:Math.min(rhAll,cw2*1.05),cw:cw2,per:n};
+  else{var ap=avail-64,rws=Math.max(1,Math.floor((ap+gap)/(target*0.95+gap))),rh2=Math.min((ap-gap*(rws-1))/rws,cw2*1.05);best={cols:cols,rh:rh2,cw:cw2,per:cols*rws}}}
+ grid.classList.add('fit');grid.style.gap=gap+'px';grid.style.setProperty('--cols',best.cols);grid.style.setProperty('--rowh',Math.floor(best.rh)+'px');
+ grid.style.setProperty('--img',Math.floor(Math.max(26,Math.min(best.rh-best.rh*0.13-28,best.cw-14)))+'px');grid.style.setProperty('--fs',Math.max(12,Math.min(20,best.rh*0.12)).toFixed(1)+'px');
+ if(best.per>=n)return;
+ var pages=Math.ceil(n/best.per),key=st+'|'+flow.intent+'|'+flow.tab+'|'+(flow.target||'')+'|'+flow.adjTab;if(key!==pageState.key){pageState.key=key;pageState.page=0}
+ var pg=Math.min(pageState.page,pages-1);cards.forEach(function(el,i){el.style.display=(i>=pg*best.per&&i<(pg+1)*best.per)?'':'none'});
+ pager.hidden=false;pager.innerHTML='<button class="btn btn-ghost" id="pgPrev"'+(pg===0?' disabled':'')+'>'+ic('back')+T('Avant','Back')+'</button><span class="pg">'+T('Page ','Page ')+(pg+1)+' / '+pages+'</span><button class="btn btn-primary" id="pgNext"'+(pg>=pages-1?' disabled':'')+'>'+T('Suite','Next')+ic('next')+'</button>';
+ byId('pgPrev').addEventListener('click',function(){if(pageState.page>0){pageState.page--;layoutGrid(stage())}});
+ byId('pgNext').addEventListener('click',function(){if(pageState.page<pages-1){pageState.page++;layoutGrid(stage())}})}
+var _renderFlow0=renderFlow;renderFlow=function(){_renderFlow0();layoutGrid(stage())};
+window.addEventListener('resize',function(){layoutGrid(stage())});
+/* ---------- v9 : réglages en onglets ---------- */
+var SET_TABS=[['child','Enfants'],['phrases','Phrases'],['words','Mots'],['display','Affichage et voix'],['safety','Sécurité'],['save','Sauvegarde']],setTab='child';
+function renderSetTabs(){var bar=byId('setTabs');bar.innerHTML='';SET_TABS.forEach(function(t){var b=document.createElement('button');b.className='chip'+(setTab===t[0]?' on':'');b.setAttribute('role','tab');b.textContent=t[1];b.addEventListener('click',function(){setTab=t[0];renderSetTabs();window.scrollTo(0,0)});bar.appendChild(b)});
+ $$('#screen-settings .settings-section').forEach(function(sec){sec.hidden=sec.getAttribute('data-tab')!==setTab})}
 
 /* ---------- v8 : voix d'un proche ---------- */
 var micRec=null;
