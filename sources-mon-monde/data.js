@@ -144,6 +144,23 @@ const W = [
   { id: 'encore', cat: 'debut', k: 'soc', fr: 'Encore', en: 'More' },
   { id: 'oui', cat: 'debut', k: 'soc', fr: 'Oui', en: 'Yes' },
   { id: 'non', cat: 'debut', k: 'soc', col: 'neg', fr: 'Non', en: 'No' },
+  { id: 'glace', cat: 'manger', k: 'noun', fr: 'glace', g: 'f', en: 'ice cream', ec: 'count' },
+  { id: 'oeuf', cat: 'manger', k: 'noun', fr: 'œuf', g: 'm', en: 'egg', ec: 'count' },
+  { id: 'pizza', cat: 'manger', k: 'noun', fr: 'pizza', g: 'f', m: 1, en: 'pizza', ec: 'mass' },
+  { id: 'sandwich', cat: 'manger', k: 'noun', fr: 'sandwich', g: 'm', en: 'sandwich', ec: 'count' },
+  { id: 'crayons', cat: 'objets', k: 'noun', fr: 'crayons', g: 'p', en: 'pencils', ec: 'pl' },
+  { id: 'casque', cat: 'objets', k: 'noun', fr: 'casque', g: 'm', pos: 'mon casque', en: 'headphones', epos: 'my headphones', ec: 'pl' },
+  { id: 'pyjama', cat: 'faire', k: 'verb', fr: 'mettre mon pyjama', lbl: 'Pyjama', en: 'put my pyjamas on', elbl: 'Pyjamas' },
+  { id: 'recre', cat: 'faire', k: 'verb', fr: 'aller en récré', lbl: 'Récré', en: 'go out to play', gb: 'go out to play', elbl: 'Playtime' },
+  { id: 'caresser', cat: 'faire', k: 'verb', fr: 'caresser le chien', lbl: 'Caresser le chien', en: 'pet the dog', gb: 'stroke the dog', elbl: 'Pet the dog' },
+  { id: 'pipi', cat: 'debut', k: 'soc', fr: 'Je veux faire pipi', lbl: 'Pipi', en: 'I need to pee', gb: 'I need a wee', elbl: 'Pee' },
+  { id: 'caca', cat: 'debut', k: 'soc', fr: 'Je veux faire caca', lbl: 'Caca', en: 'I need to poop', gb: 'I need a poo', elbl: 'Poo' },
+  { id: 'bruit', cat: 'debut', k: 'soc', fr: 'Il y a trop de bruit', lbl: 'Trop de bruit', en: "It's too noisy", elbl: 'Too noisy' },
+  { id: 'pause', cat: 'debut', k: 'soc', fr: 'Je veux une pause', lbl: 'Pause', en: 'I want a break', elbl: 'Break' },
+  { id: 'tranquille', cat: 'debut', k: 'soc', fr: 'Je veux être tranquille', lbl: 'Tranquille', en: 'I want some quiet time', elbl: 'Quiet time' },
+  { id: 'comprendspas', cat: 'debut', k: 'soc', fr: 'Je ne comprends pas', lbl: 'Pas compris', en: "I don't understand", elbl: "Don't understand" },
+  { id: 'jesais', cat: 'debut', k: 'soc', fr: 'Je sais', lbl: 'Je sais', en: 'I know', elbl: 'I know' },
+  { id: 'peurchien', cat: 'debut', k: 'soc', fr: "J'ai peur du chien", lbl: 'Peur du chien', en: "I'm scared of the dog", elbl: 'Scared of dog' },
 ];
 
 /* ---------- Grammaire française ---------- */

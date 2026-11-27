@@ -24,3 +24,28 @@ Object.assign(ICONS, {
 ICONS.room_cuisine = r(14, 6, 36, 52, 5, '#E9EEF5') + p('M14 24 H50') + p('M42 12 V20 M42 30 V44', 'none', 'stroke-width="3"') + c(24, 14, 3, RED, NS) + c(26, 36, 3, YEL, NS);
 ICONS.room_salon = ICONS.reposer;
 ICONS.room_bain = r(4, 30, 56, 18, 6, WH) + p('M8 48 L10 56 M54 48 L52 56', 'none', 'stroke-width="3"') + c(20, 26, 6, LB) + c(32, 22, 5, LB) + c(42, 26, 6, LB) + p('M52 30 V10 H44', 'none', 'stroke-width="3"');
+/* Ajouts : école, sensoriel, toilettes, nouveaux aliments */
+Object.assign(ICONS, {
+  glace: p('M22 30 L32 60 L42 30Z', '#E2A65B') + p('M26 36 L38 36 M28 44 L36 44', 'none', 'stroke-width="1.6"') + c(26, 24, 9, PNK) + c(38, 24, 9, '#FFF3D6') + c(32, 14, 8, BRN),
+  oeuf: el(32, 34, 17, 22, WH) + el(32, 38, 8, 8, YEL, NS),
+  pizza: p('M32 58 L8 12 Q32 2 56 12Z', YEL) + p('M8 12 Q32 2 56 12 L52 18 Q32 10 12 18Z', '#E2A65B') + c(28, 24, 4, RED) + c(38, 30, 4, RED) + c(31, 40, 3.5, RED),
+  sandwich: p('M6 30 L32 12 L58 30Z', '#E2A65B') + r(6, 30, 52, 6, 2, GRN) + r(6, 36, 52, 6, 2, RED) + r(6, 42, 52, 10, 3, '#E2A65B'),
+  crayons: r(12, 10, 10, 40, 2, RED) + p('M12 50 L17 60 L22 50Z', CRM) + r(27, 14, 10, 36, 2, BLU) + p('M27 50 L32 60 L37 50Z', CRM) + r(42, 8, 10, 42, 2, GRN) + p('M42 50 L47 60 L52 50Z', CRM),
+  casque: p('M12 40 V32 Q12 10 32 10 Q52 10 52 32 V40', 'none', 'stroke-width="5"') + r(6, 34, 14, 22, 5, PUR) + r(44, 34, 14, 22, 5, PUR),
+  pyjama: p('M22 8 L8 18 L14 28 L20 24 V58 H44 V24 L50 28 L56 18 L42 8 Q32 16 22 8Z', '#A78BFA') + c(26, 30, 2.5, YEL, NS) + c(38, 40, 2.5, YEL, NS) + c(28, 48, 2.5, YEL, NS) + c(50, 10, 5, YEL) + c(48, 8, 4, '#A78BFA', NS),
+  pipi: toilet() + p('M50 16 Q56 24 50 28 Q44 24 50 16Z', YEL),
+  caca: toilet() + p('M44 22 Q44 14 50 12 Q50 16 54 16 Q58 18 56 22 Q60 24 58 28 H42 Q40 24 44 22Z', BRN),
+  bruit: el(20, 34, 10, 14, SK) + p('M34 20 Q40 34 34 48 M42 14 Q52 34 42 54 M50 8 Q64 34 50 60', 'none', `stroke="${RED}" stroke-width="3"`),
+  pause: c(32, 32, 25, BLU) + r(22, 20, 7, 24, 2, WH, NS) + r(35, 20, 7, 24, 2, WH, NS),
+  tranquille: r(10, 30, 44, 26, 6, '#A78BFA') + face(32, 22, 13, 'calm') + p('M50 8 h8 l-8 8 h8', 'none', 'stroke-width="2"'),
+  comprendspas: face(26, 36, 20, 'neutral') + t(50, 30, 26, '?', PUR) + p('M42 40 Q50 46 58 40', 'none', `stroke="${PUR}" stroke-width="2"`),
+  jesais: face(28, 38, 20, 'happy') + hand(50, 24, .55) + c(48, 6, 3, YEL, NS),
+  recre: r(14, 8, 26, 50, 2, BRN) + c(35, 34, 2, YEL) + sun(50, 14, 5) + c(50, 48, 8, WH) + p('M50 40 Q46 48 50 56', 'none', `stroke="${RED}" stroke-width="2"`),
+  chien: el(30, 40, 18, 11, '#C98B4E') + c(48, 28, 10, '#C98B4E') + el(54, 22, 4, 8, BRN) + dot(51, 27) + c(57, 31, 2, K, NS) + p('M18 48 V58 M26 50 V58 M36 50 V58 M42 48 V58', 'none', 'stroke-width="3"') + p('M12 36 Q6 30 8 24', 'none', 'stroke-width="3"'),
+  caresser: el(28, 44, 16, 10, '#C98B4E') + c(44, 34, 9, '#C98B4E') + el(50, 28, 3.5, 7, BRN) + hand(32, 18, .55) + heart(PNK, 54, 12, .22),
+  peurchien: ICONS.peur ? face(18, 22, 12, 'scared') + el(36, 46, 16, 10, '#C98B4E') + c(52, 36, 9, '#C98B4E') + el(57, 30, 3.5, 7, BRN) : '',
+  appeler: r(20, 4, 26, 52, 5, '#34405A') + r(23, 10, 20, 34, 1.5, '#8EC5FF', NS) + p('M48 14 Q54 20 48 26 M52 10 Q60 20 52 30', 'none', `stroke="${GRN}" stroke-width="2.5"`),
+  room_ecole: ICONS.ecole,
+  tableau_ic: r(4, 10, 56, 40, 4, '#8C5A2E') + r(8, 14, 48, 32, 2, '#2F6B4F') + t(32, 36, 16, 'A b', '#F4F6FA'),
+  cartable_ic: p('M12 30 Q12 16 32 16 Q52 16 52 30 V54 Q52 58 48 58 H16 Q12 58 12 54Z', RED) + p('M24 16 Q24 8 32 8 Q40 8 40 16', 'none', 'stroke-width="3"') + r(22, 34, 20, 12, 3, ORA),
+});

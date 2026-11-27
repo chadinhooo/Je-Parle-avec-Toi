@@ -1,7 +1,7 @@
-const APP_VERSION = '2.0.0';
+const APP_VERSION = '2.1.0';
 const I18N = {
   fr: {
-    app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
+    school: 'Mon enfant va à l’école (ouvrir l’École en semaine, 8 h 30 – 16 h 15)', app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
     want: 'Je veux', notWant: 'Je ne veux pas', pMal: 'Mal', pPeu: 'Un peu', pTres: 'Très mal',
     tAsk: 'Questions', tLog: 'Fil', tWrite: 'Écrire', tSet: 'Réglages',
     askHelp: 'Posez une question, choisissez jusqu’à 4 réponses en images, puis montrez l’écran à l’enfant.', askQ: 'Votre question', askPh: 'Par exemple : tu veux quoi au goûter ?',
@@ -24,7 +24,7 @@ const I18N = {
     reset: 'Tout remettre comme au départ', resetAsk: 'Tout effacer et revenir au départ ? Photos, personnes, choix ajoutés et fil seront supprimés.',
   },
   en: {
-    app: 'My World', hint: 'Touch something to talk', adult: 'Adult', close: 'Close', back: 'Back to child', replay: 'Say again', now: 'Now',
+    school: 'My child goes to school (open School on weekdays, 8:30 – 16:15)', app: 'My World', hint: 'Touch something to talk', adult: 'Adult', close: 'Close', back: 'Back to child', replay: 'Say again', now: 'Now',
     want: 'I want', notWant: "I don't want", pMal: 'Hurts', pPeu: 'A little', pTres: 'A lot',
     tAsk: 'Questions', tLog: 'Log', tWrite: 'Type', tSet: 'Settings',
     askHelp: 'Ask a question, pick up to 4 picture answers, then show the screen to the child.', askQ: 'Your question', askPh: 'For example: what do you want for a snack?',
@@ -49,7 +49,7 @@ const I18N = {
 };
 
 /* ---------- État ---------- */
-const KEY = 'monmonde1';
+const KEY = new URLSearchParams(location.search).has('embed') ? 'monmonde-jpat' : 'monmonde1';
 const PEOPLE0 = ['maman', 'papa', 'frere', 'soeur', 'mamie', 'papy', 'maitresse', 'ami'].map((id) => ({ id }));
 const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [], av: { skin: '#F7CBA5', hair: 'short', hc: '#6B4A2F', shirt: '#3B82F6', glasses: 0 } };
 let S = load();
@@ -148,7 +148,8 @@ function optText(o, neg) {
       return base + (k === 'peu' ? ' a little' : ' a lot');
     }
     case 'aller': { const w = word(a); if (w && w.k === 'pers') return fr ? 'Je veux aller chez ' + persName(w) : 'I want to go and see ' + persName(w); return compose(['veux', a]); }
-    case 'soc': { const w = word(a); return w ? (fr ? w.fr : w.en) : ''; }
+    case 'soc': { const w = word(a); return w ? (fr ? w.fr : (GB() && typeof w.gb === 'string' && w.gb) || w.en) : ''; }
+    case 'call': { const n = persName(word(a)); return fr ? 'Je veux appeler ' + n : 'I want to call ' + n; }
     case 'tpl': { const n = persName(word(b)), t = TPL[a][L()][1]; return t.replace('{P}', cap(n)).replace('{p}', n); }
     default: return compose([a]);
   }
@@ -157,6 +158,7 @@ function defOpt(w) { return ({ noun: 'veux:', verb: 'verb:', place: 'aller:', fe
 function optView(o, h, neg) {
   const { k, a, b } = parts(o);
   if (k === 'tpl') return { ic: picto(TPL[a].ic), lb: TPL[a][L()][0], col: a === 'veux' ? 'verb' : a === 'ouest' ? 'q' : 'soc' };
+  if (k === 'call') { const w = word(a) || {}; return { ic: pic(w), lb: w.id ? label(w) : '?', col: 'pers' }; }
   if (h && h.mode === 'pain') return { ic: picto(k === 'mal' ? 'mal' : k), lb: T({ mal: 'pMal', peu: 'pPeu', tres: 'pTres' }[k]), col: 'neg' };
   if (h && h.mode === 'start') return { ic: picto(TPL[k] ? TPL[k].ic : k), lb: TPL[k] ? TPL[k][L()][0] : k, col: k === 'ouest' ? 'q' : 'verb' };
   const w = word(a) || {};
@@ -201,6 +203,7 @@ function say(text, icon, o) {
   S.log.push({ w: 'c', t: text, o: o || '', r: scene, ts: Date.now() }); if (S.log.length > 600) S.log.splice(0, S.log.length - 600); save();
   const b = $('#bubble');
   b.innerHTML = `<span class="av">${avatarSVG(moodOf(o))}</span><span class="btx">${esc(text)}</span>${icon ? `<span class="bic">${icon}</span>` : ''}${ui('say')}`;
+  if (typeof EMBED !== 'undefined' && EMBED) window.parent.postMessage({ type: 'mm-said', text }, location.origin);
   if (o === 'soc:eteins') lights(false); if (o === 'soc:allume') lights(true);
   renderSugg();
   b.setAttribute('aria-label', T('replay') + ' : ' + text); b.dataset.t = text; b.classList.remove('idle');
@@ -232,7 +235,11 @@ const URG = [
 ];
 let scene = 'cuisine', sheetHot = null, neg = false, view = 'child', adultTab = 'ask', unlocked = false;
 const urgTxt = (u) => (L() === 'fr' ? u.fr : (GB() && u.gb) || u.en);
-function nowRoom() { const d = new Date(), h = d.getHours() + d.getMinutes() / 60; let r0 = ROUTINE[0][1]; ROUTINE.forEach(([t, r]) => { if (h >= t) r0 = r; }); return r0; }
+function nowRoom() {
+  const d = new Date(), h = d.getHours() + d.getMinutes() / 60, wd = d.getDay();
+  if (S.school && wd >= 1 && wd <= 5 && SCHOOL.some(([a0, b0]) => h >= a0 && h < b0 && !(wd === 3 && a0 > 12))) return 'ecole';
+  let r0 = ROUTINE[0][1]; ROUTINE.forEach(([t, r]) => { if (h >= t) r0 = r; }); return r0;
+}
 function allScenes() { return SCENES.map((s) => ({ id: s.id, name: nm(s), ic: picto('room_' + s.id) })).concat(S.scenes.map((s) => ({ id: s.id, name: s.name, ic: `<img src="${s.img}" alt="">` }))); }
 function renderUrg() {
   $('#urg').innerHTML = URG.map((u) => `<button class="urg c-${u.col}" data-urg="${u.id}" aria-label="${esc(urgTxt(u)[1])}"><span class="pic">${picto(u.ic)}</span><span class="lbl">${esc(urgTxt(u)[0])}</span></button>`).join('');
@@ -362,7 +369,7 @@ function renderSettings() {
   const allO = (base.o || []).concat(S.custom.filter((c) => c.hot === objHot).map((c) => 'veux:' + c.id));
   return `${renderAvatarSet()}<details><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
     <label class="f">${T('lang')}<select id="sLang">${opt('fr', 'Français', S.lang)}${opt('en-US', 'English (US)', S.lang)}${opt('en-GB', 'English (UK)', S.lang)}</select></label></details>
-  <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><p class="hint">${T('dayHelp')}</p>
+  <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><label class="chk"><input type="checkbox" id="sSchool"${S.school ? ' checked' : ''}> ${T('school')}</label><p class="hint">${T('dayHelp')}</p>
     <ul class="routine">${ROUTINE.map(([t, r]) => `<li><b>${String(Math.floor(t)).padStart(2, '0')}:${String(Math.round((t % 1) * 60)).padStart(2, '0')}</b> ${esc(nm(SCENES.find((s) => s.id === r)))}</li>`).join('')}</ul></details>
   <details><summary>${T('sPeople')}</summary><p class="hint">${T('peopleHelp')}</p>
     <ul class="plist">${S.people.map((pe, i) => { const w = word(pe.id); return `<li><span class="mini big">${pic(w)}</span><input aria-label="${T('name')}" data-pname="${i}" value="${esc(pe.name || '')}" placeholder="${esc(label(WD[pe.id] || w))}">${photoBtn('pimg' + i, 'iconbtn')}<button class="iconbtn" data-pdel="${i}" aria-label="${T('del')}">${ui('trash')}</button></li>`; }).join('')}</ul>
@@ -525,6 +532,7 @@ document.addEventListener('change', async (e) => {
   else if (t.name === 'theme') { S.theme = t.value; applyTheme(); }
   else if (t.id === 'sLang') { S.lang = t.value; S.voice = ''; save(); renderAll(); return renderAdult(); }
   else if (t.id === 'sAuto') S.auto = t.checked;
+  else if (t.id === 'sSchool') S.school = t.checked;
   else if (t.id === 'sVoice') S.voice = t.value;
   else if (t.id === 'sRate') S.rate = +t.value;
   else if (t.id === 'sPitch') S.pitch = +t.value;

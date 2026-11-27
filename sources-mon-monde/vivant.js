@@ -156,4 +156,17 @@ function renderBilan() {
   <button class="btn" id="bPrint">${ui('bilan')}${T('print')}</button>`;
 }
 
+/* Intégré dans Je Parle avec Toi : réglages partagés (voix, langue, fille ou garçon, code parent, thème) */
+const EMBED = new URLSearchParams(location.search).has('embed') && window.parent !== window;
+if (EMBED) document.documentElement.classList.add('embed');
+window.addEventListener('message', (e) => {
+  const m = e.data || {}; if (e.origin !== location.origin || m.type !== 'jpat-sync') return;
+  S.gender = m.gender === 'f' ? 'f' : 'm'; S.lang = m.lang === 'en' ? 'en-US' : 'fr';
+  if (m.rate) S.rate = +m.rate; if (m.pitch) S.pitch = +m.pitch; if (m.pin) S.code = String(m.pin);
+  if (m.voiceName) { const vv = voices.find((x) => x.name === m.voiceName); if (vv) S.voice = vv.voiceURI; }
+  if (m.theme === 'dark' || m.theme === 'light') S.theme = m.theme;
+  save(); if (view === 'child') renderAll();
+});
+
 boot();
+if (EMBED) window.parent.postMessage({ type: 'mm-ready' }, location.origin);

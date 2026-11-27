@@ -278,3 +278,5 @@ summary { font-weight: 600; font-size: 18px; min-height: 56px; display: flex; al
   .btx { font-size: 20px; }
   .sg { min-height: 40px; }
 }
+.embed #stage { margin-bottom: 6px; }
+.embed #rooms { padding-bottom: 6px; }

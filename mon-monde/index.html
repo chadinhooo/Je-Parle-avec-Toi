@@ -293,6 +293,8 @@ summary { font-weight: 600; font-size: 18px; min-height: 56px; display: flex; al
   .btx { font-size: 20px; }
   .sg { min-height: 40px; }
 }
+.embed #stage { margin-bottom: 6px; }
+.embed #rooms { padding-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -576,6 +578,31 @@ Object.assign(ICONS, {
 ICONS.room_cuisine = r(14, 6, 36, 52, 5, '#E9EEF5') + p('M14 24 H50') + p('M42 12 V20 M42 30 V44', 'none', 'stroke-width="3"') + c(24, 14, 3, RED, NS) + c(26, 36, 3, YEL, NS);
 ICONS.room_salon = ICONS.reposer;
 ICONS.room_bain = r(4, 30, 56, 18, 6, WH) + p('M8 48 L10 56 M54 48 L52 56', 'none', 'stroke-width="3"') + c(20, 26, 6, LB) + c(32, 22, 5, LB) + c(42, 26, 6, LB) + p('M52 30 V10 H44', 'none', 'stroke-width="3"');
+/* Ajouts : école, sensoriel, toilettes, nouveaux aliments */
+Object.assign(ICONS, {
+  glace: p('M22 30 L32 60 L42 30Z', '#E2A65B') + p('M26 36 L38 36 M28 44 L36 44', 'none', 'stroke-width="1.6"') + c(26, 24, 9, PNK) + c(38, 24, 9, '#FFF3D6') + c(32, 14, 8, BRN),
+  oeuf: el(32, 34, 17, 22, WH) + el(32, 38, 8, 8, YEL, NS),
+  pizza: p('M32 58 L8 12 Q32 2 56 12Z', YEL) + p('M8 12 Q32 2 56 12 L52 18 Q32 10 12 18Z', '#E2A65B') + c(28, 24, 4, RED) + c(38, 30, 4, RED) + c(31, 40, 3.5, RED),
+  sandwich: p('M6 30 L32 12 L58 30Z', '#E2A65B') + r(6, 30, 52, 6, 2, GRN) + r(6, 36, 52, 6, 2, RED) + r(6, 42, 52, 10, 3, '#E2A65B'),
+  crayons: r(12, 10, 10, 40, 2, RED) + p('M12 50 L17 60 L22 50Z', CRM) + r(27, 14, 10, 36, 2, BLU) + p('M27 50 L32 60 L37 50Z', CRM) + r(42, 8, 10, 42, 2, GRN) + p('M42 50 L47 60 L52 50Z', CRM),
+  casque: p('M12 40 V32 Q12 10 32 10 Q52 10 52 32 V40', 'none', 'stroke-width="5"') + r(6, 34, 14, 22, 5, PUR) + r(44, 34, 14, 22, 5, PUR),
+  pyjama: p('M22 8 L8 18 L14 28 L20 24 V58 H44 V24 L50 28 L56 18 L42 8 Q32 16 22 8Z', '#A78BFA') + c(26, 30, 2.5, YEL, NS) + c(38, 40, 2.5, YEL, NS) + c(28, 48, 2.5, YEL, NS) + c(50, 10, 5, YEL) + c(48, 8, 4, '#A78BFA', NS),
+  pipi: toilet() + p('M50 16 Q56 24 50 28 Q44 24 50 16Z', YEL),
+  caca: toilet() + p('M44 22 Q44 14 50 12 Q50 16 54 16 Q58 18 56 22 Q60 24 58 28 H42 Q40 24 44 22Z', BRN),
+  bruit: el(20, 34, 10, 14, SK) + p('M34 20 Q40 34 34 48 M42 14 Q52 34 42 54 M50 8 Q64 34 50 60', 'none', `stroke="${RED}" stroke-width="3"`),
+  pause: c(32, 32, 25, BLU) + r(22, 20, 7, 24, 2, WH, NS) + r(35, 20, 7, 24, 2, WH, NS),
+  tranquille: r(10, 30, 44, 26, 6, '#A78BFA') + face(32, 22, 13, 'calm') + p('M50 8 h8 l-8 8 h8', 'none', 'stroke-width="2"'),
+  comprendspas: face(26, 36, 20, 'neutral') + t(50, 30, 26, '?', PUR) + p('M42 40 Q50 46 58 40', 'none', `stroke="${PUR}" stroke-width="2"`),
+  jesais: face(28, 38, 20, 'happy') + hand(50, 24, .55) + c(48, 6, 3, YEL, NS),
+  recre: r(14, 8, 26, 50, 2, BRN) + c(35, 34, 2, YEL) + sun(50, 14, 5) + c(50, 48, 8, WH) + p('M50 40 Q46 48 50 56', 'none', `stroke="${RED}" stroke-width="2"`),
+  chien: el(30, 40, 18, 11, '#C98B4E') + c(48, 28, 10, '#C98B4E') + el(54, 22, 4, 8, BRN) + dot(51, 27) + c(57, 31, 2, K, NS) + p('M18 48 V58 M26 50 V58 M36 50 V58 M42 48 V58', 'none', 'stroke-width="3"') + p('M12 36 Q6 30 8 24', 'none', 'stroke-width="3"'),
+  caresser: el(28, 44, 16, 10, '#C98B4E') + c(44, 34, 9, '#C98B4E') + el(50, 28, 3.5, 7, BRN) + hand(32, 18, .55) + heart(PNK, 54, 12, .22),
+  peurchien: ICONS.peur ? face(18, 22, 12, 'scared') + el(36, 46, 16, 10, '#C98B4E') + c(52, 36, 9, '#C98B4E') + el(57, 30, 3.5, 7, BRN) : '',
+  appeler: r(20, 4, 26, 52, 5, '#34405A') + r(23, 10, 20, 34, 1.5, '#8EC5FF', NS) + p('M48 14 Q54 20 48 26 M52 10 Q60 20 52 30', 'none', `stroke="${GRN}" stroke-width="2.5"`),
+  room_ecole: ICONS.ecole,
+  tableau_ic: r(4, 10, 56, 40, 4, '#8C5A2E') + r(8, 14, 48, 32, 2, '#2F6B4F') + t(32, 36, 16, 'A b', '#F4F6FA'),
+  cartable_ic: p('M12 30 Q12 16 32 16 Q52 16 52 30 V54 Q52 58 48 58 H16 Q12 58 12 54Z', RED) + p('M24 16 Q24 8 32 8 Q40 8 40 16', 'none', 'stroke-width="3"') + r(22, 34, 20, 12, 3, ORA),
+});
 
 /* ---------- Vocabulaire ----------
  k : pers (personne), start (début de phrase), noun (objet), body (corps), feel (ressenti), verb (action), place (lieu), soc (social), q (question)
@@ -723,6 +750,23 @@ const W = [
   { id: 'encore', cat: 'debut', k: 'soc', fr: 'Encore', en: 'More' },
   { id: 'oui', cat: 'debut', k: 'soc', fr: 'Oui', en: 'Yes' },
   { id: 'non', cat: 'debut', k: 'soc', col: 'neg', fr: 'Non', en: 'No' },
+  { id: 'glace', cat: 'manger', k: 'noun', fr: 'glace', g: 'f', en: 'ice cream', ec: 'count' },
+  { id: 'oeuf', cat: 'manger', k: 'noun', fr: 'œuf', g: 'm', en: 'egg', ec: 'count' },
+  { id: 'pizza', cat: 'manger', k: 'noun', fr: 'pizza', g: 'f', m: 1, en: 'pizza', ec: 'mass' },
+  { id: 'sandwich', cat: 'manger', k: 'noun', fr: 'sandwich', g: 'm', en: 'sandwich', ec: 'count' },
+  { id: 'crayons', cat: 'objets', k: 'noun', fr: 'crayons', g: 'p', en: 'pencils', ec: 'pl' },
+  { id: 'casque', cat: 'objets', k: 'noun', fr: 'casque', g: 'm', pos: 'mon casque', en: 'headphones', epos: 'my headphones', ec: 'pl' },
+  { id: 'pyjama', cat: 'faire', k: 'verb', fr: 'mettre mon pyjama', lbl: 'Pyjama', en: 'put my pyjamas on', elbl: 'Pyjamas' },
+  { id: 'recre', cat: 'faire', k: 'verb', fr: 'aller en récré', lbl: 'Récré', en: 'go out to play', gb: 'go out to play', elbl: 'Playtime' },
+  { id: 'caresser', cat: 'faire', k: 'verb', fr: 'caresser le chien', lbl: 'Caresser le chien', en: 'pet the dog', gb: 'stroke the dog', elbl: 'Pet the dog' },
+  { id: 'pipi', cat: 'debut', k: 'soc', fr: 'Je veux faire pipi', lbl: 'Pipi', en: 'I need to pee', gb: 'I need a wee', elbl: 'Pee' },
+  { id: 'caca', cat: 'debut', k: 'soc', fr: 'Je veux faire caca', lbl: 'Caca', en: 'I need to poop', gb: 'I need a poo', elbl: 'Poo' },
+  { id: 'bruit', cat: 'debut', k: 'soc', fr: 'Il y a trop de bruit', lbl: 'Trop de bruit', en: "It's too noisy", elbl: 'Too noisy' },
+  { id: 'pause', cat: 'debut', k: 'soc', fr: 'Je veux une pause', lbl: 'Pause', en: 'I want a break', elbl: 'Break' },
+  { id: 'tranquille', cat: 'debut', k: 'soc', fr: 'Je veux être tranquille', lbl: 'Tranquille', en: 'I want some quiet time', elbl: 'Quiet time' },
+  { id: 'comprendspas', cat: 'debut', k: 'soc', fr: 'Je ne comprends pas', lbl: 'Pas compris', en: "I don't understand", elbl: "Don't understand" },
+  { id: 'jesais', cat: 'debut', k: 'soc', fr: 'Je sais', lbl: 'Je sais', en: 'I know', elbl: 'I know' },
+  { id: 'peurchien', cat: 'debut', k: 'soc', fr: "J'ai peur du chien", lbl: 'Peur du chien', en: "I'm scared of the dog", elbl: 'Scared of dog' },
 ];
 
 /* ---------- Grammaire française ---------- */
@@ -853,6 +897,7 @@ const SCENE_ART = {
     ${HOT('tele', r(206, 132, 132, 96, 6, '#34405A') + r(214, 140, 116, 76, 3, '#8EC5FF', 'class="tvglow" stroke="none"') + p('M216 210 L250 178 L276 198 L300 172 L328 204 V214 H216Z', GRN, NS) + r(198, 248, 148, 54, 6, '#8C5A2E') + p('M262 228 V248', 'none', 'stroke-width="5"'))}
     ${el(150, 430, 130, 32, '#F0C987', 'stroke-width="2"')}
     ${HOT('canape', r(18, 262, 176, 70, 16, PUR) + r(10, 312, 192, 52, 14, '#A78BFA') + r(2, 290, 30, 80, 12, PUR) + r(180, 290, 30, 80, 12, PUR) + r(44, 280, 40, 34, 8, YEL) + p('M24 370 V384 M188 370 V384', 'none', 'stroke-width="5"'))}
+    ${HOT('telephone', hit(296, 214, 44, 36) + r(306, 222, 16, 26, 3, '#34405A') + r(308, 226, 12, 16, 1, '#8EC5FF', NS))}
     ${HOT('jouets', c(252, 356, 20, WH) + p('M252 336 Q244 356 252 376 M232 356 Q252 350 272 356', 'none', `stroke="${RED}" stroke-width="3"`) + r(288, 326, 32, 32, 4, YEL) + r(216, 362, 128, 92, 8, RED) + p('M216 386 H344', 'none', `stroke="${WH}" stroke-width="4"`))}`,
   bain: `${r(0, 0, 360, 330, 0, '#D7EEF0', NS)}${p('M0 60 H360 M0 120 H360 M0 180 H360 M0 240 H360 M0 300 H360 M60 0 V330 M120 0 V330 M180 0 V330 M240 0 V330 M300 0 V330', 'none', 'stroke="#C2E1E5" stroke-width="2"')}${r(0, 330, 360, 150, 0, '#A9C8D1', NS)}
     ${HOT('lavabo', r(226, 36, 104, 96, 44, '#EAF6FF') + p('M212 188 H338 Q338 232 275 234 Q212 232 212 188Z', WH) + r(262, 234, 26, 84, 4, WH) + p('M275 188 V170 H290', 'none', 'stroke-width="5"') + r(310, 158, 18, 24, 3, BLU) + p('M314 158 L310 140 M322 158 L328 142', 'none', 'stroke-width="3"'))}
@@ -863,13 +908,21 @@ const SCENE_ART = {
     ${HOT('armoire', r(244, 30, 104, 210, 8, '#C98B4E') + p('M296 30 V240') + c(288, 136, 3, K, NS) + c(304, 136, 3, K, NS))}
     ${HOT('lampe', r(262, 300, 80, 76, 6, '#B07A47') + p('M302 300 V282', 'none', 'stroke-width="4"') + p('M272 244 H332 L342 284 H262Z', YEL))}
     ${el(160, 446, 120, 24, '#B8A4E6', 'stroke-width="2"')}
+    ${HOT('casque', hit(170, 150, 64, 64) + p('M180 196 V186 Q180 160 202 160 Q224 160 224 186 V196', 'none', 'stroke-width="5"') + r(172, 188, 16, 24, 6, PUR) + r(216, 188, 16, 24, 6, PUR))}
     ${HOT('lit', r(10, 232, 30, 160, 8, '#2F6FD6') + r(14, 292, 236, 72, 12, '#3B82F6') + r(36, 270, 64, 30, 12, WH) + r(110, 278, 140, 34, 12, '#7FB3F5') + p('M24 364 V392 M240 364 V392', 'none', 'stroke-width="6"'))}
     ${HOT('doudou', at(98, 214, 1, teddy()))}<rect class="dim" x="0" y="0" width="360" height="480" fill="#0B1030" stroke="none"/>`,
+  ecole: `${r(0, 0, 360, 300, 0, '#E7EFE2', NS)}${r(0, 300, 360, 180, 0, '#C9B79C', NS)}${p('M0 350 H360 M0 410 H360', 'none', 'stroke="#B59873" stroke-width="2"')}
+    ${HOT('tableau', r(20, 34, 206, 116, 6, '#8C5A2E') + r(28, 42, 190, 100, 3, '#2F6B4F') + t(70, 86, 30, 'A b c', '#F4F6FA') + t(160, 124, 26, '1 2 3', '#F4F6FA'))}
+    ${HOT('maitresse', hit(250, 70, 104, 160) + at(232, 66, 2.3, person(32, 1, { hair: 'long', hc: '#3B2A1E', shirt: '#2F7FE0', dress: 1 })))}
+    ${HOT('porte', r(286, 236, 64, 122, 4, '#B07A47') + c(298, 300, 3.5, YEL) + r(298, 250, 40, 34, 3, LB) + c(326, 262, 6, YEL, NS))}
+    ${HOT('cartable', p('M22 392 Q22 360 56 360 Q90 360 90 392 V452 Q90 462 80 462 H32 Q22 462 22 452Z', RED) + p('M40 360 Q40 344 56 344 Q72 344 72 360', 'none', 'stroke-width="4"') + r(36, 400, 40, 22, 4, '#F08A24'))}
+    ${HOT('pupitre', p('M126 380 V458 M262 380 V458', 'none', 'stroke-width="7"') + r(110, 362, 168, 20, 5, '#C98B4E') + r(140, 344, 52, 20, 2, WH, 'transform="rotate(-6 166 354)"') + r(206, 340, 7, 26, 2, RED, 'transform="rotate(20 210 353)"') + r(222, 340, 7, 26, 2, BLU, 'transform="rotate(30 226 353)"'))}`,
   dehors: `${r(0, 0, 360, 480, 0, '#CDE9FF', 'class="sky" stroke="none"')}<g class="night">${[[40, 150], [120, 40], [200, 120], [330, 30], [300, 160], [170, 30]].map(([x, y]) => c(x, y, 2.5, WH, NS)).join('')}</g><g class="cloud">${el(250, 70, 46, 18, WH, NS)}${el(280, 58, 30, 16, WH, NS)}</g><g class="cloud c2">${el(150, 130, 34, 12, WH, NS)}</g>${p('M0 300 Q180 266 360 300 V480 H0Z', '#9BD17A', NS)}
     ${HOT('soleil', hit(20, 20, 84, 84) + '<g class="day spin">' + sun(62, 62, 24) + '</g><g class="night">' + c(62, 62, 24, '#F4F1D0') + c(74, 54, 20, '#1E2A4A', 'class="sky" stroke="none"') + '</g>')}
     ${HOT('balancoire', p('M28 336 L62 150 H156 L190 336', 'none', 'stroke="#8C5A2E" stroke-width="8"') + p('M92 150 V262 M126 150 V262', 'none', 'stroke-width="3"') + r(84, 262, 50, 10, 4, YEL))}
     ${HOT('toboggan', p('M226 330 V142 H250 V330', 'none', 'stroke-width="5"') + p('M226 182 H250 M226 222 H250 M226 262 H250 M226 302 H250', 'none', 'stroke-width="3"') + p('M250 142 Q284 142 304 230 Q314 300 352 304 V324 Q300 324 290 240 Q276 166 250 166Z', RED))}
-    ${HOT('ballon', c(118, 392, 26, WH) + p('M118 366 Q104 392 118 418 M92 392 Q118 382 144 392', 'none', `stroke="${RED}" stroke-width="3"`) + c(118, 392, 26))}
+    ${HOT('ballon', c(160, 404, 24, WH) + p('M160 380 Q146 404 160 428 M136 404 Q160 394 184 404', 'none', `stroke="${RED}" stroke-width="3"`) + c(160, 404, 24))}
+    ${HOT('chien', at(4, 380, 1.45, ICONS.chien))}
     ${HOT('voiture', at(194, 332, 2.4, car(BLU)))}`,
 };
 
@@ -881,6 +934,7 @@ const SCENES = [
   { id: 'salon', fr: 'Salon', en: 'Living room', gb: 'Lounge' },
   { id: 'bain', fr: 'Salle de bain', en: 'Bathroom' },
   { id: 'chambre', fr: 'Chambre', en: 'Bedroom' },
+  { id: 'ecole', fr: 'École', en: 'School' },
   { id: 'dehors', fr: 'Dehors', en: 'Outside' },
 ];
 const pain = (id) => ({ w: id, mode: 'pain', o: ['mal:' + id, 'peu:' + id, 'tres:' + id] });
@@ -889,23 +943,31 @@ const HOTS = {
   oreille: pain('oreille'), oeil: pain('oeil'), nez: pain('nez'), dents: pain('dents'),
   partout: { w: 'partout', direct: 'mal:partout' },
   emotions: { fr: 'Ce que je ressens', en: 'How I feel', ic: 'content', o: ['say:content', 'say:triste', 'say:colere', 'say:fatigue', 'say:peur', 'say:malade', 'say:calme', 'say:surpris', 'say:faim', 'say:soif', 'say:chaud', 'say:froid', 'say:ennui'] },
-  frigo: { fr: 'Frigo', en: 'Fridge', ic: 'room_cuisine', neg: 1, o: ['veux:lait', 'veux:eau', 'veux:jus', 'veux:yaourt', 'veux:fromage', 'veux:compote'] },
+  frigo: { fr: 'Frigo', en: 'Fridge', ic: 'room_cuisine', neg: 1, o: ['veux:lait', 'veux:eau', 'veux:jus', 'veux:yaourt', 'veux:fromage', 'veux:compote', 'veux:glace', 'veux:oeuf'] },
   placard: { fr: 'Placard', en: 'Cupboard', ic: 'biscuit', neg: 1, o: ['veux:biscuit', 'veux:gateau', 'veux:chocolat', 'veux:bonbon', 'veux:pain', 'veux:cereales'] },
   evier: { fr: 'Évier', en: 'Sink', ic: 'eau', o: ['say:soif', 'veux:eau', 'verb:lavermains'] },
   fruits: { fr: 'Fruits', en: 'Fruit', ic: 'pomme', neg: 1, o: ['veux:pomme', 'veux:banane', 'veux:raisin', 'veux:fraises'] },
-  table: { fr: 'Table', en: 'Table', ic: 'faim', neg: 1, o: ['say:faim', 'veux:pates', 'veux:riz', 'veux:soupe', 'veux:viande', 'veux:legumes', 'veux:frites', 'soc:jaifini'] },
+  table: { fr: 'Table', en: 'Table', ic: 'faim', neg: 1, o: ['say:faim', 'veux:pates', 'veux:riz', 'veux:soupe', 'veux:viande', 'veux:legumes', 'veux:frites', 'veux:pizza', 'veux:sandwich', 'soc:encore', 'soc:jaifini'] },
   cadre: { fr: 'Photos', en: 'Photos', ic: 'tous', go: 'gens' },
   livres: { fr: 'Livres', en: 'Books', ic: 'lire', neg: 1, o: ['verb:lire', 'verb:histoire', 'verb:dessiner', 'veux:livre'] },
   tele: { fr: 'Télé', en: 'TV', ic: 'tele', neg: 1, o: ['verb:televoir', 'verb:ecouter', 'verb:danser', 'verb:chanter', 'veux:tablette'] },
   canape: { fr: 'Canapé', en: 'Sofa', ic: 'reposer', neg: 1, o: ['verb:reposer', 'verb:calin', 'verb:histoire', 'say:fatigue', 'say:ennui'] },
   jouets: { fr: 'Jouets', en: 'Toys', ic: 'jouer', neg: 1, o: ['verb:jouer', 'veux:ballon', 'veux:lego', 'veux:puzzle', 'veux:petitevoiture', 'veux:doudou', 'veux:bulles', 'veux:tablette'] },
   lavabo: { fr: 'Lavabo', en: 'Sink', ic: 'brosser', neg: 1, o: ['verb:brosser', 'verb:lavermains', 'veux:eau', 'mal:dents'] },
-  wc: { fr: 'Toilettes', en: 'Toilet', gb: 'Toilet', ic: 'toilettes', o: ['verb:allertoilettes', 'soc:jaifini', 'soc:besoinaide'] },
+  wc: { fr: 'Toilettes', en: 'Toilet', gb: 'Toilet', ic: 'toilettes', o: ['soc:pipi', 'soc:caca', 'verb:allertoilettes', 'soc:jaifini', 'soc:besoinaide'] },
   bain: { fr: 'Bain', en: 'Bath', ic: 'room_bain', neg: 1, o: ['verb:laver', 'veux:bulles', 'say:chaud', 'say:froid', 'soc:jaifini'] },
   lit: { fr: 'Lit', en: 'Bed', ic: 'dormir', neg: 1, o: ['verb:dormir', 'verb:histoire', 'verb:calin', 'say:fatigue', 'say:peur'] },
   doudou: { fr: 'Doudou', en: 'Teddy', ic: 'doudou', mode: 'start', o: ['veux:doudou', 'ouest:doudou'] },
-  armoire: { fr: 'Armoire', en: 'Wardrobe', ic: 'habiller', neg: 1, o: ['verb:habiller', 'say:chaud', 'say:froid'] },
-  lampe: { fr: 'Lampe', en: 'Lamp', ic: 'allume', o: ['soc:allume', 'soc:eteins', 'say:peur'] },
+  armoire: { fr: 'Armoire', en: 'Wardrobe', ic: 'habiller', neg: 1, o: ['verb:habiller', 'verb:pyjama', 'say:chaud', 'say:froid'] },
+  casque: { fr: 'Casque', en: 'Headphones', ic: 'casque', neg: 1, o: ['veux:casque', 'soc:bruit', 'soc:pause', 'soc:tranquille', 'verb:reposer'] },
+  telephone: { fr: 'Téléphone', en: 'Phone', ic: 'appeler', o: ['call:maman', 'call:papa', 'call:mamie', 'call:papy'] },
+  chien: { fr: 'Chien', en: 'Dog', ic: 'chien', neg: 1, o: ['verb:caresser', 'soc:peurchien'] },
+  tableau: { fr: 'Tableau', en: 'Board', ic: 'tableau_ic', o: ['soc:jesais', 'soc:comprendspas', 'soc:besoinaide', 'soc:regarde'] },
+  maitresse: { fr: 'Maîtresse', en: 'Teacher', ic: 'maitresse', o: ['tpl:aide:maitresse', 'tpl:regarde:maitresse', 'tpl:viens:maitresse', 'soc:comprendspas', 'verb:allertoilettes'] },
+  porte: { fr: 'Récré', en: 'Playtime', ic: 'recre', neg: 1, o: ['verb:recre', 'verb:jouer', 'soc:montour', 'soc:tranquille'] },
+  cartable: { fr: 'Cartable', en: 'School bag', ic: 'cartable_ic', neg: 1, o: ['veux:gouter', 'veux:eau', 'veux:doudou', 'veux:casque'] },
+  pupitre: { fr: 'Ma table', en: 'My desk', ic: 'crayons', neg: 1, o: ['veux:crayons', 'veux:livre', 'verb:dessiner', 'verb:lire', 'soc:jaifini', 'soc:pause'] },
+  lampe: { fr: 'Lampe', en: 'Lamp', ic: 'allume', o: ['soc:allume', 'soc:eteins', 'say:peur', 'soc:tranquille'] },
   soleil: { fr: 'Soleil', en: 'Sun', ic: 'chaud', o: ['say:chaud', 'say:soif', 'veux:eau'] },
   balancoire: { fr: 'Balançoire', en: 'Swing', ic: 'balancoire', neg: 1, o: ['verb:balancoire', 'soc:encore', 'soc:montour', 'soc:atoi', 'soc:besoinaide'] },
   toboggan: { fr: 'Toboggan', en: 'Slide', ic: 'toboggan', neg: 1, o: ['verb:toboggan', 'soc:encore', 'soc:montour', 'soc:atoi'] },
@@ -913,6 +975,8 @@ const HOTS = {
   voiture: { fr: 'Voiture', en: 'Car', ic: 'voiture', o: ['aller:maison', 'aller:ecole', 'aller:parc', 'aller:magasin', 'aller:piscine', 'aller:docteur', 'aller:mamie', 'aller:papy'] },
 };
 const ROUTINE = [[0, 'chambre'], [6.5, 'cuisine'], [9.5, 'salon'], [11.75, 'cuisine'], [13.5, 'dehors'], [16, 'cuisine'], [17, 'salon'], [18.5, 'bain'], [19.5, 'chambre']];
+/* Jours d'école (lundi, mardi, jeudi, vendredi ; mercredi matin) si l'option est cochée */
+const SCHOOL = [[8.5, 11.75], [13.5, 16.25]];
 const TPL = {
   veux: { ic: 'veux', fr: ['Je veux', 'Je veux {p}'], en: ['I want', 'I want {p}'] },
   ouest: { ic: 'ouest', fr: ['Où est ?', 'Où est {p} ?'], en: ['Where?', 'Where is {p}?'] },
@@ -931,10 +995,10 @@ const QUICKQ = [
   { fr: 'Oui ou non ?', en: 'Yes or no?', s: 'say', a: ['oui', 'non'] },
 ];
 
-const APP_VERSION = '2.0.0';
+const APP_VERSION = '2.1.0';
 const I18N = {
   fr: {
-    app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
+    school: 'Mon enfant va à l’école (ouvrir l’École en semaine, 8 h 30 – 16 h 15)', app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
     want: 'Je veux', notWant: 'Je ne veux pas', pMal: 'Mal', pPeu: 'Un peu', pTres: 'Très mal',
     tAsk: 'Questions', tLog: 'Fil', tWrite: 'Écrire', tSet: 'Réglages',
     askHelp: 'Posez une question, choisissez jusqu’à 4 réponses en images, puis montrez l’écran à l’enfant.', askQ: 'Votre question', askPh: 'Par exemple : tu veux quoi au goûter ?',
@@ -957,7 +1021,7 @@ const I18N = {
     reset: 'Tout remettre comme au départ', resetAsk: 'Tout effacer et revenir au départ ? Photos, personnes, choix ajoutés et fil seront supprimés.',
   },
   en: {
-    app: 'My World', hint: 'Touch something to talk', adult: 'Adult', close: 'Close', back: 'Back to child', replay: 'Say again', now: 'Now',
+    school: 'My child goes to school (open School on weekdays, 8:30 – 16:15)', app: 'My World', hint: 'Touch something to talk', adult: 'Adult', close: 'Close', back: 'Back to child', replay: 'Say again', now: 'Now',
     want: 'I want', notWant: "I don't want", pMal: 'Hurts', pPeu: 'A little', pTres: 'A lot',
     tAsk: 'Questions', tLog: 'Log', tWrite: 'Type', tSet: 'Settings',
     askHelp: 'Ask a question, pick up to 4 picture answers, then show the screen to the child.', askQ: 'Your question', askPh: 'For example: what do you want for a snack?',
@@ -982,7 +1046,7 @@ const I18N = {
 };
 
 /* ---------- État ---------- */
-const KEY = 'monmonde1';
+const KEY = new URLSearchParams(location.search).has('embed') ? 'monmonde-jpat' : 'monmonde1';
 const PEOPLE0 = ['maman', 'papa', 'frere', 'soeur', 'mamie', 'papy', 'maitresse', 'ami'].map((id) => ({ id }));
 const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [], av: { skin: '#F7CBA5', hair: 'short', hc: '#6B4A2F', shirt: '#3B82F6', glasses: 0 } };
 let S = load();
@@ -1081,7 +1145,8 @@ function optText(o, neg) {
       return base + (k === 'peu' ? ' a little' : ' a lot');
     }
     case 'aller': { const w = word(a); if (w && w.k === 'pers') return fr ? 'Je veux aller chez ' + persName(w) : 'I want to go and see ' + persName(w); return compose(['veux', a]); }
-    case 'soc': { const w = word(a); return w ? (fr ? w.fr : w.en) : ''; }
+    case 'soc': { const w = word(a); return w ? (fr ? w.fr : (GB() && typeof w.gb === 'string' && w.gb) || w.en) : ''; }
+    case 'call': { const n = persName(word(a)); return fr ? 'Je veux appeler ' + n : 'I want to call ' + n; }
     case 'tpl': { const n = persName(word(b)), t = TPL[a][L()][1]; return t.replace('{P}', cap(n)).replace('{p}', n); }
     default: return compose([a]);
   }
@@ -1090,6 +1155,7 @@ function defOpt(w) { return ({ noun: 'veux:', verb: 'verb:', place: 'aller:', fe
 function optView(o, h, neg) {
   const { k, a, b } = parts(o);
   if (k === 'tpl') return { ic: picto(TPL[a].ic), lb: TPL[a][L()][0], col: a === 'veux' ? 'verb' : a === 'ouest' ? 'q' : 'soc' };
+  if (k === 'call') { const w = word(a) || {}; return { ic: pic(w), lb: w.id ? label(w) : '?', col: 'pers' }; }
   if (h && h.mode === 'pain') return { ic: picto(k === 'mal' ? 'mal' : k), lb: T({ mal: 'pMal', peu: 'pPeu', tres: 'pTres' }[k]), col: 'neg' };
   if (h && h.mode === 'start') return { ic: picto(TPL[k] ? TPL[k].ic : k), lb: TPL[k] ? TPL[k][L()][0] : k, col: k === 'ouest' ? 'q' : 'verb' };
   const w = word(a) || {};
@@ -1134,6 +1200,7 @@ function say(text, icon, o) {
   S.log.push({ w: 'c', t: text, o: o || '', r: scene, ts: Date.now() }); if (S.log.length > 600) S.log.splice(0, S.log.length - 600); save();
   const b = $('#bubble');
   b.innerHTML = `<span class="av">${avatarSVG(moodOf(o))}</span><span class="btx">${esc(text)}</span>${icon ? `<span class="bic">${icon}</span>` : ''}${ui('say')}`;
+  if (typeof EMBED !== 'undefined' && EMBED) window.parent.postMessage({ type: 'mm-said', text }, location.origin);
   if (o === 'soc:eteins') lights(false); if (o === 'soc:allume') lights(true);
   renderSugg();
   b.setAttribute('aria-label', T('replay') + ' : ' + text); b.dataset.t = text; b.classList.remove('idle');
@@ -1165,7 +1232,11 @@ const URG = [
 ];
 let scene = 'cuisine', sheetHot = null, neg = false, view = 'child', adultTab = 'ask', unlocked = false;
 const urgTxt = (u) => (L() === 'fr' ? u.fr : (GB() && u.gb) || u.en);
-function nowRoom() { const d = new Date(), h = d.getHours() + d.getMinutes() / 60; let r0 = ROUTINE[0][1]; ROUTINE.forEach(([t, r]) => { if (h >= t) r0 = r; }); return r0; }
+function nowRoom() {
+  const d = new Date(), h = d.getHours() + d.getMinutes() / 60, wd = d.getDay();
+  if (S.school && wd >= 1 && wd <= 5 && SCHOOL.some(([a0, b0]) => h >= a0 && h < b0 && !(wd === 3 && a0 > 12))) return 'ecole';
+  let r0 = ROUTINE[0][1]; ROUTINE.forEach(([t, r]) => { if (h >= t) r0 = r; }); return r0;
+}
 function allScenes() { return SCENES.map((s) => ({ id: s.id, name: nm(s), ic: picto('room_' + s.id) })).concat(S.scenes.map((s) => ({ id: s.id, name: s.name, ic: `<img src="${s.img}" alt="">` }))); }
 function renderUrg() {
   $('#urg').innerHTML = URG.map((u) => `<button class="urg c-${u.col}" data-urg="${u.id}" aria-label="${esc(urgTxt(u)[1])}"><span class="pic">${picto(u.ic)}</span><span class="lbl">${esc(urgTxt(u)[0])}</span></button>`).join('');
@@ -1295,7 +1366,7 @@ function renderSettings() {
   const allO = (base.o || []).concat(S.custom.filter((c) => c.hot === objHot).map((c) => 'veux:' + c.id));
   return `${renderAvatarSet()}<details><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
     <label class="f">${T('lang')}<select id="sLang">${opt('fr', 'Français', S.lang)}${opt('en-US', 'English (US)', S.lang)}${opt('en-GB', 'English (UK)', S.lang)}</select></label></details>
-  <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><p class="hint">${T('dayHelp')}</p>
+  <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><label class="chk"><input type="checkbox" id="sSchool"${S.school ? ' checked' : ''}> ${T('school')}</label><p class="hint">${T('dayHelp')}</p>
     <ul class="routine">${ROUTINE.map(([t, r]) => `<li><b>${String(Math.floor(t)).padStart(2, '0')}:${String(Math.round((t % 1) * 60)).padStart(2, '0')}</b> ${esc(nm(SCENES.find((s) => s.id === r)))}</li>`).join('')}</ul></details>
   <details><summary>${T('sPeople')}</summary><p class="hint">${T('peopleHelp')}</p>
     <ul class="plist">${S.people.map((pe, i) => { const w = word(pe.id); return `<li><span class="mini big">${pic(w)}</span><input aria-label="${T('name')}" data-pname="${i}" value="${esc(pe.name || '')}" placeholder="${esc(label(WD[pe.id] || w))}">${photoBtn('pimg' + i, 'iconbtn')}<button class="iconbtn" data-pdel="${i}" aria-label="${T('del')}">${ui('trash')}</button></li>`; }).join('')}</ul>
@@ -1458,6 +1529,7 @@ document.addEventListener('change', async (e) => {
   else if (t.name === 'theme') { S.theme = t.value; applyTheme(); }
   else if (t.id === 'sLang') { S.lang = t.value; S.voice = ''; save(); renderAll(); return renderAdult(); }
   else if (t.id === 'sAuto') S.auto = t.checked;
+  else if (t.id === 'sSchool') S.school = t.checked;
   else if (t.id === 'sVoice') S.voice = t.value;
   else if (t.id === 'sRate') S.rate = +t.value;
   else if (t.id === 'sPitch') S.pitch = +t.value;
@@ -1653,7 +1725,20 @@ function renderBilan() {
   <button class="btn" id="bPrint">${ui('bilan')}${T('print')}</button>`;
 }
 
+/* Intégré dans Je Parle avec Toi : réglages partagés (voix, langue, fille ou garçon, code parent, thème) */
+const EMBED = new URLSearchParams(location.search).has('embed') && window.parent !== window;
+if (EMBED) document.documentElement.classList.add('embed');
+window.addEventListener('message', (e) => {
+  const m = e.data || {}; if (e.origin !== location.origin || m.type !== 'jpat-sync') return;
+  S.gender = m.gender === 'f' ? 'f' : 'm'; S.lang = m.lang === 'en' ? 'en-US' : 'fr';
+  if (m.rate) S.rate = +m.rate; if (m.pitch) S.pitch = +m.pitch; if (m.pin) S.code = String(m.pin);
+  if (m.voiceName) { const vv = voices.find((x) => x.name === m.voiceName); if (vv) S.voice = vv.voiceURI; }
+  if (m.theme === 'dark' || m.theme === 'light') S.theme = m.theme;
+  save(); if (view === 'child') renderAll();
+});
+
 boot();
+if (EMBED) window.parent.postMessage({ type: 'mm-ready' }, location.origin);
 </script>
 </body>
 </html>
