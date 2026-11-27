@@ -116,7 +116,7 @@ button:disabled { opacity: .4; cursor: default; }
 /* Espace adulte */
 #adult { position: fixed; inset: 0; z-index: 30; background: var(--bg); overflow-y: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
 .ahead { padding: 10px 12px 0; max-width: 780px; margin: 0 auto; }
-.atabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bg); border-bottom: 1px solid var(--line); max-width: 780px; margin: 8px auto 0; }
+.atabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--bg); border-bottom: 1px solid var(--line); max-width: 780px; margin: 8px auto 0; }
 .atabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 58px; border: 0; background: none; color: var(--mute); font-size: 13px; font-weight: 600; border-bottom: 3px solid transparent; }
 .atabs [aria-selected=true] { color: var(--acc); border-bottom-color: var(--acc); }
 .abody { max-width: 780px; margin: 0 auto; padding: 14px 16px 32px; }
@@ -199,18 +199,114 @@ summary { font-weight: 600; font-size: 18px; min-height: 56px; display: flex; al
 .zc.sel { stroke: #F0605F; fill-opacity: .35; }
 #toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 12px; font-weight: 600; z-index: 50; }
 @media (max-height: 640px) { .urg { min-height: 52px; } .urg .pic { width: 26px; height: 26px; } .rpic { width: 38px; height: 38px; } }
+
+/* ---------- Mon Monde Vivant ---------- */
+#bubble .av { width: 62px; height: 62px; flex: none; border-radius: 50%; background: var(--plate); overflow: hidden; border: 2px solid rgba(255, 255, 255, .6); }
+#bubble.idle .av { border-color: var(--line); width: 52px; height: 52px; }
+#bubble .av svg, .askav svg, .avbig svg { width: 100%; height: 100%; display: block; }
+.tm { transform: scaleY(0); transform-box: fill-box; transform-origin: center; }
+#sugg { display: flex; align-items: center; gap: 6px; margin: 6px 8px 0; overflow-x: auto; scrollbar-width: none; flex: none; }
+#sugg::-webkit-scrollbar { display: none; }
+.sgt { flex: none; font-size: 12px; font-weight: 600; color: var(--mute); width: 64px; line-height: 1.15; }
+.sg { flex: 0 1 auto; min-width: 0; max-width: 46%; display: flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; min-height: 50px; border-radius: 14px; border: 2px solid var(--c); background: var(--ct); font-size: 14px; font-weight: 600; text-align: left; }
+.sg > span:last-child { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+#listen { position: fixed; inset: 0; z-index: 45; background: rgba(10, 14, 22, .55); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.lcard { background: var(--surf); border-radius: 24px; padding: 24px; max-width: 440px; width: 100%; text-align: center; }
+.lmic { width: 96px; height: 96px; margin: 0 auto 8px; border-radius: 50%; background: var(--acc); color: var(--acc-ink); display: flex; align-items: center; justify-content: center; }
+.lmic .ui { width: 44px; height: 44px; }
+.ltx { font-size: 24px; font-weight: 600; min-height: 1.3em; }
+.listenbtn .rpic { color: var(--acc); align-items: center; justify-content: center; }
+.listenbtn .rpic .ui { width: 26px; height: 26px; }
+.askhead { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 40px 8px 18px; }
+.askhead .askq { margin: 0; text-align: left; }
+.askav { width: 76px; height: 76px; flex: none; border-radius: 50%; background: var(--plate); overflow: hidden; border: 2px solid var(--line); }
+.sky { fill: var(--sky, #C7E6FF); }
+.night { display: none; }
+.is-night .night { display: inline; }
+.is-night .day { display: none; }
+.is-night.sc-dehors svg { filter: brightness(.72) saturate(.85); }
+.is-evening.sc-dehors svg { filter: sepia(.15) saturate(1.1); }
+.dim { opacity: 0; pointer-events: none; }
+.lights-off .dim { opacity: .58; }
+.hot { transform-box: fill-box; transform-origin: 50% 60%; }
+.avset { display: flex; align-items: center; gap: 14px; }
+.avbig { width: 104px; height: 104px; flex: none; border-radius: 50%; background: var(--plate); overflow: hidden; border: 2px solid var(--line); }
+.sw { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0; }
+.sw input { position: absolute; opacity: 0; }
+.sw span { display: block; width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--line); cursor: pointer; }
+.sw input:checked + span { outline: 3px solid var(--acc); outline-offset: 3px; }
+.sw input:focus-visible + span { outline: 3px dashed var(--acc); outline-offset: 3px; }
+.kpis { display: flex; gap: 12px; flex-wrap: wrap; }
+.kpis p { margin: 0; background: var(--surf); border: 1px solid var(--line); border-radius: 14px; padding: 10px 16px; }
+.kpis b { font-size: 28px; display: block; }
+.bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 170px; align-items: end; margin-bottom: 8px; }
+.bar { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 4px; }
+.bv { background: var(--acc); border-radius: 8px 8px 0 0; min-height: 3px; display: flex; justify-content: center; }
+.bv b { color: var(--acc-ink); font-size: 13px; padding-top: 3px; }
+.bl { text-align: center; font-size: 13px; color: var(--mute); }
+.feels { display: flex; flex-wrap: wrap; gap: 12px; }
+.feel { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; min-width: 64px; }
+.feel b { font-size: 18px; }
+.top { padding-left: 20px; }
+.top li { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.top li { display: list-item; }
+.top b { float: right; color: var(--mute); }
+@media (prefers-reduced-motion: no-preference) {
+  .talking .tm { animation: talkm .18s ease-in-out infinite alternate; }
+  @keyframes talkm { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
+  .talking .av svg, .talking.askav svg { animation: nod .5s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+  @keyframes nod { to { transform: rotate(-3deg) translateY(1px); } }
+  .cloud { animation: drift 28s ease-in-out infinite alternate; }
+  .cloud.c2 { animation-duration: 36s; animation-direction: alternate-reverse; }
+  @keyframes drift { from { transform: translateX(-24px); } to { transform: translateX(36px); } }
+  .spin { transform-box: fill-box; transform-origin: center; animation: spin 60s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .drip { animation: drip 1.8s ease-in infinite; transform-box: fill-box; }
+  @keyframes drip { 0% { transform: translateY(0); opacity: 1; } 80% { transform: translateY(18px); opacity: 0; } 100% { opacity: 0; } }
+  .float { animation: floaty 2.6s ease-in-out infinite alternate; }
+  .float.f2 { animation-delay: .7s; } .float.f3 { animation-delay: 1.4s; }
+  @keyframes floaty { to { transform: translateY(-9px); } }
+  .tvglow { animation: glow 3.2s ease-in-out infinite alternate; }
+  @keyframes glow { to { opacity: .82; } }
+  .dim { transition: opacity .9s; }
+  .enter { animation: sceneIn .38s cubic-bezier(.2, .8, .3, 1); }
+  @keyframes sceneIn { from { opacity: 0; transform: scale(.965); } }
+  .tap { animation: boing .45s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes boing { 35% { transform: scale(1.07); } 70% { transform: scale(.98); } }
+  .lmic { animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(67, 56, 202, .45); } 100% { box-shadow: 0 0 0 26px rgba(67, 56, 202, 0); } }
+}
+@media print {
+  #app, #sheet, #ask, #listen, #toast, .ahead, .atabs, #bPrint { display: none !important; }
+  #adult { position: static; overflow: visible; display: block !important; }
+  body { background: #fff; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  #app { display: grid; grid-template-columns: minmax(0, 1fr) 92px; grid-template-rows: auto auto auto minmax(0, 1fr); }
+  #urg { grid-column: 1; grid-row: 1; } #bubble { grid-column: 1; grid-row: 2; min-height: 50px; padding: 4px 10px 4px 4px; } #sugg { grid-column: 1; grid-row: 3; } #stage { grid-column: 1; grid-row: 4; }
+  #rooms { grid-column: 2; grid-row: 1 / 5; flex-direction: column; overflow-x: hidden; overflow-y: auto; border-top: 0; border-left: 1px solid var(--line); padding: 6px 2px env(safe-area-inset-bottom); }
+  #rooms button { width: auto; }
+  #rooms .adultbtn { margin: 6px 0 0; border-left: 0; border-top: 1px solid var(--line); border-radius: 0; padding-top: 8px; width: auto; }
+  .urg { min-height: 44px; flex-direction: row; justify-content: center; gap: 4px; padding: 3px; }
+  .urg .pic { width: 26px; height: 26px; }
+  #bubble .av, #bubble.idle .av { width: 42px; height: 42px; }
+  .btx { font-size: 20px; }
+  .sg { min-height: 40px; }
+}
 </style>
 </head>
 <body>
 <div id="app">
   <div id="urg"></div>
   <button id="bubble" class="idle"></button>
+  <div id="sugg" hidden></div>
   <div id="stage"><div id="scene"></div></div>
   <nav id="rooms" aria-label="Pièces"></nav>
 </div>
 <div id="sheet" hidden></div>
 <div id="adult" hidden></div>
 <div id="ask" hidden role="dialog" aria-modal="true"></div>
+<div id="listen" hidden role="dialog" aria-modal="true"></div>
 <div id="toast" role="status" hidden></div>
 <script>/* Pictogrammes dessinés pour l'appli (pas de licence tierce). Grille 64x64. */
 const K = '#22293A', SK = '#F7CBA5', HB = '#6B4A2F', HG = '#C9CED6', HY = '#E3B04B',
@@ -743,33 +839,34 @@ const SCENE_ART = {
     ${HOT('emotions', el(292, 62, 56, 44, WH) + c(242, 116, 9, WH) + c(230, 134, 5, WH) + face(266, 60, 15, 'happy') + face(304, 60, 15, 'sad') + face(285, 86, 9, 'angry'))}
     ${HOT('partout', r(14, 400, 84, 70, 16, WH) + at(24, 404, .97, ICONS.partout))}`,
   cuisine: `${r(0, 0, 360, 312, 0, '#F2E6CF', NS)}${r(0, 312, 360, 168, 0, '#D8BE95', NS)}${p('M0 370 H360 M0 430 H360', 'none', 'stroke="#C4A77A" stroke-width="2"')}
-    ${r(24, 36, 110, 92, 8, '#BFE3FF')}${p('M79 36 V128 M24 82 H134', 'none', 'stroke-width="4"')}
+    ${r(24, 36, 110, 92, 8, '#BFE3FF', 'class="sky"')}<g class="day">${c(52, 62, 11, YEL, NS)}</g><g class="night">${c(52, 62, 10, '#F4F1D0', NS)}${c(110, 104, 2, WH, NS)}</g>${p('M79 36 V128 M24 82 H134', 'none', 'stroke-width="4"')}
     ${HOT('placard', r(150, 30, 80, 94, 8, '#C98B4E') + p('M190 30 V124') + c(182, 78, 3, K, NS) + c(198, 78, 3, K, NS))}
     ${r(0, 216, 238, 96, 0, '#B07A47')}${r(-6, 206, 248, 14, 4, '#8C5A2E')}${p('M80 226 V306 M160 226 V306', 'none')}
-    ${HOT('evier', hit(18, 150, 96, 70) + el(64, 210, 42, 9, '#C9CED6') + p('M66 206 V178 Q66 166 80 166 H90', 'none', 'stroke-width="6"') + el(90, 180, 3, 6, BLU, NS))}
+    ${HOT('evier', hit(18, 150, 96, 70) + el(64, 210, 42, 9, '#C9CED6') + p('M66 206 V178 Q66 166 80 166 H90', 'none', 'stroke-width="6"') + el(90, 180, 3, 6, BLU, 'class="drip" stroke="none"'))}
     ${HOT('fruits', hit(126, 156, 88, 58) + c(152, 190, 13, RED) + p('M160 196 Q174 166 200 178 Q184 184 174 200Z', YEL) + c(184, 194, 11, ORA) + p('M126 202 Q170 228 214 202Z', WH))}
     ${HOT('frigo', r(246, 72, 98, 252, 12, '#E9EEF5') + p('M246 152 H344') + r(328, 96, 7, 36, 3, '#9AA3B2') + r(328, 170, 7, 60, 3, '#9AA3B2') + r(262, 172, 34, 28, 2, WH) + c(272, 214, 6, RED) + c(292, 222, 6, YEL))}
     ${HOT('table', hit(56, 316, 248, 150) + p('M84 392 V466 M276 392 V466', 'none', 'stroke-width="8"') + r(56, 376, 248, 18, 6, '#A86B3A') + el(170, 370, 48, 10, WH) + el(170, 369, 30, 6) + p('M108 352 V376 M104 352 V360 M112 352 V360', 'none', 'stroke-width="2.5"') + p('M244 330 H268 L265 374 H247Z', LB))}`,
   salon: `${r(0, 0, 360, 318, 0, '#DCEBF2', NS)}${r(0, 318, 360, 162, 0, '#C9AE88', NS)}${p('M0 360 H360 M0 410 H360 M0 455 H360', 'none', 'stroke="#B59873" stroke-width="2"')}
     ${HOT('cadre', r(26, 34, 124, 94, 6, '#8C5A2E') + r(34, 42, 108, 78, 3, WH) + face(62, 86, 14, 'happy') + face(90, 80, 17, 'happy') + face(118, 88, 12, 'happy'))}
+    <g class="clock">${c(166, 106, 19, WH)}<path class="hh" d="M166 106 V95" stroke-width="4"/><path class="mh" d="M166 106 V91" stroke-width="2.5"/>${c(166, 106, 2, K, NS)}</g>
     ${HOT('livres', hit(180, 16, 160, 58) + r(190, 26, 14, 38, 2, RED) + r(206, 32, 12, 32, 2, BLU) + r(220, 22, 16, 42, 2, GRN) + r(238, 34, 12, 30, 2, YEL) + r(262, 30, 30, 34, 3, PUR) + r(180, 64, 160, 10, 2, '#8C5A2E'))}
-    ${HOT('tele', r(206, 132, 132, 96, 6, '#34405A') + r(214, 140, 116, 76, 3, '#8EC5FF', NS) + p('M216 210 L250 178 L276 198 L300 172 L328 204 V214 H216Z', GRN, NS) + r(198, 248, 148, 54, 6, '#8C5A2E') + p('M262 228 V248', 'none', 'stroke-width="5"'))}
+    ${HOT('tele', r(206, 132, 132, 96, 6, '#34405A') + r(214, 140, 116, 76, 3, '#8EC5FF', 'class="tvglow" stroke="none"') + p('M216 210 L250 178 L276 198 L300 172 L328 204 V214 H216Z', GRN, NS) + r(198, 248, 148, 54, 6, '#8C5A2E') + p('M262 228 V248', 'none', 'stroke-width="5"'))}
     ${el(150, 430, 130, 32, '#F0C987', 'stroke-width="2"')}
     ${HOT('canape', r(18, 262, 176, 70, 16, PUR) + r(10, 312, 192, 52, 14, '#A78BFA') + r(2, 290, 30, 80, 12, PUR) + r(180, 290, 30, 80, 12, PUR) + r(44, 280, 40, 34, 8, YEL) + p('M24 370 V384 M188 370 V384', 'none', 'stroke-width="5"'))}
     ${HOT('jouets', c(252, 356, 20, WH) + p('M252 336 Q244 356 252 376 M232 356 Q252 350 272 356', 'none', `stroke="${RED}" stroke-width="3"`) + r(288, 326, 32, 32, 4, YEL) + r(216, 362, 128, 92, 8, RED) + p('M216 386 H344', 'none', `stroke="${WH}" stroke-width="4"`))}`,
   bain: `${r(0, 0, 360, 330, 0, '#D7EEF0', NS)}${p('M0 60 H360 M0 120 H360 M0 180 H360 M0 240 H360 M0 300 H360 M60 0 V330 M120 0 V330 M180 0 V330 M240 0 V330 M300 0 V330', 'none', 'stroke="#C2E1E5" stroke-width="2"')}${r(0, 330, 360, 150, 0, '#A9C8D1', NS)}
     ${HOT('lavabo', r(226, 36, 104, 96, 44, '#EAF6FF') + p('M212 188 H338 Q338 232 275 234 Q212 232 212 188Z', WH) + r(262, 234, 26, 84, 4, WH) + p('M275 188 V170 H290', 'none', 'stroke-width="5"') + r(310, 158, 18, 24, 3, BLU) + p('M314 158 L310 140 M322 158 L328 142', 'none', 'stroke-width="3"'))}
     ${HOT('wc', r(32, 176, 72, 74, 8, WH) + p('M18 254 H122 Q122 300 90 312 L96 352 H48 L54 312 Q18 300 18 254Z', WH) + el(70, 254, 52, 10, LB))}
-    ${HOT('bain', p('M150 362 H352 V404 Q352 446 310 446 H192 Q150 446 150 404Z', WH) + c(184, 354, 12, LB) + c(208, 346, 10, LB) + c(232, 354, 13, LB) + c(290, 352, 11, LB) + el(318, 348, 14, 10, YEL) + c(330, 336, 7, YEL) + p('M336 336 L344 338', 'none', `stroke="${ORA}" stroke-width="3"`) + p('M346 362 V330 H334', 'none', 'stroke-width="5"'))}`,
+    ${HOT('bain', p('M150 362 H352 V404 Q352 446 310 446 H192 Q150 446 150 404Z', WH) + '<g class="float">' + c(184, 354, 12, LB) + '</g><g class="float f2">' + c(208, 346, 10, LB) + '</g><g class="float f3">' + c(232, 354, 13, LB) + '</g><g class="float f2">' + c(290, 352, 11, LB) + '</g>' + el(318, 348, 14, 10, YEL) + c(330, 336, 7, YEL) + p('M336 336 L344 338', 'none', `stroke="${ORA}" stroke-width="3"`) + p('M346 362 V330 H334', 'none', 'stroke-width="5"'))}`,
   chambre: `${r(0, 0, 360, 300, 0, '#E6E1F5', NS)}${r(0, 300, 360, 180, 0, '#CDB894', NS)}
-    ${r(26, 40, 124, 100, 8, '#2B3A55')}${p('M88 40 V140 M26 90 H150', 'none', 'stroke-width="4"')}${c(56, 64, 12, YEL, NS)}${c(62, 60, 10, '#2B3A55', NS)}${c(118, 112, 2, WH, NS)}${c(130, 70, 2, WH, NS)}
+    ${r(26, 40, 124, 100, 8, '#2B3A55', 'class="sky"')}<g class="night">${c(56, 64, 12, YEL, NS)}${c(62, 60, 10, '#1E2A4A', 'class="sky" stroke="none"')}${c(118, 112, 2, WH, NS)}${c(130, 70, 2, WH, NS)}</g><g class="day">${c(118, 70, 12, YEL, NS)}</g>${p('M88 40 V140 M26 90 H150', 'none', 'stroke-width="4"')}
     ${HOT('armoire', r(244, 30, 104, 210, 8, '#C98B4E') + p('M296 30 V240') + c(288, 136, 3, K, NS) + c(304, 136, 3, K, NS))}
     ${HOT('lampe', r(262, 300, 80, 76, 6, '#B07A47') + p('M302 300 V282', 'none', 'stroke-width="4"') + p('M272 244 H332 L342 284 H262Z', YEL))}
     ${el(160, 446, 120, 24, '#B8A4E6', 'stroke-width="2"')}
     ${HOT('lit', r(10, 232, 30, 160, 8, '#2F6FD6') + r(14, 292, 236, 72, 12, '#3B82F6') + r(36, 270, 64, 30, 12, WH) + r(110, 278, 140, 34, 12, '#7FB3F5') + p('M24 364 V392 M240 364 V392', 'none', 'stroke-width="6"'))}
-    ${HOT('doudou', at(98, 214, 1, teddy()))}`,
-  dehors: `${r(0, 0, 360, 480, 0, '#CDE9FF', NS)}${el(250, 70, 46, 18, WH, NS)}${el(280, 58, 30, 16, WH, NS)}${p('M0 300 Q180 266 360 300 V480 H0Z', '#9BD17A', NS)}
-    ${HOT('soleil', hit(20, 20, 84, 84) + sun(62, 62, 24))}
+    ${HOT('doudou', at(98, 214, 1, teddy()))}<rect class="dim" x="0" y="0" width="360" height="480" fill="#0B1030" stroke="none"/>`,
+  dehors: `${r(0, 0, 360, 480, 0, '#CDE9FF', 'class="sky" stroke="none"')}<g class="night">${[[40, 150], [120, 40], [200, 120], [330, 30], [300, 160], [170, 30]].map(([x, y]) => c(x, y, 2.5, WH, NS)).join('')}</g><g class="cloud">${el(250, 70, 46, 18, WH, NS)}${el(280, 58, 30, 16, WH, NS)}</g><g class="cloud c2">${el(150, 130, 34, 12, WH, NS)}</g>${p('M0 300 Q180 266 360 300 V480 H0Z', '#9BD17A', NS)}
+    ${HOT('soleil', hit(20, 20, 84, 84) + '<g class="day spin">' + sun(62, 62, 24) + '</g><g class="night">' + c(62, 62, 24, '#F4F1D0') + c(74, 54, 20, '#1E2A4A', 'class="sky" stroke="none"') + '</g>')}
     ${HOT('balancoire', p('M28 336 L62 150 H156 L190 336', 'none', 'stroke="#8C5A2E" stroke-width="8"') + p('M92 150 V262 M126 150 V262', 'none', 'stroke-width="3"') + r(84, 262, 50, 10, 4, YEL))}
     ${HOT('toboggan', p('M226 330 V142 H250 V330', 'none', 'stroke-width="5"') + p('M226 182 H250 M226 222 H250 M226 262 H250 M226 302 H250', 'none', 'stroke-width="3"') + p('M250 142 Q284 142 304 230 Q314 300 352 304 V324 Q300 324 290 240 Q276 166 250 166Z', RED))}
     ${HOT('ballon', c(118, 392, 26, WH) + p('M118 366 Q104 392 118 418 M92 392 Q118 382 144 392', 'none', `stroke="${RED}" stroke-width="3"`) + c(118, 392, 26))}
@@ -834,7 +931,7 @@ const QUICKQ = [
   { fr: 'Oui ou non ?', en: 'Yes or no?', s: 'say', a: ['oui', 'non'] },
 ];
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '2.0.0';
 const I18N = {
   fr: {
     app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
@@ -887,7 +984,7 @@ const I18N = {
 /* ---------- État ---------- */
 const KEY = 'monmonde1';
 const PEOPLE0 = ['maman', 'papa', 'frere', 'soeur', 'mamie', 'papy', 'maitresse', 'ami'].map((id) => ({ id }));
-const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [] };
+const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [], av: { skin: '#F7CBA5', hair: 'short', hc: '#6B4A2F', shirt: '#3B82F6', glasses: 0 } };
 let S = load();
 function load() { try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { return Object.assign({}, DEF); } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { toast(T('full')); return false; } }
@@ -1026,16 +1123,22 @@ function speak(text) {
   u.lang = langCode(); u.rate = S.rate; u.pitch = S.pitch;
   const v = voices.find((x) => x.voiceURI === S.voice) || voices.find((x) => x.lang.replace('_', '-') === langCode()) || voices.find((x) => x.lang.startsWith(L()));
   if (v) u.voice = v;
+  u.onstart = () => talk(true); u.onend = u.onerror = () => talk(false);
+  clearTimeout(talkT); talkT = setTimeout(() => talk(false), 1500 + text.length * 90);
   speechSynthesis.speak(u);
 }
-function logIt(who, t) { S.log.push({ w: who, t, ts: Date.now() }); if (S.log.length > 200) S.log.splice(0, S.log.length - 200); save(); }
-function say(text, icon) {
+function logIt(who, t) { S.log.push({ w: who, t, ts: Date.now() }); if (S.log.length > 600) S.log.splice(0, S.log.length - 600); save(); }
+function say(text, icon, o) {
   if (!text) return;
-  speak(text); logIt('c', text);
+  speak(text);
+  S.log.push({ w: 'c', t: text, o: o || '', r: scene, ts: Date.now() }); if (S.log.length > 600) S.log.splice(0, S.log.length - 600); save();
   const b = $('#bubble');
-  b.innerHTML = `<span class="bic">${icon || ''}</span><span class="btx">${esc(text)}</span>${ui('say')}`;
+  b.innerHTML = `<span class="av">${avatarSVG(moodOf(o))}</span><span class="btx">${esc(text)}</span>${icon ? `<span class="bic">${icon}</span>` : ''}${ui('say')}`;
+  if (o === 'soc:eteins') lights(false); if (o === 'soc:allume') lights(true);
+  renderSugg();
   b.setAttribute('aria-label', T('replay') + ' : ' + text); b.dataset.t = text; b.classList.remove('idle');
   b.style.animation = 'none'; void b.offsetWidth; b.style.animation = '';
+  if (!$('#ask').hidden) $('#ask .askav') && ($('#ask .askav').innerHTML = avatarSVG(moodOf(o)));
 }
 
 /* ---------- Icônes d'interface ---------- */
@@ -1045,6 +1148,8 @@ const UI = {
   ask: '<path d="M4 5h16v11H9l-5 4z"/><path d="M10 9a2 2 0 1 1 2.5 2c-.5.2-.5.6-.5 1"/><path d="M12 14.2v.1"/>',
   log: '<path d="M5 6h14M5 12h14M5 18h9"/>', write: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h1M10 10h1M14 10h1M7 14h10"/>',
   set: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+  bilan: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>', plus: '<path d="M12 5v14M5 12h14"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
 };
 const ui = (k) => `<svg class="ui" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${UI[k]}</g></svg>`;
@@ -1068,7 +1173,7 @@ function renderUrg() {
 function renderRooms() {
   const nr = nowRoom();
   $('#rooms').innerHTML = allScenes().map((s) => `<button data-room="${s.id}" aria-current="${s.id === scene}"><span class="rpic">${s.ic}</span><span class="rl">${esc(s.name)}</span>${S.auto && s.id === nr ? `<span class="nowdot" title="${T('now')}"></span>` : ''}</button>`).join('') +
-    `<button class="adultbtn" data-open="adult"><span class="rpic">${picto('adulte')}</span><span class="rl">${T('adult')}</span></button>`;
+    `<button class="listenbtn" data-open="listen"><span class="rpic">${ui('mic')}</span><span class="rl">${T('listen')}</span></button><button class="adultbtn" data-open="adult"><span class="rpic">${picto('adulte')}</span><span class="rl">${T('adult')}</span></button>`;
   const on = $('#rooms [aria-current="true"]'); if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
 function sceneSVG(id) {
@@ -1077,7 +1182,9 @@ function sceneSVG(id) {
     return `<svg class="scene" viewBox="0 0 ${sc.w} ${sc.h}" preserveAspectRatio="xMidYMid meet"><image href="${sc.img}" width="${sc.w}" height="${sc.h}"/>` +
       sc.zones.map((z, i) => `<g class="hot zone" data-hot="z:${sc.id}:${i}" tabindex="0" role="button"><circle cx="${z.x * sc.w}" cy="${z.y * sc.h}" r="${z.r * sc.w}"/></g>`).join('') + '</svg>';
   }
-  return `<svg class="scene" viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet"><g stroke="${K}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${SCENE_ART[id]}</g></svg>`;
+  let art = SCENE_ART[id];
+  if (id === 'moi') art = art.split(SK).join(S.av.skin).split(HB).join(S.av.hc).split(SHIRT).join(S.av.shirt);
+  return `<svg class="scene" viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet"><g stroke="${K}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
 function renderScene() {
   const st = $('#scene');
@@ -1086,6 +1193,8 @@ function renderScene() {
   if (scene === 'gens') {
     st.innerHTML = `<div class="people">${S.people.map((pe) => { const w = word(pe.id); return `<button class="pcard c-pers" data-hot="p:${pe.id}"><span class="pic">${pic(w)}</span><span class="lbl">${esc(label(w))}</span></button>`; }).join('')}</div>`;
   } else st.innerHTML = sceneSVG(scene);
+  if (st.firstElementChild) st.firstElementChild.classList.add('enter');
+  st.classList.toggle('lights-off', lightsOff); live();
   $$('#scene [data-hot]').forEach((g) => { const h = hotDef(g.dataset.hot); if (h) g.setAttribute('aria-label', hotName(h)); });
 }
 function goScene(id) { scene = id; renderScene(); renderRooms(); closeSheet(); }
@@ -1094,11 +1203,11 @@ function goScene(id) { scene = id; renderScene(); renderRooms(); closeSheet(); }
 function openSheet(id) {
   const h = hotDef(id); if (!h) return;
   if (h.go) return goScene(h.go);
-  if (h.direct) return say(optText(h.direct), hotIcon(h));
+  if (h.direct) return say(optText(h.direct), hotIcon(h), h.direct);
   if (!h.o.length) return;
   sheetHot = id; neg = false; renderSheet();
   $$('#scene .hot.on').forEach((g) => g.classList.remove('on'));
-  const g = $(`#scene [data-hot="${CSS.escape(id)}"]`); if (g) g.classList.add('on');
+  const g = $(`#scene [data-hot="${CSS.escape(id)}"]`); if (g) { g.classList.add('on', 'tap'); setTimeout(() => g.classList.remove('tap'), 500); }
 }
 function renderSheet() {
   const h = hotDef(sheetHot), sh = $('#sheet');
@@ -1130,14 +1239,14 @@ function renderAsk() {
   <div class="stick"><button class="btn primary big" data-open="ask"${ask.a.length ? '' : ' disabled'}>${ui('ask')}${T('show')}</button></div>`;
 }
 function libHTML() { return libResults(query).map((w) => `<button class="libw${ask.a.includes(w.id) ? ' is-on' : ''}" data-lib="${w.id}" aria-pressed="${ask.a.includes(w.id)}"><span class="mini">${pic(w)}</span><span>${esc(label(w))}</span></button>`).join(''); }
-function showAsk() {
+function showAsk(fromVoice) {
   const q = ask.q.trim();
   $('#ask').innerHTML = `<button class="iconbtn askx" data-close="ask" aria-label="${T('close')}">${ui('close')}</button>
-    <p class="askq">${esc(q || '…')}</p>
+    <div class="askhead"><span class="askav">${avatarSVG('happy')}</span><p class="askq">${esc(q || '…')}</p></div>
     <div class="askg n${ask.a.length}">${ask.a.map((id) => { const w = word(id); return `<button class="opt c-${colOf(w)}" data-ans="${id}"><span class="pic">${pic(w)}</span><span class="lbl">${esc(label(w))}</span></button>`; }).join('')}</div>
     <div class="askfoot" hidden><button class="btn" data-again="1">${T('another')}</button><button class="btn" data-close="ask">${T('back')}</button></div>`;
   $('#ask').hidden = false;
-  if (q) { speak(q); logIt('a', q); }
+  if (q && !fromVoice) { speak(q); logIt('a', q); }
 }
 
 /* ---------- Adulte : fil, écrire ---------- */
@@ -1184,7 +1293,7 @@ function renderSettings() {
   const h = hotDef(objHot), base = HOTS[objHot];
   const hotOpts = SCENES.filter((s) => s.id !== 'gens').map((s) => `<optgroup label="${esc(nm(s))}">${Object.keys(HOTS).filter((k) => SCENE_ART[s.id].includes(`data-hot="${k}"`) && (HOTS[k].o || []).length && HOTS[k].mode !== 'pain').map((k) => opt(k, nm(HOTS[k]), objHot)).join('')}</optgroup>`).join('');
   const allO = (base.o || []).concat(S.custom.filter((c) => c.hot === objHot).map((c) => 'veux:' + c.id));
-  return `<details open><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
+  return `${renderAvatarSet()}<details><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
     <label class="f">${T('lang')}<select id="sLang">${opt('fr', 'Français', S.lang)}${opt('en-US', 'English (US)', S.lang)}${opt('en-GB', 'English (UK)', S.lang)}</select></label></details>
   <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><p class="hint">${T('dayHelp')}</p>
     <ul class="routine">${ROUTINE.map(([t, r]) => `<li><b>${String(Math.floor(t)).padStart(2, '0')}:${String(Math.round((t % 1) * 60)).padStart(2, '0')}</b> ${esc(nm(SCENES.find((s) => s.id === r)))}</li>`).join('')}</ul></details>
@@ -1224,10 +1333,10 @@ function renderEditor() {
     <button class="btn danger" id="zDel">${ui('trash')}${T('del')}</button></fieldset>` : ''}`;
 }
 function renderAdult(msg) {
-  const body = adultTab === 'ask' ? renderAsk() : adultTab === 'log' ? renderLog() : adultTab === 'write' ? renderWrite() : unlocked ? renderSettings() : renderLock(msg);
+  const body = adultTab === 'ask' ? renderAsk() : adultTab === 'log' ? renderLog() : adultTab === 'bilan' ? renderBilan() : adultTab === 'write' ? renderWrite() : unlocked ? renderSettings() : renderLock(msg);
   const was = $$('#adult details').map((d) => d.open);
   $('#adult').innerHTML = `<div class="ahead"><button class="btn" data-close="adult">${ui('close')}${T('back')}</button></div>
-    <div class="atabs" role="tablist">${[['ask', 'tAsk'], ['log', 'tLog'], ['write', 'tWrite'], ['set', 'tSet']].map(([k, t]) => `<button role="tab" aria-selected="${k === adultTab}" data-atab="${k}">${ui(k)}<span>${T(t)}</span></button>`).join('')}</div>
+    <div class="atabs" role="tablist">${[['ask', 'tAsk'], ['log', 'tLog'], ['bilan', 'tBilan'], ['write', 'tWrite'], ['set', 'tSet']].map(([k, t]) => `<button role="tab" aria-selected="${k === adultTab}" data-atab="${k}">${ui(k)}<span>${T(t)}</span></button>`).join('')}</div>
     <div class="abody">${body}</div>`;
   const ds = $$('#adult details'); if (was.length === ds.length) ds.forEach((d, i) => { d.open = was[i]; });
   $('#adult').hidden = false;
@@ -1251,8 +1360,8 @@ function applyTheme() {
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   $('meta[name=theme-color]').content = dark ? '#12161D' : '#F4F6F8';
 }
-function idleBubble() { const b = $('#bubble'); b.className = 'idle'; b.dataset.t = ''; b.innerHTML = `<span class="btx">${esc(T('hint'))}</span>`; }
-function renderAll() { if ($('#bubble').classList.contains('idle')) idleBubble(); document.documentElement.lang = L(); document.title = T('app'); applyTheme(); renderUrg(); renderRooms(); renderScene(); if (sheetHot) renderSheet(); }
+function idleBubble() { const b = $('#bubble'); b.className = 'idle'; b.dataset.t = ''; b.innerHTML = `<span class="av">${avatarSVG('happy')}</span><span class="btx">${esc(T('hint'))}</span>`; }
+function renderAll() { if ($('#bubble').classList.contains('idle')) idleBubble(); renderSugg(); document.documentElement.lang = L(); document.title = T('app'); applyTheme(); renderUrg(); renderRooms(); renderScene(); if (sheetHot) renderSheet(); }
 let toastT;
 function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2400); }
 
@@ -1269,21 +1378,25 @@ document.addEventListener('click', (e) => {
   const d = b.dataset;
   if (d.hot) return openSheet(d.hot);
   if (d.urg) {
-    const u = URG.find((x) => x.id === d.urg); say(urgTxt(u)[1], picto(u.ic));
+    const u = URG.find((x) => x.id === d.urg); say(urgTxt(u)[1], picto(u.ic), 'urg:' + u.id);
     if (u.id === 'mal') goScene('moi');
     return;
   }
   if (d.room) return goScene(d.room);
-  if (d.o !== undefined) { const h = hotDef(sheetHot), o = h.o[+d.o]; const v = optView(o, h, neg); say(optText(o, neg), v.ic); return closeSheet(); }
+  if (d.o !== undefined) { const h = hotDef(sheetHot), o = h.o[+d.o]; const v = optView(o, h, neg); say(optText(o, neg), v.ic, o + (neg ? '|n' : '')); return closeSheet(); }
   if (d.neg !== undefined) { neg = d.neg === '1'; return renderSheet(); }
   if (d.close === 'sheet') return closeSheet();
   if (d.close === 'adult') { $('#adult').hidden = true; unlocked = false; pin = firstPin = ''; editSc = null; view = 'child'; return renderAll(); }
   if (d.close === 'ask') { $('#ask').hidden = true; return; }
   if (d.open === 'adult') { view = 'adult'; closeSheet(); return renderAdult(); }
+  if (d.open === 'listen') { closeSheet(); return startListen(); }
+  if (d.close === 'listen') return stopListen();
+  if (d.sg) { const [o, n] = d.sg.split('|'); const v = optView(o, null, !!n); return say(optText(o, !!n), v.ic, d.sg); }
+  if (b.id === 'bPrint') return window.print();
   if (d.open === 'ask') { ask.q = $('#askQ').value; return showAsk(); }
-  if (d.again) { $('#ask').hidden = true; ask = { q: '', a: [] }; adultTab = 'ask'; view = 'adult'; return renderAdult(); }
+  if (d.again) { $('#ask').hidden = true; if (ask.voice) return startListen(); ask = { q: '', a: [] }; adultTab = 'ask'; view = 'adult'; return renderAdult(); }
   if (d.ans) {
-    const w = word(d.ans); say(optText(defOpt(w)), pic(w));
+    const w = word(d.ans); say(optText(defOpt(w)), pic(w), defOpt(w));
     $$('#ask .opt').forEach((x) => x.classList.toggle('dim', x !== b)); $('.askfoot').hidden = false; return;
   }
   if (d.atab) { adultTab = d.atab; if (d.atab !== 'set') { unlocked = false; editSc = null; } return renderAdult(); }
@@ -1340,6 +1453,7 @@ document.addEventListener('input', (e) => {
 });
 document.addEventListener('change', async (e) => {
   const t = e.target, d = t.dataset;
+  if (t.name && t.name.startsWith('av_')) { S.av[t.name.slice(3)] = t.type === 'checkbox' ? (t.checked ? 1 : 0) : t.value; save(); renderAll(); return renderAdult(); }
   if (t.name === 'gender') S.gender = t.value;
   else if (t.name === 'theme') { S.theme = t.value; applyTheme(); }
   else if (t.id === 'sLang') { S.lang = t.value; S.voice = ''; save(); renderAll(); return renderAdult(); }
@@ -1375,9 +1489,171 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden && S.
 let lastTouch = Date.now();
 document.addEventListener('pointerdown', () => { lastTouch = Date.now(); }, true);
 
+function boot() {
 if (S.auto) scene = nowRoom();
-renderAll();
+renderAll(); setInterval(live, 30000);
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('service-worker.js');
+}
+
+/* ---------- Mon Monde Vivant : personnage, scènes vivantes, interprète, suggestions, bilan ---------- */
+Object.assign(I18N.fr, {
+  sugg: 'Souvent à cette heure', listen: 'Écouter', listening: 'Je vous écoute…', listenHelp: 'Posez votre question à l’enfant, normalement. Par exemple : « Tu veux des pâtes ou du riz ? »', cancel: 'Annuler',
+  noMic: 'L’écoute n’est pas disponible sur cet appareil : tapez la question.', micDenied: 'Le micro est refusé. Autorisez-le dans les réglages du navigateur.', micErr: 'Je n’ai rien entendu. Réessayez.',
+  tBilan: 'Bilan', bWeek: 'Phrases dites ces 7 derniers jours', bTop: 'Ce que l’enfant dit le plus', bFeel: 'Émotions exprimées', bPain: 'Douleurs signalées', bNone: 'Pas encore de données. Elles apparaîtront dès que l’enfant utilisera l’appli.',
+  bAsk: 'questions posées', bSaid: 'phrases dites', print: 'Imprimer pour l’orthophoniste ou le médecin', times: 'fois', last: 'dernière fois',
+  sAvatar: 'Personnage de l’enfant', avHelp: 'Ce personnage parle à la place de l’enfant et montre ce qu’il ressent. Faites-le lui ressembler.',
+  skin: 'Peau', hairS: 'Coiffure', hairC: 'Cheveux', shirt: 'Habits', glasses: 'Lunettes',
+  hairs: { short: 'Courts', long: 'Longs', pig: 'Couettes', bun: 'Chignon', curly: 'Bouclés', none: 'Ras' },
+});
+Object.assign(I18N.en, {
+  sugg: 'Often at this time', listen: 'Listen', listening: 'Listening…', listenHelp: 'Ask the child your question as usual. For example: “Do you want pasta or rice?”', cancel: 'Cancel',
+  noMic: 'Listening is not available on this device: type the question.', micDenied: 'The microphone is blocked. Allow it in the browser settings.', micErr: 'I did not hear anything. Try again.',
+  tBilan: 'Report', bWeek: 'Sentences said in the last 7 days', bTop: 'What the child says most', bFeel: 'Feelings expressed', bPain: 'Pain reported', bNone: 'No data yet. It will appear as soon as the child uses the app.',
+  bAsk: 'questions asked', bSaid: 'sentences said', print: 'Print for the speech therapist or doctor', times: 'times', last: 'last time',
+  sAvatar: 'Child’s character', avHelp: 'This character speaks for the child and shows how they feel. Make it look like them.',
+  skin: 'Skin', hairS: 'Hairstyle', hairC: 'Hair', shirt: 'Clothes', glasses: 'Glasses',
+  hairs: { short: 'Short', long: 'Long', pig: 'Bunches', bun: 'Bun', curly: 'Curly', none: 'Shaved' },
+});
+if (!S.av) S.av = JSON.parse(JSON.stringify(DEF.av));
+
+/* Personnage */
+function avatarSVG(mood) {
+  const a = S.av, sk = a.skin, hc = a.hc;
+  let back = '', front = '';
+  if (a.hair === 'long') back = p('M22 40 Q16 78 26 84 H74 Q84 78 78 40Z', hc);
+  if (a.hair === 'pig') back = c(20, 40, 9, hc) + c(80, 40, 9, hc);
+  if (a.hair === 'bun') back = c(50, 14, 9, hc);
+  if (a.hair !== 'none' && a.hair !== 'curly') front = p('M24 44 Q20 13 50 14 Q80 13 76 44 Q66 26 50 27 Q34 26 24 44Z', hc);
+  if (a.hair === 'curly') front = [[28, 30], [36, 21], [46, 17], [56, 17], [65, 21], [72, 30]].map(([x, y]) => c(x, y, 9, hc)).join('');
+  if (a.hair === 'none') front = p('M26 36 Q30 18 50 18 Q70 18 74 36', 'none', `stroke="${hc}" stroke-width="5" opacity=".7"`);
+  const gl = a.glasses ? c(40.6, 41.4, 6.5, 'none', 'stroke-width="2"') + c(59.4, 41.4, 6.5, 'none', 'stroke-width="2"') + p('M47 41 H53', 'none', 'stroke-width="2"') : '';
+  return `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g stroke="${K}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${back}${p('M16 100 Q16 76 50 74 Q84 76 84 100Z', a.shirt)}${r(43, 62, 14, 14, 2, sk)}${face(50, 44, 26, mood, sk)}${front}${gl}<ellipse class="tm" cx="50" cy="55" rx="6.5" ry="5" fill="#8A2A2F" stroke="none"/></g></svg>`;
+}
+const FEEL_MOOD = { content: 'happy', triste: 'sad', colere: 'angry', fatigue: 'tired', peur: 'scared', malade: 'sick', calme: 'calm', surpris: 'surprised', ennui: 'neutral', faim: 'neutral', soif: 'neutral', chaud: 'neutral', froid: 'neutral' };
+function moodOf(o) {
+  if (!o) return 'happy';
+  const [k, x] = o.split('|')[0].split(':');
+  if (k === 'mal' || k === 'peu' || k === 'tres' || o === 'urg:mal') return 'pain';
+  if (k === 'say' && FEEL_MOOD[x]) return FEEL_MOOD[x];
+  if (o === 'urg:stop') return 'angry';
+  if (o === 'urg:aide' || x === 'besoinaide' || x === 'aide' || x === 'peur') return 'scared';
+  if (o.endsWith('|n') || o === 'urg:non') return 'neutral';
+  return 'happy';
+}
+let talkT;
+function talk(on) { $$('#bubble, .askav').forEach((el) => el.classList.toggle('talking', on)); }
+function renderAvatarSet() {
+  const a = S.av, sw = (name, list, cur) => `<div class="sw">${list.map((col) => `<label><input type="radio" name="av_${name}" value="${col}"${col === cur ? ' checked' : ''}><span style="background:${col}" title="${col}"></span></label>`).join('')}</div>`;
+  return `<details open><summary>${T('sAvatar')}</summary><div class="avset"><span class="avbig">${avatarSVG('happy')}</span><p class="hint">${T('avHelp')}</p></div>
+    <p class="flabel">${T('skin')}</p>${sw('skin', ['#FBDCC4', '#F7CBA5', '#E0A67A', '#B97A50', '#7A4A2A'], a.skin)}
+    <p class="flabel">${T('hairS')}</p>${seg('av_hair', Object.entries(T('hairs')), a.hair)}
+    <p class="flabel">${T('hairC')}</p>${sw('hc', ['#2B2B2B', '#6B4A2F', '#B5562C', '#E3B04B', '#C9CED6'], a.hc)}
+    <p class="flabel">${T('shirt')}</p>${sw('shirt', ['#3B82F6', '#E5484D', '#3BA55C', '#F7C948', '#8B5CF6', '#F27BB0', '#F08A24'], a.shirt)}
+    <label class="chk"><input type="checkbox" name="av_glasses"${a.glasses ? ' checked' : ''}> ${T('glasses')}</label></details>`;
+}
+
+/* Scènes vivantes : ciel et horloge à l'heure réelle, lumière de la chambre */
+let lightsOff = false;
+function lights(on) { lightsOff = !on; const st = $('#scene'); if (st) st.classList.toggle('lights-off', lightsOff); }
+function live() {
+  const d = new Date(), h = d.getHours() + d.getMinutes() / 60, st = $('#scene'); if (!st) return;
+  const ph = h < 7 || h >= 20.5 ? 'night' : h >= 18.5 ? 'evening' : 'day';
+  st.classList.toggle('is-night', ph === 'night'); st.classList.toggle('is-evening', ph === 'evening');
+  st.style.setProperty('--sky', { day: '#C7E6FF', evening: '#F6C49A', night: '#1E2A4A' }[ph]);
+  const hh = $('#scene .hh'), mh = $('#scene .mh');
+  if (hh) { hh.setAttribute('transform', `rotate(${(d.getHours() % 12) * 30 + d.getMinutes() / 2} 166 106)`); mh.setAttribute('transform', `rotate(${d.getMinutes() * 6} 166 106)`); }
+}
+
+/* Suggestions : ce que l'enfant dit souvent à cette heure-ci */
+function suggestions() {
+  const now = Date.now(), hNow = new Date().getHours() + new Date().getMinutes() / 60, sc = {}, n = {};
+  S.log.forEach((m) => {
+    if (m.w !== 'c' || !m.o || m.o.startsWith('urg:')) return;
+    const dt = new Date(m.ts), hh = dt.getHours() + dt.getMinutes() / 60;
+    let dh = Math.abs(hh - hNow); dh = Math.min(dh, 24 - dh);
+    sc[m.o] = (sc[m.o] || 0) + Math.exp(-(dh * dh) / 2) * (0.5 + Math.exp(-(now - m.ts) / (7 * 864e5)));
+    n[m.o] = (n[m.o] || 0) + 1;
+  });
+  return Object.keys(sc).filter((k) => n[k] >= 2 && sc[k] > 0.6).sort((x, y) => sc[y] - sc[x]).slice(0, 3);
+}
+function renderSugg() {
+  const el = $('#sugg'); if (!el) return;
+  const ks = suggestions().filter((k) => { const [o] = k.split('|'), w = word(o.split(':')[o.startsWith('tpl:') ? 2 : 1]); return !!w; });
+  el.hidden = !ks.length;
+  el.innerHTML = ks.length ? `<span class="sgt">${T('sugg')}</span>` + ks.map((k) => { const [o, ng] = k.split('|'), v = optView(o, null, !!ng); return `<button class="sg c-${v.col}" data-sg="${esc(k)}"><span class="mini">${v.ic}</span><span>${esc(optText(o, !!ng))}</span></button>`; }).join('') : '';
+}
+
+/* Interprète : l'adulte parle, l'appli comprend et prépare les réponses en images */
+let rec = null;
+function forms(w) {
+  const out = new Set(), add = (s) => { if (!s) return; const f = norm(String(s)).replace(/[^a-z0-9]+/g, ' ').trim(); if (f.length >= 3) { out.add(f); out.add(f.replace(/s$/, '')); if (!/s$/.test(f)) out.add(f + 's'); } };
+  add(label(w)); [].concat(w.fr || []).forEach(add); add(w.en); if (typeof w.gb === 'string') add(w.gb); add(w.enp);
+  return [...out].filter((f) => f.length >= 3);
+}
+const INTENTS = [
+  [/\b(mal|bobo|douleur|hurts?|pain)\b/, ['tete', 'ventre', 'dents', 'oreille']],
+  [/\b(sens|ca va|humeur|feel|feeling|how are you)\b/, ['content', 'triste', 'colere', 'fatigue']],
+  [/\b(aller|sortir|go|going)\b/, ['maison', 'parc', 'piscine', 'magasin']],
+  [/\b(jouer|joue|play)\b/, ['ballon', 'lego', 'puzzle', 'tablette']],
+  [/\b(manger|faim|gouter|eat|hungry|snack|lunch|dinner)\b/, ['pates', 'pomme', 'biscuit', 'yaourt']],
+  [/\b(boire|soif|drink|thirsty)\b/, ['eau', 'lait', 'jus']],
+];
+function understand(text) {
+  const n = ' ' + norm(text).replace(/[^a-z0-9]+/g, ' ') + ' ';
+  let hits = [];
+  libWords().forEach((w) => forms(w).forEach((f) => { const i = n.indexOf(' ' + f + ' '); if (i >= 0) hits.push({ id: w.id, i, e: i + f.length }); }));
+  hits.sort((x, y) => x.i - y.i || (y.e - y.i) - (x.e - x.i));
+  const keep = [];
+  hits.forEach((h) => { if (!keep.some((k) => k.id === h.id || (h.i >= k.i && h.e <= k.e))) keep.push(h); });
+  // « jouer au ballon » ou « lire une histoire » : le verbe juste avant un autre mot ne compte pas comme une réponse à part
+  const kept = keep.filter((h, i) => { const nx = keep[i + 1]; return !(nx && word(h.id).k === 'verb' && nx.i - h.e <= 5 && !/\b(ou|or)\b/.test(n.slice(h.e, nx.i + 1))); });
+  hits = kept.slice(0, 4).map((h) => h.id);
+  if (hits.length >= 2) return hits;
+  if (hits.length === 1 && !['oui', 'non'].includes(hits[0])) return ['oui', 'non'];
+  if (/\b(qui|who)\b/.test(n)) return S.people.slice(0, 4).map((pe) => pe.id);
+  for (const [re, ids] of INTENTS) if (re.test(n)) return ids;
+  return ['oui', 'non'];
+}
+function startListen() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast(T('noMic')); view = 'adult'; adultTab = 'ask'; return renderAdult(); }
+  const L0 = $('#listen');
+  L0.innerHTML = `<div class="lcard"><span class="lmic">${ui('mic')}</span><h2>${T('listening')}</h2><p class="hint">${T('listenHelp')}</p><p class="ltx" id="ltx" aria-live="polite"></p><button class="btn" data-close="listen">${T('cancel')}</button></div>`;
+  L0.hidden = false;
+  let finalTxt = '';
+  rec = new SR(); rec.lang = langCode(); rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+  rec.onresult = (e) => { const txt = [...e.results].map((x) => x[0].transcript).join(''); $('#ltx').textContent = txt; if (e.results[e.results.length - 1].isFinal) finalTxt = txt; };
+  rec.onerror = (e) => { toast(e.error === 'not-allowed' || e.error === 'service-not-allowed' ? T('micDenied') : T('micErr')); };
+  rec.onend = () => {
+    L0.hidden = true; rec = null;
+    const q = finalTxt.trim(); if (!q) return;
+    ask = { q: cap(q) + (/[?!.]$/.test(q) ? '' : ' ?'), a: understand(q), voice: true };
+    logIt('a', ask.q); showAsk(true);
+  };
+  try { speechSynthesis.cancel(); rec.start(); } catch (e) { L0.hidden = true; toast(T('micErr')); }
+}
+function stopListen() { if (rec) { rec.onend = null; rec.abort(); rec = null; } $('#listen').hidden = true; }
+
+/* Bilan pour les parents */
+function renderBilan() {
+  const kids = S.log.filter((m) => m.w === 'c'); if (!kids.length) return `<p class="hint">${T('bNone')}</p>`;
+  const loc = L() === 'fr' ? 'fr-FR' : S.lang, day0 = new Date(); day0.setHours(0, 0, 0, 0);
+  const days = [...Array(7)].map((_, i) => { const d = new Date(day0 - (6 - i) * 864e5); return { d, n: kids.filter((m) => m.ts >= +d && m.ts < +d + 864e5).length }; });
+  const max = Math.max(1, ...days.map((x) => x.n));
+  const count = (arr, key) => arr.reduce((acc, m) => { const k = key(m); if (k) acc[k] = (acc[k] || 0) + 1; return acc; }, {});
+  const top = Object.entries(count(kids, (m) => m.t)).sort((x, y) => y[1] - x[1]).slice(0, 6);
+  const feels = Object.entries(count(kids, (m) => (m.o && m.o.startsWith('say:') && FEEL_MOOD[m.o.split(':')[1]] ? m.o.split(':')[1] : ''))).sort((x, y) => y[1] - x[1]);
+  const pains = {}; kids.forEach((m) => { const k = (m.o || '').split(':'); if (['mal', 'peu', 'tres'].includes(k[0])) { const p0 = pains[k[1]] || (pains[k[1]] = { n: 0, last: 0, tres: 0 }); p0.n++; p0.last = Math.max(p0.last, m.ts); if (k[0] === 'tres') p0.tres++; } });
+  const asked = S.log.filter((m) => m.w === 'a' && m.ts >= +days[0].d).length, said = days.reduce((s, x) => s + x.n, 0);
+  return `<div class="kpis"><p><b>${said}</b> ${T('bSaid')}</p><p><b>${asked}</b> ${T('bAsk')}</p></div>
+  <h2>${T('bWeek')}</h2><div class="bars">${days.map((x) => `<div class="bar"><span class="bv" style="height:${Math.round((x.n / max) * 100)}%"><b>${x.n || ''}</b></span><span class="bl">${esc(x.d.toLocaleDateString(loc, { weekday: 'short' }))}</span></div>`).join('')}</div>
+  ${feels.length ? `<h2>${T('bFeel')}</h2><div class="feels">${feels.map(([id, n]) => `<span class="feel"><span class="mini big">${picto(id)}</span><b>${n}</b>${esc(label(WD[id]))}</span>`).join('')}</div>` : ''}
+  ${Object.keys(pains).length ? `<h2>${T('bPain')}</h2><ul class="plist">${Object.entries(pains).sort((x, y) => y[1].n - x[1].n).map(([id, v]) => `<li><span class="mini big">${picto(id)}</span><span class="grow">${esc(label(WD[id]))} : ${v.n} ${T('times')}${v.tres ? ` (${v.tres} × ${esc(T('pTres').toLowerCase())})` : ''}<br><small>${T('last')} : ${esc(new Date(v.last).toLocaleString(loc, { weekday: 'long', hour: '2-digit', minute: '2-digit' }))}</small></span></li>`).join('')}</ul>` : ''}
+  <h2>${T('bTop')}</h2><ol class="top">${top.map(([t, n]) => `<li><span>${esc(t)}</span><b>${n}</b></li>`).join('')}</ol>
+  <button class="btn" id="bPrint">${ui('bilan')}${T('print')}</button>`;
+}
+
+boot();
 </script>
 </body>
 </html>

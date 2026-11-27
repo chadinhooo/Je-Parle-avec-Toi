@@ -1,7 +1,7 @@
 import re, pathlib
 B = pathlib.Path(__file__).resolve().parent; OUT = B.parent / 'mon-monde'
 shell = (B / 'shell.html').read_text()
-js = '\n'.join((B / f).read_text() for f in ['icons.js', 'icons2.js', 'data.js', 'scenes.js', 'app.js'])
+js = '\n'.join((B / f).read_text() for f in ['icons.js', 'icons2.js', 'data.js', 'scenes.js', 'app.js', 'vivant.js'])
 html = shell.replace('/*CSS*/', (B / 'style.css').read_text()).replace('/*JS*/', js)
 (OUT / 'index.html').write_text(html)
 ver = re.search(r"APP_VERSION = '([^']+)'", js).group(1)

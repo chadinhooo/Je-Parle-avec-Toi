@@ -1,4 +1,4 @@
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '2.0.0';
 const I18N = {
   fr: {
     app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
@@ -51,7 +51,7 @@ const I18N = {
 /* ---------- État ---------- */
 const KEY = 'monmonde1';
 const PEOPLE0 = ['maman', 'papa', 'frere', 'soeur', 'mamie', 'papy', 'maitresse', 'ami'].map((id) => ({ id }));
-const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [] };
+const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [], av: { skin: '#F7CBA5', hair: 'short', hc: '#6B4A2F', shirt: '#3B82F6', glasses: 0 } };
 let S = load();
 function load() { try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { return Object.assign({}, DEF); } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { toast(T('full')); return false; } }
@@ -190,16 +190,22 @@ function speak(text) {
   u.lang = langCode(); u.rate = S.rate; u.pitch = S.pitch;
   const v = voices.find((x) => x.voiceURI === S.voice) || voices.find((x) => x.lang.replace('_', '-') === langCode()) || voices.find((x) => x.lang.startsWith(L()));
   if (v) u.voice = v;
+  u.onstart = () => talk(true); u.onend = u.onerror = () => talk(false);
+  clearTimeout(talkT); talkT = setTimeout(() => talk(false), 1500 + text.length * 90);
   speechSynthesis.speak(u);
 }
-function logIt(who, t) { S.log.push({ w: who, t, ts: Date.now() }); if (S.log.length > 200) S.log.splice(0, S.log.length - 200); save(); }
-function say(text, icon) {
+function logIt(who, t) { S.log.push({ w: who, t, ts: Date.now() }); if (S.log.length > 600) S.log.splice(0, S.log.length - 600); save(); }
+function say(text, icon, o) {
   if (!text) return;
-  speak(text); logIt('c', text);
+  speak(text);
+  S.log.push({ w: 'c', t: text, o: o || '', r: scene, ts: Date.now() }); if (S.log.length > 600) S.log.splice(0, S.log.length - 600); save();
   const b = $('#bubble');
-  b.innerHTML = `<span class="bic">${icon || ''}</span><span class="btx">${esc(text)}</span>${ui('say')}`;
+  b.innerHTML = `<span class="av">${avatarSVG(moodOf(o))}</span><span class="btx">${esc(text)}</span>${icon ? `<span class="bic">${icon}</span>` : ''}${ui('say')}`;
+  if (o === 'soc:eteins') lights(false); if (o === 'soc:allume') lights(true);
+  renderSugg();
   b.setAttribute('aria-label', T('replay') + ' : ' + text); b.dataset.t = text; b.classList.remove('idle');
   b.style.animation = 'none'; void b.offsetWidth; b.style.animation = '';
+  if (!$('#ask').hidden) $('#ask .askav') && ($('#ask .askav').innerHTML = avatarSVG(moodOf(o)));
 }
 
 /* ---------- Icônes d'interface ---------- */
@@ -209,6 +215,8 @@ const UI = {
   ask: '<path d="M4 5h16v11H9l-5 4z"/><path d="M10 9a2 2 0 1 1 2.5 2c-.5.2-.5.6-.5 1"/><path d="M12 14.2v.1"/>',
   log: '<path d="M5 6h14M5 12h14M5 18h9"/>', write: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h1M10 10h1M14 10h1M7 14h10"/>',
   set: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+  bilan: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>', plus: '<path d="M12 5v14M5 12h14"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
 };
 const ui = (k) => `<svg class="ui" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${UI[k]}</g></svg>`;
@@ -232,7 +240,7 @@ function renderUrg() {
 function renderRooms() {
   const nr = nowRoom();
   $('#rooms').innerHTML = allScenes().map((s) => `<button data-room="${s.id}" aria-current="${s.id === scene}"><span class="rpic">${s.ic}</span><span class="rl">${esc(s.name)}</span>${S.auto && s.id === nr ? `<span class="nowdot" title="${T('now')}"></span>` : ''}</button>`).join('') +
-    `<button class="adultbtn" data-open="adult"><span class="rpic">${picto('adulte')}</span><span class="rl">${T('adult')}</span></button>`;
+    `<button class="listenbtn" data-open="listen"><span class="rpic">${ui('mic')}</span><span class="rl">${T('listen')}</span></button><button class="adultbtn" data-open="adult"><span class="rpic">${picto('adulte')}</span><span class="rl">${T('adult')}</span></button>`;
   const on = $('#rooms [aria-current="true"]'); if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
 function sceneSVG(id) {
@@ -241,7 +249,9 @@ function sceneSVG(id) {
     return `<svg class="scene" viewBox="0 0 ${sc.w} ${sc.h}" preserveAspectRatio="xMidYMid meet"><image href="${sc.img}" width="${sc.w}" height="${sc.h}"/>` +
       sc.zones.map((z, i) => `<g class="hot zone" data-hot="z:${sc.id}:${i}" tabindex="0" role="button"><circle cx="${z.x * sc.w}" cy="${z.y * sc.h}" r="${z.r * sc.w}"/></g>`).join('') + '</svg>';
   }
-  return `<svg class="scene" viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet"><g stroke="${K}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${SCENE_ART[id]}</g></svg>`;
+  let art = SCENE_ART[id];
+  if (id === 'moi') art = art.split(SK).join(S.av.skin).split(HB).join(S.av.hc).split(SHIRT).join(S.av.shirt);
+  return `<svg class="scene" viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet"><g stroke="${K}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${art}</g></svg>`;
 }
 function renderScene() {
   const st = $('#scene');
@@ -250,6 +260,8 @@ function renderScene() {
   if (scene === 'gens') {
     st.innerHTML = `<div class="people">${S.people.map((pe) => { const w = word(pe.id); return `<button class="pcard c-pers" data-hot="p:${pe.id}"><span class="pic">${pic(w)}</span><span class="lbl">${esc(label(w))}</span></button>`; }).join('')}</div>`;
   } else st.innerHTML = sceneSVG(scene);
+  if (st.firstElementChild) st.firstElementChild.classList.add('enter');
+  st.classList.toggle('lights-off', lightsOff); live();
   $$('#scene [data-hot]').forEach((g) => { const h = hotDef(g.dataset.hot); if (h) g.setAttribute('aria-label', hotName(h)); });
 }
 function goScene(id) { scene = id; renderScene(); renderRooms(); closeSheet(); }
@@ -258,11 +270,11 @@ function goScene(id) { scene = id; renderScene(); renderRooms(); closeSheet(); }
 function openSheet(id) {
   const h = hotDef(id); if (!h) return;
   if (h.go) return goScene(h.go);
-  if (h.direct) return say(optText(h.direct), hotIcon(h));
+  if (h.direct) return say(optText(h.direct), hotIcon(h), h.direct);
   if (!h.o.length) return;
   sheetHot = id; neg = false; renderSheet();
   $$('#scene .hot.on').forEach((g) => g.classList.remove('on'));
-  const g = $(`#scene [data-hot="${CSS.escape(id)}"]`); if (g) g.classList.add('on');
+  const g = $(`#scene [data-hot="${CSS.escape(id)}"]`); if (g) { g.classList.add('on', 'tap'); setTimeout(() => g.classList.remove('tap'), 500); }
 }
 function renderSheet() {
   const h = hotDef(sheetHot), sh = $('#sheet');
@@ -294,14 +306,14 @@ function renderAsk() {
   <div class="stick"><button class="btn primary big" data-open="ask"${ask.a.length ? '' : ' disabled'}>${ui('ask')}${T('show')}</button></div>`;
 }
 function libHTML() { return libResults(query).map((w) => `<button class="libw${ask.a.includes(w.id) ? ' is-on' : ''}" data-lib="${w.id}" aria-pressed="${ask.a.includes(w.id)}"><span class="mini">${pic(w)}</span><span>${esc(label(w))}</span></button>`).join(''); }
-function showAsk() {
+function showAsk(fromVoice) {
   const q = ask.q.trim();
   $('#ask').innerHTML = `<button class="iconbtn askx" data-close="ask" aria-label="${T('close')}">${ui('close')}</button>
-    <p class="askq">${esc(q || '…')}</p>
+    <div class="askhead"><span class="askav">${avatarSVG('happy')}</span><p class="askq">${esc(q || '…')}</p></div>
     <div class="askg n${ask.a.length}">${ask.a.map((id) => { const w = word(id); return `<button class="opt c-${colOf(w)}" data-ans="${id}"><span class="pic">${pic(w)}</span><span class="lbl">${esc(label(w))}</span></button>`; }).join('')}</div>
     <div class="askfoot" hidden><button class="btn" data-again="1">${T('another')}</button><button class="btn" data-close="ask">${T('back')}</button></div>`;
   $('#ask').hidden = false;
-  if (q) { speak(q); logIt('a', q); }
+  if (q && !fromVoice) { speak(q); logIt('a', q); }
 }
 
 /* ---------- Adulte : fil, écrire ---------- */
@@ -348,7 +360,7 @@ function renderSettings() {
   const h = hotDef(objHot), base = HOTS[objHot];
   const hotOpts = SCENES.filter((s) => s.id !== 'gens').map((s) => `<optgroup label="${esc(nm(s))}">${Object.keys(HOTS).filter((k) => SCENE_ART[s.id].includes(`data-hot="${k}"`) && (HOTS[k].o || []).length && HOTS[k].mode !== 'pain').map((k) => opt(k, nm(HOTS[k]), objHot)).join('')}</optgroup>`).join('');
   const allO = (base.o || []).concat(S.custom.filter((c) => c.hot === objHot).map((c) => 'veux:' + c.id));
-  return `<details open><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
+  return `${renderAvatarSet()}<details><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
     <label class="f">${T('lang')}<select id="sLang">${opt('fr', 'Français', S.lang)}${opt('en-US', 'English (US)', S.lang)}${opt('en-GB', 'English (UK)', S.lang)}</select></label></details>
   <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><p class="hint">${T('dayHelp')}</p>
     <ul class="routine">${ROUTINE.map(([t, r]) => `<li><b>${String(Math.floor(t)).padStart(2, '0')}:${String(Math.round((t % 1) * 60)).padStart(2, '0')}</b> ${esc(nm(SCENES.find((s) => s.id === r)))}</li>`).join('')}</ul></details>
@@ -388,10 +400,10 @@ function renderEditor() {
     <button class="btn danger" id="zDel">${ui('trash')}${T('del')}</button></fieldset>` : ''}`;
 }
 function renderAdult(msg) {
-  const body = adultTab === 'ask' ? renderAsk() : adultTab === 'log' ? renderLog() : adultTab === 'write' ? renderWrite() : unlocked ? renderSettings() : renderLock(msg);
+  const body = adultTab === 'ask' ? renderAsk() : adultTab === 'log' ? renderLog() : adultTab === 'bilan' ? renderBilan() : adultTab === 'write' ? renderWrite() : unlocked ? renderSettings() : renderLock(msg);
   const was = $$('#adult details').map((d) => d.open);
   $('#adult').innerHTML = `<div class="ahead"><button class="btn" data-close="adult">${ui('close')}${T('back')}</button></div>
-    <div class="atabs" role="tablist">${[['ask', 'tAsk'], ['log', 'tLog'], ['write', 'tWrite'], ['set', 'tSet']].map(([k, t]) => `<button role="tab" aria-selected="${k === adultTab}" data-atab="${k}">${ui(k)}<span>${T(t)}</span></button>`).join('')}</div>
+    <div class="atabs" role="tablist">${[['ask', 'tAsk'], ['log', 'tLog'], ['bilan', 'tBilan'], ['write', 'tWrite'], ['set', 'tSet']].map(([k, t]) => `<button role="tab" aria-selected="${k === adultTab}" data-atab="${k}">${ui(k)}<span>${T(t)}</span></button>`).join('')}</div>
     <div class="abody">${body}</div>`;
   const ds = $$('#adult details'); if (was.length === ds.length) ds.forEach((d, i) => { d.open = was[i]; });
   $('#adult').hidden = false;
@@ -415,8 +427,8 @@ function applyTheme() {
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   $('meta[name=theme-color]').content = dark ? '#12161D' : '#F4F6F8';
 }
-function idleBubble() { const b = $('#bubble'); b.className = 'idle'; b.dataset.t = ''; b.innerHTML = `<span class="btx">${esc(T('hint'))}</span>`; }
-function renderAll() { if ($('#bubble').classList.contains('idle')) idleBubble(); document.documentElement.lang = L(); document.title = T('app'); applyTheme(); renderUrg(); renderRooms(); renderScene(); if (sheetHot) renderSheet(); }
+function idleBubble() { const b = $('#bubble'); b.className = 'idle'; b.dataset.t = ''; b.innerHTML = `<span class="av">${avatarSVG('happy')}</span><span class="btx">${esc(T('hint'))}</span>`; }
+function renderAll() { if ($('#bubble').classList.contains('idle')) idleBubble(); renderSugg(); document.documentElement.lang = L(); document.title = T('app'); applyTheme(); renderUrg(); renderRooms(); renderScene(); if (sheetHot) renderSheet(); }
 let toastT;
 function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2400); }
 
@@ -433,21 +445,25 @@ document.addEventListener('click', (e) => {
   const d = b.dataset;
   if (d.hot) return openSheet(d.hot);
   if (d.urg) {
-    const u = URG.find((x) => x.id === d.urg); say(urgTxt(u)[1], picto(u.ic));
+    const u = URG.find((x) => x.id === d.urg); say(urgTxt(u)[1], picto(u.ic), 'urg:' + u.id);
     if (u.id === 'mal') goScene('moi');
     return;
   }
   if (d.room) return goScene(d.room);
-  if (d.o !== undefined) { const h = hotDef(sheetHot), o = h.o[+d.o]; const v = optView(o, h, neg); say(optText(o, neg), v.ic); return closeSheet(); }
+  if (d.o !== undefined) { const h = hotDef(sheetHot), o = h.o[+d.o]; const v = optView(o, h, neg); say(optText(o, neg), v.ic, o + (neg ? '|n' : '')); return closeSheet(); }
   if (d.neg !== undefined) { neg = d.neg === '1'; return renderSheet(); }
   if (d.close === 'sheet') return closeSheet();
   if (d.close === 'adult') { $('#adult').hidden = true; unlocked = false; pin = firstPin = ''; editSc = null; view = 'child'; return renderAll(); }
   if (d.close === 'ask') { $('#ask').hidden = true; return; }
   if (d.open === 'adult') { view = 'adult'; closeSheet(); return renderAdult(); }
+  if (d.open === 'listen') { closeSheet(); return startListen(); }
+  if (d.close === 'listen') return stopListen();
+  if (d.sg) { const [o, n] = d.sg.split('|'); const v = optView(o, null, !!n); return say(optText(o, !!n), v.ic, d.sg); }
+  if (b.id === 'bPrint') return window.print();
   if (d.open === 'ask') { ask.q = $('#askQ').value; return showAsk(); }
-  if (d.again) { $('#ask').hidden = true; ask = { q: '', a: [] }; adultTab = 'ask'; view = 'adult'; return renderAdult(); }
+  if (d.again) { $('#ask').hidden = true; if (ask.voice) return startListen(); ask = { q: '', a: [] }; adultTab = 'ask'; view = 'adult'; return renderAdult(); }
   if (d.ans) {
-    const w = word(d.ans); say(optText(defOpt(w)), pic(w));
+    const w = word(d.ans); say(optText(defOpt(w)), pic(w), defOpt(w));
     $$('#ask .opt').forEach((x) => x.classList.toggle('dim', x !== b)); $('.askfoot').hidden = false; return;
   }
   if (d.atab) { adultTab = d.atab; if (d.atab !== 'set') { unlocked = false; editSc = null; } return renderAdult(); }
@@ -504,6 +520,7 @@ document.addEventListener('input', (e) => {
 });
 document.addEventListener('change', async (e) => {
   const t = e.target, d = t.dataset;
+  if (t.name && t.name.startsWith('av_')) { S.av[t.name.slice(3)] = t.type === 'checkbox' ? (t.checked ? 1 : 0) : t.value; save(); renderAll(); return renderAdult(); }
   if (t.name === 'gender') S.gender = t.value;
   else if (t.name === 'theme') { S.theme = t.value; applyTheme(); }
   else if (t.id === 'sLang') { S.lang = t.value; S.voice = ''; save(); renderAll(); return renderAdult(); }
@@ -539,6 +556,8 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden && S.
 let lastTouch = Date.now();
 document.addEventListener('pointerdown', () => { lastTouch = Date.now(); }, true);
 
+function boot() {
 if (S.auto) scene = nowRoom();
-renderAll();
+renderAll(); setInterval(live, 30000);
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('service-worker.js');
+}

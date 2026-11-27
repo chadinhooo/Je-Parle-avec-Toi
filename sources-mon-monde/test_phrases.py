@@ -14,5 +14,10 @@ with sync_playwright() as p:
     for lang, g, o, neg, exp in CASES:
         got = pg.evaluate("([l,g,o,n])=>{S.lang=l;S.gender=g;return optText(o,!!n)}", [lang, g, o, neg])
         if got != exp: bad += 1; print('ÉCHEC', o, '->', got, '| attendu :', exp)
+    for q, exp in [("Tu veux des pâtes ou du riz ?", ['pates', 'riz']), ("Tu as mal où ?", ['tete', 'ventre', 'dents', 'oreille']),
+                   ("Tu veux jouer au ballon ou aux Lego ?", ['ballon', 'lego']), ("Tu veux regarder la télé ou lire une histoire ?", ['televoir', 'histoire']),
+                   ("Tu veux de l'eau ?", ['oui', 'non'])]:
+        got = pg.evaluate("q=>{S.lang='fr';return understand(q)}", q)
+        if got != exp: bad += 1; print('ÉCHEC écoute', q, '->', got)
     b.close()
 srv.terminate(); print('OK' if not bad else f'{bad} échec(s)'); sys.exit(bad)
