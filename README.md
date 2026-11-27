@@ -1,1 +1,27 @@
-# Je-Parle-avec-Toi
+# Je Parle avec Toi
+
+Application de communication par pictogrammes (CAA) pour enfants et adultes non verbaux.
+
+## Où trouver chaque version
+
+| Version | Adresse | Rôle |
+|---|---|---|
+| Appli principale (v6) | https://chadinhooo.github.io/Je-Parle-avec-Toi/ | Version utilisée au quotidien. Ne change que sur demande. |
+| Test (dernière version, v8) | https://chadinhooo.github.io/Je-Parle-avec-Toi/test/ | Nouvelle version à essayer avant de remplacer l'appli principale. |
+| Archive v6 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v6/ | Copie de l'appli d'origine. |
+| Archive v7 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v7/ | Étape 2 enrichie, réglages par usager, échelle de douleur, code parent. |
+| Archive v8 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v8/ | Sauvegarde, mes phrases, journée, voix d'un proche, mode montrer, hors ligne, clavier, défilement, anglais. |
+
+## Organisation des dossiers
+
+- `index.html`, `manifest.webmanifest`, `service-worker.js`, icônes : appli principale.
+- `test/` : toujours la version la plus récente, à tester.
+- `versions/v6`, `versions/v7`, `versions/v8` : une copie figée de chaque version. Rien n'est jamais effacé.
+
+## Données
+
+Chaque version a sa propre mémoire sur le téléphone. Les versions test et archives reprennent au départ les profils et mots de l'appli principale, mais n'écrivent jamais dedans.
+
+## Crédits
+
+Pictogrammes : ARASAAC (Sergio Palao, Gouvernement d'Aragon), licence CC BY-NC-SA.
