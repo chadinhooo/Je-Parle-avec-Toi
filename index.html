@@ -370,6 +370,9 @@ main{padding-top:.4rem}
 .model-banner{display:none;align-items:center;gap:.8rem}
 body.modeling .model-banner{display:flex}
 .model-banner span{flex:1}
+/* correctif : texte lisible dans les champs en mode sombre */
+input,select,textarea{color:var(--color-text)}
+input::placeholder,textarea::placeholder{color:var(--color-text-faint);opacity:1}
 </style>
 </head>
 <body>
