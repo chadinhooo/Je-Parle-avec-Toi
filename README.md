@@ -7,16 +7,17 @@ Application de communication par pictogrammes (CAA) pour enfants et adultes non 
 | Version | Adresse | Rôle |
 |---|---|---|
 | Appli principale (v6) | https://chadinhooo.github.io/Je-Parle-avec-Toi/ | Version utilisée au quotidien. Ne change que sur demande. |
-| Test (dernière version, v8) | https://chadinhooo.github.io/Je-Parle-avec-Toi/test/ | Nouvelle version à essayer avant de remplacer l'appli principale. |
+| Test (dernière version, v9) | https://chadinhooo.github.io/Je-Parle-avec-Toi/test/ | Nouvelle version à essayer avant de remplacer l'appli principale. |
 | Archive v6 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v6/ | Copie de l'appli d'origine. |
 | Archive v7 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v7/ | Étape 2 enrichie, réglages par usager, échelle de douleur, code parent. |
 | Archive v8 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v8/ | Sauvegarde, mes phrases, journée, voix d'un proche, mode montrer, hors ligne, clavier, défilement, anglais. |
+| Archive v9 | https://chadinhooo.github.io/Je-Parle-avec-Toi/versions/v9/ | Écran sans défilement, pages à l'étape 3, en-tête compact, réglages en onglets, « Montrer à l'enfant » côté parent. |
 
 ## Organisation des dossiers
 
 - `index.html`, `manifest.webmanifest`, `service-worker.js`, icônes : appli principale.
 - `test/` : toujours la version la plus récente, à tester.
-- `versions/v6`, `versions/v7`, `versions/v8` : une copie figée de chaque version. Rien n'est jamais effacé.
+- `versions/v6` à `versions/v9` : une copie figée de chaque version. Rien n'est jamais effacé.
 
 ## Données
 
