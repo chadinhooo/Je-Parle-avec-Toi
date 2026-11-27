@@ -1,4 +1,4 @@
-const VERSION = 'jpat-test-v9';
+const VERSION = 'jpat-test-v9.1';
 const SHELL = ['./', './index.html'];
 
 self.addEventListener('install', (e) => {
