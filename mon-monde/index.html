@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F6F8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mon Monde">
+<meta name="description" content="Parler en touchant son monde : des scènes de la maison, du corps et des gens, pour les enfants et adultes qui ne parlent pas ou peu.">
+<title>Mon Monde</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preload" href="fonts/FiraSans-SemiBold.woff" as="font" type="font/woff" crossorigin>
+<style>@font-face { font-family: 'Fira Sans'; src: url(fonts/FiraSans-Regular.woff) format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Fira Sans'; src: url(fonts/FiraSans-SemiBold.woff) format('woff'); font-weight: 600 700; font-display: swap; }
+:root {
+  --bg: #F4F6F8; --surf: #FFFFFF; --ink: #161C2B; --mute: #566176; --line: #D7DCE4; --acc: #4338CA; --acc-t: #E6E4FA; --acc-ink: #FFFFFF; --plate: #FFFFFF;
+  --pers: #E2AE00; --pers-t: #FFF4C7; --verb: #2E9A50; --verb-t: #DFF3E5; --desc: #2F7FE0; --desc-t: #DFEBFC;
+  --noun: #E9821E; --noun-t: #FDE8D3; --soc: #D4428A; --soc-t: #FBE0EC; --q: #8A4FD6; --q-t: #EEE3FB; --neg: #D7383B; --neg-t: #FBDEDE;
+  color-scheme: light;
+}
+[data-theme=dark] {
+  --bg: #12161D; --surf: #1B212C; --ink: #EEF1F7; --mute: #A7B0C2; --line: #2F3848; --acc: #A5B4FC; --acc-t: #262B4D; --acc-ink: #111633; --plate: #F4F6FA;
+  --pers: #F2C230; --pers-t: #3A3317; --verb: #4CC172; --verb-t: #183424; --desc: #66A3F2; --desc-t: #172B45;
+  --noun: #F29A44; --noun-t: #3D2715; --soc: #EC6FAA; --soc-t: #3D1A2C; --q: #AE83EE; --q-t: #2C1F45; --neg: #F0605F; --neg-t: #41191B;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { font-family: 'Fira Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+button:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ui { width: 24px; height: 24px; flex: none; }
+[hidden] { display: none !important; }
+.c-pers { --c: var(--pers); --ct: var(--pers-t); } .c-verb { --c: var(--verb); --ct: var(--verb-t); } .c-desc { --c: var(--desc); --ct: var(--desc-t); }
+.c-noun { --c: var(--noun); --ct: var(--noun-t); } .c-soc { --c: var(--soc); --ct: var(--soc-t); } .c-q { --c: var(--q); --ct: var(--q-t); } .c-neg { --c: var(--neg); --ct: var(--neg-t); }
+.pic svg, .pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); }
+
+/* Mots urgents */
+#urg { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; padding: 8px 8px 0; flex: none; }
+.urg { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 62px; padding: 5px 2px 4px; border-radius: 14px; border: 3px solid var(--c); background: var(--ct); }
+.urg .pic { width: 32px; height: 32px; background: var(--plate); border-radius: 8px; padding: 2px; }
+.urg .lbl { font-size: 12px; letter-spacing: -.01em; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Scène */
+#bubble.idle { background: var(--surf); color: var(--mute); box-shadow: none; border: 1px dashed var(--line); }
+#bubble.idle .btx { font-size: 17px; font-weight: 400; }
+#bubble.idle .bic, #bubble.idle .ui { display: none; }
+#stage { position: relative; flex: 1; min-height: 0; margin: 8px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); }
+#scene { position: absolute; inset: 0; display: flex; }
+#scene .scene { width: 100%; height: 100%; }
+.sc-moi { background: #EEF3FA; } .sc-cuisine { background: linear-gradient(#F2E6CF 65%, #D8BE95 65%); } .sc-salon { background: linear-gradient(#DCEBF2 66.2%, #C9AE88 66.2%); }
+.sc-bain { background: linear-gradient(#D7EEF0 68.7%, #A9C8D1 68.7%); } .sc-chambre { background: linear-gradient(#E6E1F5 62.5%, #CDB894 62.5%); } .sc-dehors { background: linear-gradient(#CDE9FF 59%, #9BD17A 59%); }
+.sc-photo { background: #1B212C; } .sc-gens { background: var(--surf); }
+.hot { cursor: pointer; outline: none; }
+.hot.on, .hot:focus-visible { filter: drop-shadow(0 0 5px #4338CA) drop-shadow(0 0 2px #4338CA); }
+@media (hover: hover) { .hot:hover { filter: brightness(1.06); } }
+.zone circle { fill: #fff; fill-opacity: .22; stroke: #fff; stroke-width: 4; vector-effect: non-scaling-stroke; }
+.zone.on circle { stroke: #A5B4FC; }
+.people { width: 100%; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; padding: 12px; align-content: start; }
+.pcard { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px; border-radius: 18px; border: 3px solid var(--c); background: var(--ct); }
+.pcard .pic { width: 100%; aspect-ratio: 1; background: var(--plate); border-radius: 12px; overflow: hidden; padding: 6%; }
+.pcard .pic img { margin: -6%; width: 112%; height: 112%; }
+.pcard .lbl { font-weight: 600; font-size: 19px; }
+
+/* Bulle de parole : le moment fort */
+#bubble { flex: none; margin: 8px 8px 0; min-height: 68px; display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border: 0; border-radius: 20px 20px 20px 6px; background: var(--acc); color: var(--acc-ink); text-align: left; box-shadow: 0 6px 18px rgba(20, 24, 60, .25); }
+.bic { width: 48px; height: 48px; flex: none; background: var(--plate); border-radius: 12px; padding: 3px; display: flex; overflow: hidden; }
+.bic svg, .bic img { width: 100%; height: 100%; object-fit: cover; }
+.btx { flex: 1; font-size: clamp(20px, 5.4vw, 30px); font-weight: 600; line-height: 1.15; }
+@media (prefers-reduced-motion: no-preference) { #bubble:not(.idle) { animation: pop .28s cubic-bezier(.2, 1.4, .4, 1); transform-origin: 20px 100%; } @keyframes pop { from { transform: scale(.6); opacity: 0; } } .opt, .urg { transition: transform .08s; } .opt:active, .urg:active { transform: scale(.96); } }
+
+/* Pièces */
+#rooms { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; background: var(--surf); border-top: 1px solid var(--line); padding: 6px 6px calc(6px + env(safe-area-inset-bottom)); flex: none; }
+#rooms::-webkit-scrollbar { display: none; }
+#rooms button { position: relative; flex: none; width: 74px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 2px; border: 0; background: none; border-radius: 14px; color: var(--mute); }
+.rpic { width: 46px; height: 46px; border-radius: 50%; background: var(--plate); border: 2px solid var(--line); padding: 4px; display: flex; overflow: hidden; }
+.rpic svg, .rpic img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.rl { font-size: 12px; font-weight: 600; line-height: 1.1; text-align: center; }
+#rooms button[aria-current=true] { color: var(--acc); }
+#rooms button[aria-current=true] .rpic { border: 3px solid var(--acc); }
+.nowdot { position: absolute; top: 4px; right: 12px; width: 12px; height: 12px; border-radius: 50%; background: var(--verb); border: 2px solid var(--surf); }
+#rooms .adultbtn { margin-left: auto; border-left: 1px solid var(--line); border-radius: 0; padding-left: 6px; width: 80px; }
+@media (min-width: 760px) { #rooms { justify-content: center; } #rooms .adultbtn { margin-left: 24px; } }
+
+/* Fiche de choix */
+#sheet { position: fixed; inset: 0; z-index: 20; background: rgba(10, 14, 22, .45); display: flex; align-items: flex-end; justify-content: center; }
+.sh-card { width: min(100%, 680px); max-height: 88dvh; overflow-y: auto; background: var(--surf); border-radius: 24px 24px 0 0; padding: 12px 14px calc(16px + env(safe-area-inset-bottom)); }
+@media (min-width: 760px) and (min-height: 600px) { #sheet { align-items: center; } .sh-card { border-radius: 24px; } }
+.sh-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.sh-ic { width: 48px; height: 48px; flex: none; background: var(--plate); border: 1px solid var(--line); border-radius: 12px; padding: 3px; display: flex; overflow: hidden; }
+.sh-ic svg, .sh-ic img { width: 100%; height: 100%; object-fit: cover; }
+.sh-top h2 { flex: 1; margin: 0; font-size: 22px; }
+.neg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.neg button { display: flex; align-items: center; gap: 8px; min-height: 54px; padding: 4px 10px 4px 6px; border-radius: 14px; border: 2px solid var(--line); background: var(--surf); font-weight: 600; font-size: 16px; text-align: left; }
+.neg [data-neg="0"][aria-checked=true] { border: 3px solid var(--verb); background: var(--verb-t); }
+.neg [data-neg="1"][aria-checked=true] { border: 3px solid var(--neg); background: var(--neg-t); }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.opts.n5, .opts.n6, .opts.n7, .opts.n8, .opts.n9 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (min-width: 600px) { .opts.n7, .opts.n8, .opts.n9 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.opt { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; border-radius: 16px; border: 3px solid var(--c); background: var(--ct); min-width: 0; }
+.opt .pic { width: 100%; max-width: 140px; aspect-ratio: 1; background: var(--plate); border-radius: 12px; padding: 6%; overflow: hidden; }
+.opt .pic img { margin: -6%; width: 112%; height: 112%; }
+.opt .lbl { font-weight: 600; font-size: clamp(14px, 3.8vw, 19px); line-height: 1.15; text-align: center; overflow-wrap: break-word; hyphens: auto; max-width: 100%; }
+.mini { width: 40px; height: 40px; flex: none; border-radius: 8px; background: var(--plate); padding: 2px; display: inline-flex; overflow: hidden; }
+.mini.big { width: 52px; height: 52px; }
+.mini svg, .mini img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+
+/* Espace adulte */
+#adult { position: fixed; inset: 0; z-index: 30; background: var(--bg); overflow-y: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+.ahead { padding: 10px 12px 0; max-width: 780px; margin: 0 auto; }
+.atabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bg); border-bottom: 1px solid var(--line); max-width: 780px; margin: 8px auto 0; }
+.atabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 58px; border: 0; background: none; color: var(--mute); font-size: 13px; font-weight: 600; border-bottom: 3px solid transparent; }
+.atabs [aria-selected=true] { color: var(--acc); border-bottom-color: var(--acc); }
+.abody { max-width: 780px; margin: 0 auto; padding: 14px 16px 32px; }
+h2 { font-size: 20px; margin: 8px 0 12px; }
+.hint { color: var(--mute); line-height: 1.45; margin: 4px 0 12px; }
+.btn { min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--surf); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+.btn.primary { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); }
+.btn.danger { color: var(--neg); border-color: var(--neg); }
+.btn.big { width: 100%; min-height: 58px; justify-content: center; font-size: 18px; }
+.iconbtn { width: 48px; height: 48px; flex: none; border-radius: 12px; border: 1px solid var(--line); background: var(--surf); display: inline-flex; align-items: center; justify-content: center; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chips2 { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+.qchip { min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surf); font-weight: 600; }
+.sel { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 48px; }
+.selc { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 3px 8px 3px 3px; border-radius: 12px; border: 2px solid var(--c); background: var(--ct); font-weight: 600; }
+.selc .ui { width: 18px; height: 18px; }
+.lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.libw { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 4px; min-height: 84px; border-radius: 12px; border: 1px solid var(--line); background: var(--surf); font-size: 13px; font-weight: 600; }
+.libw .mini { width: 48px; height: 48px; }
+.libw.is-on { border: 3px solid var(--acc); background: var(--acc-t); }
+.stick { position: sticky; bottom: 0; padding: 10px 0; background: var(--bg); }
+.fil { list-style: none; padding: 0; margin: 0 0 16px; display: flex; flex-direction: column; gap: 6px; }
+.fil .day { align-self: center; color: var(--mute); font-size: 14px; margin: 10px 0 4px; }
+.msg { max-width: 82%; padding: 10px 14px; border-radius: 18px; font-size: 18px; }
+.msg time { display: block; font-size: 12px; opacity: .7; margin-top: 2px; }
+.from-c { align-self: flex-end; background: var(--acc); color: var(--acc-ink); border-bottom-right-radius: 6px; }
+.from-a { align-self: flex-start; background: var(--surf); border: 1px solid var(--line); border-bottom-left-radius: 6px; }
+textarea { width: 100%; min-height: 36vh; font-size: 26px; line-height: 1.3; border-radius: 16px; border: 1px solid var(--line); background: var(--surf); padding: 14px; resize: vertical; }
+
+/* Question montrée à l'enfant */
+#ask { position: fixed; inset: 0; z-index: 40; background: var(--bg); display: flex; flex-direction: column; padding: calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom)); }
+.askx { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 12px; }
+.askq { font-size: clamp(26px, 7vw, 44px); font-weight: 600; text-align: center; margin: 44px 8px 18px; line-height: 1.15; }
+.askg { flex: 1; min-height: 0; display: grid; gap: 14px; grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(0, 1fr); }
+.askg.n1 { grid-template-columns: 1fr; }
+.askg .opt { display: grid; grid-template-rows: minmax(0, 1fr) auto; justify-items: center; overflow: hidden; }
+.askg .opt .pic { width: 100%; height: 100%; min-height: 0; max-width: none; aspect-ratio: auto; background: none; padding: 0; display: flex; justify-content: center; }
+.askg .opt .pic svg, .askg .opt .pic img { width: auto; height: 100%; max-width: 100%; aspect-ratio: 1; background: var(--plate); border-radius: 14px; padding: 4%; }
+.askg .opt .pic img { padding: 0; margin: 0; }
+.askg .opt .lbl { font-size: clamp(18px, 5vw, 28px); }
+.askg .opt.dim { opacity: .3; }
+.askfoot { display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+/* Code parent et réglages */
+.lock { max-width: 340px; margin: 0 auto; text-align: center; }
+.lock .err { color: var(--neg); font-weight: 600; }
+.dots { display: flex; justify-content: center; gap: 14px; margin: 16px 0 22px; }
+.dots span { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--ink); }
+.dots .on { background: var(--ink); }
+.pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.pad button { height: 68px; border-radius: 16px; border: 1px solid var(--line); background: var(--surf); font-size: 28px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.ptop { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+details { background: var(--surf); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; padding: 0 16px; }
+details[open] { padding-bottom: 16px; }
+summary { font-weight: 600; font-size: 18px; min-height: 56px; display: flex; align-items: center; cursor: pointer; }
+.f { display: grid; gap: 6px; margin: 12px 0; font-weight: 600; }
+.f input:not([type=range]), .f select, .plist input { min-height: 48px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); padding: 0 12px; font-size: 17px; font-weight: 400; min-width: 0; }
+.f input[type=range] { width: 100%; min-height: 40px; accent-color: var(--acc); }
+.flabel { font-weight: 600; margin: 14px 0 6px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.seg input { position: absolute; opacity: 0; }
+.seg span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; cursor: pointer; }
+.seg input:checked + span { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); }
+.seg input:focus-visible + span { outline: 3px solid var(--acc); outline-offset: 2px; }
+.chk { display: flex; align-items: center; gap: 10px; min-height: 48px; flex: 1; }
+.chk input { width: 22px; height: 22px; accent-color: var(--acc); flex: none; }
+.plist, .olist, .routine { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+.plist li, .olist li { display: flex; align-items: center; gap: 8px; }
+.plist input { flex: 1; }
+.plist .grow { flex: 1; font-weight: 600; }
+.olist li { border-bottom: 1px solid var(--line); }
+.routine li { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.routine b { display: inline-block; width: 64px; }
+.add { border: 1px dashed var(--line); border-radius: 12px; margin-top: 12px; padding: 4px 14px 14px; }
+.add legend { font-weight: 600; padding: 0 6px; }
+.photo { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+.edwrap { background: #1B212C; border-radius: 14px; overflow: hidden; }
+.edsvg { display: block; width: 100%; max-height: 62vh; cursor: crosshair; }
+.zc { fill: #fff; fill-opacity: .25; stroke: #A5B4FC; stroke-width: 4; vector-effect: non-scaling-stroke; cursor: pointer; }
+.zc.sel { stroke: #F0605F; fill-opacity: .35; }
+#toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 12px; font-weight: 600; z-index: 50; }
+@media (max-height: 640px) { .urg { min-height: 52px; } .urg .pic { width: 26px; height: 26px; } .rpic { width: 38px; height: 38px; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="urg"></div>
+  <button id="bubble" class="idle"></button>
+  <div id="stage"><div id="scene"></div></div>
+  <nav id="rooms" aria-label="Pièces"></nav>
+</div>
+<div id="sheet" hidden></div>
+<div id="adult" hidden></div>
+<div id="ask" hidden role="dialog" aria-modal="true"></div>
+<div id="toast" role="status" hidden></div>
+<script>/* Pictogrammes dessinés pour l'appli (pas de licence tierce). Grille 64x64. */
+const K = '#22293A', SK = '#F7CBA5', HB = '#6B4A2F', HG = '#C9CED6', HY = '#E3B04B',
+  RED = '#E5484D', BLU = '#3B82F6', GRN = '#3BA55C', YEL = '#F7C948', ORA = '#F08A24',
+  PUR = '#8B5CF6', PNK = '#F27BB0', BRN = '#9A6236', WH = '#FFFFFF', LB = '#BFE3FF', CRM = '#F6E3BE';
+const NS = 'stroke="none"';
+const c = (x, y, r, f = 'none', e = '') => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" ${e}/>`;
+const el = (x, y, rx, ry, f = 'none', e = '') => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${f}" ${e}/>`;
+const r = (x, y, w, h, rx, f = 'none', e = '') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${f}" ${e}/>`;
+const p = (d, f = 'none', e = '') => `<path d="${d}" fill="${f}" ${e}/>`;
+const t = (x, y, s, txt, f = K) => `<text x="${x}" y="${y}" font-size="${s}" font-weight="700" font-family="Fira Sans,system-ui,sans-serif" fill="${f}" stroke="none" text-anchor="middle">${txt}</text>`;
+const dot = (x, y, s = 1.6) => c(x, y, s, K, NS);
+
+function face(cx, cy, R, mood = 'happy', fill = SK) {
+  const ex = R * 0.36, ey = cy - R * 0.1, m = cy + R * 0.38;
+  let s = c(cx, cy, R, fill), eyes = dot(cx - ex, ey, R * 0.09) + dot(cx + ex, ey, R * 0.09);
+  const arc = (y1, y2) => p(`M${cx - R * .38} ${y1} Q${cx} ${y2} ${cx + R * .38} ${y1}`);
+  switch (mood) {
+    case 'happy': return s + eyes + arc(m - R * .08, m + R * .32);
+    case 'sad': return s + eyes + arc(m + R * .18, m - R * .2) + p(`M${cx - ex - R * .2} ${ey - R * .3} L${cx - ex + R * .15} ${ey - R * .42} M${cx + ex + R * .2} ${ey - R * .3} L${cx + ex - R * .15} ${ey - R * .42}`) + el(cx + ex + R * .05, ey + R * .32, R * .07, R * .12, LB, NS);
+    case 'angry': return c(cx, cy, R, '#F6A9A0') + eyes + p(`M${cx - ex - R * .22} ${ey - R * .38} L${cx - ex + R * .2} ${ey - R * .18} M${cx + ex + R * .22} ${ey - R * .38} L${cx + ex - R * .2} ${ey - R * .18}`) + arc(m + R * .12, m - R * .12);
+    case 'tired': return s + p(`M${cx - ex - R * .14} ${ey} q${R * .14} ${R * .12} ${R * .28} 0 M${cx + ex - R * .14} ${ey} q${R * .14} ${R * .12} ${R * .28} 0`) + el(cx, m + R * .05, R * .1, R * .13, K, NS) + t(cx + R * .95, cy - R * .7, R * .55, 'z');
+    case 'scared': return s + c(cx - ex, ey, R * .17, WH) + c(cx + ex, ey, R * .17, WH) + dot(cx - ex, ey, R * .07) + dot(cx + ex, ey, R * .07) + p(`M${cx - ex - R * .2} ${ey - R * .36} Q${cx - ex} ${ey - R * .5} ${cx - ex + R * .2} ${ey - R * .36} M${cx + ex - R * .2} ${ey - R * .36} Q${cx + ex} ${ey - R * .5} ${cx + ex + R * .2} ${ey - R * .36}`) + el(cx, m + R * .06, R * .13, R * .19, K, NS);
+    case 'sick': return c(cx, cy, R, '#CDE7B0') + p(`M${cx - ex - R * .14} ${ey} h${R * .28} M${cx + ex - R * .14} ${ey} h${R * .28}`) + p(`M${cx - R * .34} ${m + R * .05} q${R * .11} -${R * .14} ${R * .22} 0 q${R * .11} ${R * .14} ${R * .22} 0 q${R * .11} -${R * .14} ${R * .22} 0`);
+    case 'calm': return s + p(`M${cx - ex - R * .14} ${ey + R * .04} q${R * .14} -${R * .14} ${R * .28} 0 M${cx + ex - R * .14} ${ey + R * .04} q${R * .14} -${R * .14} ${R * .28} 0`) + arc(m - R * .05, m + R * .18);
+    case 'surprised': return s + c(cx - ex, ey, R * .12, WH) + c(cx + ex, ey, R * .12, WH) + dot(cx - ex, ey, R * .06) + dot(cx + ex, ey, R * .06) + c(cx, m + R * .08, R * .17, K, NS);
+    case 'pain': return s + p(`M${cx - ex - R * .16} ${ey - R * .12} l${R * .26} ${R * .12} l-${R * .26} ${R * .12} M${cx + ex + R * .16} ${ey - R * .12} l-${R * .26} ${R * .12} l${R * .26} ${R * .12}`) + p(`M${cx - R * .34} ${m + R * .08} q${R * .11} -${R * .16} ${R * .22} 0 q${R * .11} ${R * .16} ${R * .22} 0 q${R * .11} -${R * .16} ${R * .22} 0`);
+    case 'open': return s + eyes + el(cx, m + R * .05, R * .2, R * .16, '#8A2A2F');
+    default: return s + eyes + p(`M${cx - R * .25} ${m + R * .05} h${R * .5}`);
+  }
+}
+
+/* Personnage : x centre, s échelle (1 adulte, .74 enfant), o = {hair, hc, shirt, glasses, mood} */
+function person(x, s, o = {}) {
+  const top = 61 - 50 * s, hr = 7.6 * s, hy = top + 8.5 * s, hc = o.hc || HB, sh = o.shirt || BLU;
+  const cap = p(`M${x - hr} ${hy + 1 * s} Q${x - hr - 1 * s} ${hy - hr * 1.35} ${x} ${hy - hr * 1.05} Q${x + hr + 1 * s} ${hy - hr * 1.35} ${x + hr} ${hy + 1 * s} Q${x} ${hy - hr * .55} ${x - hr} ${hy + 1 * s}Z`, hc);
+  let back = '', front = '';
+  if (o.hair === 'long') back = p(`M${x - hr - 1.5 * s} ${hy} Q${x - hr - 3 * s} ${hy + hr * 1.7} ${x - hr + 2 * s} ${hy + hr * 1.8} L${x + hr - 2 * s} ${hy + hr * 1.8} Q${x + hr + 3 * s} ${hy + hr * 1.7} ${x + hr + 1.5 * s} ${hy}Z`, hc);
+  if (o.hair === 'bun') back = c(x, hy - hr * 1.1, hr * .45, hc);
+  if (o.hair === 'pig') back = c(x - hr - 1.5 * s, hy - 1 * s, hr * .45, hc) + c(x + hr + 1.5 * s, hy - 1 * s, hr * .45, hc);
+  if (o.hair !== 'bald') front = cap; else front = p(`M${x - hr} ${hy} q${-1 * s} ${-hr * .6} ${hr * .3} ${-hr * .7} M${x + hr} ${hy} q${1 * s} ${-hr * .6} ${-hr * .3} ${-hr * .7}`, 'none', `stroke="${HG}" stroke-width="${3 * s}"`);
+  const ey = hy + .5 * s;
+  let fc = dot(x - hr * .38, ey, 1.2 * s + .3) + dot(x + hr * .38, ey, 1.2 * s + .3) + p(`M${x - hr * .32} ${hy + hr * .42} Q${x} ${hy + hr * .68} ${x + hr * .32} ${hy + hr * .42}`, 'none', `stroke-width="${2 * s}"`);
+  if (o.glasses) fc += c(x - hr * .38, ey, hr * .3, 'none', `stroke-width="${1.6 * s}"`) + c(x + hr * .38, ey, hr * .3, 'none', `stroke-width="${1.6 * s}"`);
+  const ty = top + 17 * s, by = top + 38 * s;
+  const arms = o.armsUp
+    ? p(`M${x - 8 * s} ${ty + 3 * s} L${x - 15 * s} ${ty - 9 * s} M${x + 8 * s} ${ty + 3 * s} L${x + 15 * s} ${ty - 9 * s}`, 'none', `stroke-width="${3.2 * s}"`)
+    : p(`M${x - 8 * s} ${ty + 3 * s} L${x - 13 * s} ${ty + 17 * s} M${x + 8 * s} ${ty + 3 * s} L${x + 13 * s} ${ty + 17 * s}`, 'none', `stroke-width="${3.2 * s}"`);
+  const legs = p(`M${x - 4.5 * s} ${by} L${x - 5 * s} 61 M${x + 4.5 * s} ${by} L${x + 5 * s} 61`, 'none', `stroke-width="${3.6 * s}"`);
+  const body = o.dress
+    ? p(`M${x - 8 * s} ${ty} Q${x} ${ty - 3 * s} ${x + 8 * s} ${ty} L${x + 13 * s} ${by + 4 * s} L${x - 13 * s} ${by + 4 * s}Z`, sh)
+    : p(`M${x - 8.5 * s} ${ty} Q${x} ${ty - 3 * s} ${x + 8.5 * s} ${ty} L${x + 9.5 * s} ${by} L${x - 9.5 * s} ${by}Z`, sh);
+  return back + legs + arms + body + c(x, hy, hr, SK) + front + fc;
+}
+
+function hand(x, y, s = 1, f = SK) {
+  let g = '';
+  [-7.5, -2.5, 2.5, 7.5].forEach((dx, i) => { g += r(x + dx * s - 2.4 * s, y - (i === 0 || i === 3 ? 12 : 16) * s, 4.8 * s, 20 * s, 2.4 * s, f); });
+  g += p(`M${x - 10 * s} ${y + 2 * s} L${x - 16 * s} ${y - 6 * s} Q${x - 19 * s} ${y - 2 * s} ${x - 14 * s} ${y + 8 * s}`, f);
+  g += p(`M${x - 10 * s} ${y} H${x + 10 * s} V${y + 12 * s} Q${x + 10 * s} ${y + 20 * s} ${x} ${y + 20 * s} Q${x - 10 * s} ${y + 20 * s} ${x - 10 * s} ${y + 12 * s}Z`, f);
+  return g;
+}
+
+const noOver = () => c(32, 32, 27, 'none', `stroke="${RED}" stroke-width="5"`) + p('M13 13 L51 51', 'none', `stroke="${RED}" stroke-width="5"`);
+const hi = (x, y, rr) => c(x, y, rr, RED, `fill-opacity=".28" stroke="${RED}" stroke-width="3"`);
+
+function bodyFig(back) {
+  return p('M32 20 L32 22', 'none') +
+    p('M22 24 Q32 20 42 24 L41 42 L23 42Z', back ? '#7FB3F5' : '#7FB3F5') +
+    p('M22 25 L15 40 M42 25 L49 40', 'none', 'stroke-width="4"') +
+    c(14.5, 42, 2.8, SK) + c(49.5, 42, 2.8, SK) +
+    p('M27 42 L26 58 M37 42 L38 58', 'none', 'stroke-width="5"') +
+    el(25, 59.5, 4, 2.2, '#5B6475') + el(39, 59.5, 4, 2.2, '#5B6475') +
+    c(32, 13, 8, back ? HB : SK) + (back ? '' : dot(29, 12.5, 1.1) + dot(35, 12.5, 1.1) + p('M29.5 16 Q32 17.8 34.5 16', 'none', 'stroke-width="1.6"'));
+}
+function bigFace(open) {
+  return el(13, 31, 4, 6, SK) + el(51, 31, 4, 6, SK) + c(32, 30, 19, SK) +
+    p('M14 26 Q14 9 32 10 Q50 9 50 26 Q44 17 32 18 Q20 17 14 26Z', HB) +
+    c(25, 29, 2.4, K, NS) + c(39, 29, 2.4, K, NS) + p('M32 31 L30 37 L33 37', 'none', 'stroke-width="2"') +
+    (open ? p('M25 41 Q32 50 39 41Z', '#8A2A2F') + p('M26.5 41.6 H37.5 L37 43.5 H27Z', WH, 'stroke-width="1.2"') : p('M26 42 Q32 46 38 42', 'none'));
+}
+const glass = (fill) => (fill ? p('M21 30 H43 L41 54 Q41 57 38 57 H26 Q23 57 23 54Z', fill, NS) : '') + p('M18 12 H46 L42 55 Q41.6 59 38 59 H26 Q22.4 59 22 55Z');
+const bowl = (f = WH) => p('M8 34 H56 Q56 56 32 56 Q8 56 8 34Z', f);
+const toilet = () => r(16, 6, 18, 22, 3, WH) + p('M10 30 H48 Q48 44 36 47 L38 58 H22 L24 47 Q10 44 10 30Z', WH) + el(29, 30, 19, 4.5, LB);
+const house = (wall = CRM, roof = RED) => p('M10 30 L32 10 L54 30', roof, 'stroke-width="3"') + r(15, 29, 34, 28, 2, wall) + r(27, 40, 10, 17, 1.5, BRN) + r(39, 35, 7, 7, 1, LB);
+const car = (body = RED) => p('M6 42 Q6 34 14 33 L20 24 Q22 21 26 21 H40 Q44 21 46 24 L51 33 Q58 34 58 42 V46 H6Z', body) + p('M22 32 L25 25 H31 V32Z M35 32 V25 H41 L45 32Z', LB) + c(18, 47, 6, '#3A4252') + c(46, 47, 6, '#3A4252') + c(18, 47, 2, WH, NS) + c(46, 47, 2, WH, NS);
+const tv = () => r(7, 12, 50, 34, 4, '#34405A') + r(11, 16, 42, 26, 2, '#8EC5FF', NS) + p('M12 38 L22 28 L30 35 L38 26 L52 40 V42 H12Z', GRN, NS) + p('M24 52 L28 46 M40 52 L36 46 M20 53 H44');
+const bed = () => r(6, 30, 52, 14, 3, BLU) + r(9, 24, 16, 9, 4, WH) + p('M6 20 V54 M58 34 V54', 'none', 'stroke-width="4"') + p('M24 30 Q40 24 58 30', 'none');
+const note = (x, y, s = 1) => el(x, y, 5 * s, 3.8 * s, K) + p(`M${x + 4.6 * s} ${y} V${y - 20 * s} L${x + 13 * s} ${y - 16 * s}`, 'none', `stroke-width="${3 * s}"`);
+const teddy = () => c(18, 14, 7, BRN) + c(46, 14, 7, BRN) + c(32, 24, 14, '#B87A45') + el(32, 30, 6, 4.5, CRM) + dot(27, 21, 1.8) + dot(37, 21, 1.8) + dot(32, 28.5, 2) + el(32, 48, 15, 13, '#B87A45') + el(32, 49, 8, 7, CRM) + c(18, 58, 5, BRN) + c(46, 58, 5, BRN);
+const plate = () => c(32, 34, 20, WH) + c(32, 34, 13, 'none', 'stroke-width="1.6"') + p('M6 18 V30 M3 18 V25 Q3 29 6 30 Q9 29 9 25 V18 M6 30 V54', 'none', 'stroke-width="2.2"') + p('M58 54 V16 Q51 22 52 36 H58', '#D5DAE2', 'stroke-width="2.2"');
+const tree = (x = 44) => r(x - 3, 34, 6, 22, 1, BRN) + c(x, 26, 13, GRN);
+const sun = (x, y, rr = 7) => c(x, y, rr, YEL) + p(`M${x} ${y - rr - 6} v3 M${x} ${y + rr + 3} v3 M${x - rr - 6} ${y} h3 M${x + rr + 3} ${y} h3 M${x - rr - 3} ${y - rr - 3} l2.5 2.5 M${x + rr + 3} ${y + rr + 3} l-2.5 -2.5 M${x + rr + 3} ${y - rr - 3} l-2.5 2.5 M${x - rr - 3} ${y + rr + 3} l2.5 -2.5`, 'none', 'stroke-width="2"');
+const thermo = (x, col) => r(x - 4, 8, 8, 38, 4, WH) + c(x, 50, 7, col) + r(x - 1.6, 24, 3.2, 26, 1.6, col, NS);
+const speech = (f = WH) => p('M10 14 Q10 8 16 8 H48 Q54 8 54 14 V36 Q54 42 48 42 H26 L16 52 V42 Q10 42 10 36Z', f);
+const book = (f = BLU) => p('M8 16 Q20 11 32 17 Q44 11 56 16 V52 Q44 47 32 53 Q20 47 8 52Z', WH) + p('M32 17 V53') + p('M13 24 Q20 22 27 25 M13 31 Q20 29 27 32 M37 25 Q44 22 51 24 M37 32 Q44 29 51 31', 'none', `stroke="${f}" stroke-width="2"`);
+const heart = (f = RED, x = 32, y = 34, s = 1) => p(`M${x} ${y + 18 * s} C${x - 26 * s} ${y + 2 * s} ${x - 20 * s} ${y - 20 * s} ${x} ${y - 9 * s} C${x + 20 * s} ${y - 20 * s} ${x + 26 * s} ${y + 2 * s} ${x} ${y + 18 * s}Z`, f);
+
+const ICONS = {
+  /* essentiels */
+  oui: c(32, 32, 25, GRN) + p('M19 33 L28 42 L45 23', 'none', `stroke="${WH}" stroke-width="6"`),
+  non: c(32, 32, 25, RED) + p('M21 21 L43 43 M43 21 L21 43', 'none', `stroke="${WH}" stroke-width="6"`),
+  stop: p('M22 6 H42 L58 22 V42 L42 58 H22 L6 42 V22Z', RED) + hand(32, 30, 1.05, WH),
+  aide: c(32, 32, 25, WH) + p('M32 7 A25 25 0 0 1 57 32 H45 A13 13 0 0 0 32 19Z M32 57 A25 25 0 0 1 7 32 H19 A13 13 0 0 0 32 45Z', RED) + c(32, 32, 13, '#EEF4FB'),
+  toilettes: toilet(),
+  mal: face(30, 34, 22, 'pain') + p('M50 4 L44 16 L52 16 L45 28', 'none', `stroke="${RED}" stroke-width="3.5"`),
+  encore: c(32, 32, 25, GRN) + p('M32 19 V45 M19 32 H45', 'none', `stroke="${WH}" stroke-width="7"`),
+  fini: r(10, 10, 44, 44, 6, WH) + p('M10 10 h11 v11 h-11Z M32 10 h11 v11 h-11Z M21 21 h11 v11 h-11Z M43 21 h11 v11 h-11Z M10 32 h11 v11 h-11Z M32 32 h11 v11 h-11Z M21 43 h11 v11 h-11Z M43 43 h11 v11 h-11Z', K, NS) + r(10, 10, 44, 44, 6),
+  /* personnes */
+  tous: person(16, .7, { hair: 'long', shirt: PNK, dress: 1 }) + person(48, .7, { hair: 'short', shirt: GRN }) + person(32, .84, { hair: 'short', hc: HY, shirt: ORA }),
+  maman: person(32, 1, { hair: 'long', shirt: RED, dress: 1 }),
+  papa: person(32, 1, { hair: 'short', shirt: BLU }),
+  mamie: person(32, .95, { hair: 'bun', hc: HG, shirt: PUR, glasses: 1, dress: 1 }),
+  papy: person(32, .95, { hair: 'bald', shirt: GRN, glasses: 1 }),
+  frere: person(32, .78, { hair: 'short', hc: HY, shirt: ORA }),
+  soeur: person(32, .78, { hair: 'pig', shirt: PNK, dress: 1 }),
+  maitresse: r(36, 8, 24, 18, 2, '#2F6B4F') + p('M41 14 h8 M41 19 h12', 'none', `stroke="${WH}" stroke-width="2"`) + person(24, .95, { hair: 'long', hc: '#3B2A1E', shirt: BLU, dress: 1 }),
+  ami: person(32, .78, { hair: 'short', hc: '#2B2B2B', shirt: YEL }),
+  moi: person(32, .82, { hair: 'short', shirt: GRN }) + p('M54 12 L40 24 M40 24 h7 M40 24 v-7', 'none', `stroke="${RED}" stroke-width="3"`),
+  /* débuts de phrase */
+  veux: hand(36, 30, 1.15) + p('M6 46 Q4 26 18 18', 'none', `stroke="${GRN}" stroke-width="3.5"`) + p('M12 18 L18 18 L18 24', 'none', `stroke="${GRN}" stroke-width="3.5"`),
+  neveux: hand(32, 30, 1.05) + noOver(),
+  suis: person(28, .9, { hair: 'short', shirt: GRN }) + p('M56 10 L38 26 M38 26 h8 M38 26 v-8', 'none', `stroke="${RED}" stroke-width="3.5"`),
+  aime: heart(RED),
+  naime: heart('#F3A3A6') + noOver(),
+  besoin: hand(26, 32, 1.05) + c(48, 16, 11, YEL) + p('M48 10 V18', 'none', 'stroke-width="3.5"') + dot(48, 23, 2),
+  vais: person(24, .9, { hair: 'short', shirt: GRN }) + p('M40 36 H58 M51 29 L58 36 L51 43', 'none', `stroke="${GRN}" stroke-width="4"`),
+  ouest: c(26, 26, 16, LB) + p('M38 38 L56 56', 'none', 'stroke-width="6"') + t(26, 33, 20, '?'),
+  cest: r(34, 30, 24, 24, 3, ORA) + hand(18, 28, .85) + p('M30 22 L36 28', 'none', `stroke="${GRN}" stroke-width="3"`),
+  /* social et questions */
+  bonjour: hand(34, 30, 1.1) + p('M8 18 Q4 26 8 34 M14 22 Q11 26 14 30', 'none', 'stroke-width="2.5"') + sun(52, 12, 5),
+  aurevoir: r(4, 8, 22, 50, 2, BRN) + c(21, 34, 1.8, YEL) + hand(42, 30, 1),
+  merci: heart(RED, 32, 22, .75) + hand(32, 40, .95),
+  stp: p('M32 6 Q24 8 22 20 L18 40 Q16 50 22 56 L32 58Z', SK) + p('M32 6 Q40 8 42 20 L46 40 Q48 50 42 56 L32 58Z', SK) + p('M32 7 V57') + p('M22 30 Q26 32 26 38 M42 30 Q38 32 38 38', 'none', 'stroke-width="2"') + heart(PNK, 52, 12, .3),
+  pardon: face(32, 32, 24, 'sad'),
+  bravo: p('M12 30 H22 V56 H12Z', BLU) + p('M22 32 L32 12 Q38 12 37 20 L35 28 H50 Q55 29 53 35 L48 52 Q46 56 41 56 H22Z', SK) + sun(50, 10, 3),
+  attends: p('M16 6 H48 M16 58 H48', 'none', 'stroke-width="4"') + p('M20 8 H44 Q44 24 32 32 Q44 40 44 56 H20 Q20 40 32 32 Q20 24 20 8Z', LB) + p('M25 52 H39 Q36 44 32 42 Q28 44 25 52Z', YEL, NS),
+  jesaispas: face(26, 36, 20, 'neutral') + t(52, 30, 28, '?', PUR),
+  regarde: p('M4 32 Q32 6 60 32 Q32 58 4 32Z', WH) + c(32, 32, 11, BLU) + c(32, 32, 5, K, NS) + c(35, 29, 2, WH, NS),
+  qui: person(26, .9, { hair: 'short', hc: '#8A94A6', shirt: '#B9C1CE' }) + t(50, 30, 28, '?', PUR),
+  quoi: r(6, 22, 30, 30, 4, ORA) + t(48, 40, 32, '?', PUR),
+  quand: c(28, 34, 22, WH) + p('M28 34 V20 M28 34 L38 40', 'none', 'stroke-width="3"') + t(54, 22, 22, '?', PUR),
+  /* manger et boire */
+  eau: glass(LB) + el(52, 14, 4, 6, BLU, NS),
+  lait: p('M20 22 L26 10 H38 L44 22 V58 H20Z', WH) + p('M20 22 H44 L38 10') + r(20, 32, 24, 14, 0, BLU, NS) + p('M20 22 V58 H44 V22'),
+  jus: glass(ORA) + p('M38 4 L33 30', 'none', `stroke="${RED}" stroke-width="3"`) + c(17, 13, 6, YEL),
+  pain: p('M8 46 Q4 38 12 34 L46 14 Q56 9 58 17 Q60 25 50 29 L16 48 Q10 52 8 46Z', '#E2A65B') + p('M20 36 L25 41 M30 30 L35 35 M40 24 L45 29', 'none', 'stroke-width="2"'),
+  pomme: p('M32 22 C20 13 7 23 11 39 C14 52 25 59 32 55 C39 59 50 52 53 39 C57 23 44 13 32 22Z', RED) + p('M32 22 Q32 12 36 7', 'none') + p('M35 14 Q43 7 48 13 Q41 19 35 14Z', GRN),
+  banane: p('M10 16 Q12 46 40 52 Q52 53 56 44 Q42 46 31 38 Q20 29 18 14Z', YEL) + p('M10 16 L14 9 L18 14', 'none') + p('M56 44 L58 48', 'none'),
+  gateau: p('M8 30 L56 22 V52 L8 56Z', CRM) + p('M8 30 L56 22 V30 Q50 35 45 30 Q39 37 33 32 Q25 39 19 33 Q13 39 8 36Z', PNK) + r(28, 6, 5, 18, 1.5, BLU) + p('M30.5 6 Q26 1 30.5 -2 Q35 1 30.5 6Z', ORA, NS),
+  chocolat: r(14, 8, 36, 50, 4, BRN) + p('M26 8 V34 M38 8 V34 M14 21 H50', 'none', 'stroke-width="2"') + r(12, 34, 40, 24, 2, RED),
+  pates: bowl(WH) + p('M14 34 q4-10 8 0 q4-10 8 0 q4-10 8 0 q4-10 8 0 q4-10 8 0', 'none', `stroke="${HY}" stroke-width="4"`) + p('M8 34 H56'),
+  riz: bowl(BLU) + p('M12 34 Q32 14 52 34Z', WH) + dot(24, 28, 1.2) + dot(32, 25, 1.2) + dot(40, 28, 1.2) + dot(30, 31, 1.2) + dot(36, 31, 1.2),
+  soupe: el(32, 34, 24, 6, ORA) + bowl(WH) + el(32, 34, 24, 5, ORA) + p('M24 24 q-4-5 0-10 q4-5 0-10 M36 24 q-4-5 0-10 q4-5 0-10', 'none', 'stroke-width="2.2"'),
+  yaourt: p('M17 20 H47 L43 58 H21Z', WH) + r(14, 13, 36, 8, 3, BLU) + r(19, 32, 26, 12, 0, PNK, NS) + p('M17 20 H47 L43 58 H21Z'),
+  fromage: p('M8 40 L50 20 L56 40Z', YEL) + r(8, 40, 48, 16, 1, YEL) + c(22, 48, 3, '#E8B23A') + c(40, 46, 4, '#E8B23A') + c(46, 31, 2.5, '#E8B23A'),
+  biscuit: c(32, 32, 24, '#D9A066') + c(24, 24, 3, BRN, NS) + c(38, 22, 2.6, BRN, NS) + c(42, 36, 3, BRN, NS) + c(26, 40, 2.6, BRN, NS) + c(34, 32, 2.2, BRN, NS),
+  frites: r(18, 8, 6, 30, 1, YEL) + r(26, 4, 6, 32, 1, YEL) + r(34, 7, 6, 30, 1, YEL) + r(41, 11, 6, 28, 1, YEL) + p('M12 26 H52 L46 58 H18Z', RED) + c(32, 40, 5, YEL, NS),
+  compote: r(16, 20, 32, 38, 6, '#F3E2A9') + r(14, 12, 36, 10, 3, RED) + p('M32 34 C27 30 22 34 23 40 C24 46 29 48 32 46 C35 48 40 46 41 40 C42 34 37 30 32 34Z', GRN),
+  bonbon: p('M18 32 L4 22 V42Z M46 32 L60 22 V42Z', PNK) + el(32, 32, 15, 12, PNK) + p('M26 24 Q30 32 26 40 M34 22 Q38 32 34 42', 'none', `stroke="${WH}" stroke-width="2.5"`),
+  legumes: p('M10 56 L30 20 Q36 16 38 22 Z', ORA) + p('M32 20 L30 8 M34 20 L40 10 M36 22 L46 16', 'none', `stroke="${GRN}" stroke-width="3"`) + r(46, 38, 6, 18, 2, '#7DBB5A') + c(44, 34, 7, GRN) + c(54, 34, 7, GRN) + c(49, 28, 7, GRN),
+  viande: p('M40 8 C56 8 60 26 50 36 C44 42 34 42 30 38 L18 50', '#C8693B') + c(14, 50, 5, WH) + c(18, 56, 5, WH) + p('M30 38 L18 50', 'none', `stroke="${WH}" stroke-width="6"`) + p('M30 38 L18 50', 'none'),
+  gouter: r(10, 30, 26, 26, 3, '#D9A066') + c(46, 38, 12, RED) + p('M46 26 Q46 20 50 18', 'none'),
+  /* corps */
+  tete: bodyFig() + hi(32, 13, 10),
+  ventre: bodyFig() + hi(32, 33, 8),
+  dos: bodyFig(true) + hi(32, 30, 9),
+  bras: bodyFig() + hi(18, 32, 7),
+  main: bodyFig() + hi(14.5, 42, 6),
+  jambe: bodyFig() + hi(26, 50, 7),
+  pied: bodyFig() + hi(39, 58, 6.5),
+  dents: bigFace(1) + hi(32, 43, 8),
+  gorge: p('M24 46 H40 V60 H24Z', SK) + bigFace() + hi(32, 54, 7),
+  oreille: bigFace() + hi(13, 31, 8),
+  oeil: bigFace() + hi(25, 29, 7),
+  nez: bigFace() + hi(32, 34, 6.5),
+  partout: bodyFig() + hi(32, 13, 6) + hi(32, 33, 6) + hi(18, 32, 5) + hi(39, 52, 5),
+  /* émotions */
+  content: face(32, 32, 25, 'happy'),
+  triste: face(32, 32, 25, 'sad'),
+  colere: face(32, 32, 25, 'angry'),
+  fatigue: face(30, 34, 24, 'tired'),
+  peur: face(32, 32, 25, 'scared'),
+  malade: face(28, 32, 23, 'sick') + thermo(53, RED),
+  calme: face(32, 32, 25, 'calm'),
+  surpris: face(32, 32, 25, 'surprised'),
+  faim: plate(),
+  soif: glass() + el(32, 50, 4, 2, LB, NS) + p('M50 18 Q56 26 50 30 Q44 26 50 18Z', LB),
+  chaud: sun(24, 24, 11) + thermo(50, RED),
+  froid: p('M24 8 V48 M8 28 H40 M12 16 L36 40 M36 16 L12 40', 'none', `stroke="${BLU}" stroke-width="3.5"`) + thermo(50, BLU),
+  ennui: face(32, 34, 24, 'neutral') + t(52, 16, 14, '...'),
+  /* actions */
+  jouer: r(8, 34, 22, 22, 3, RED) + r(34, 34, 22, 22, 3, BLU) + r(21, 10, 22, 22, 3, YEL) + t(19, 50, 13, 'A', WH) + t(45, 50, 13, 'B', WH) + t(32, 26, 13, 'C'),
+  manger: face(24, 34, 20, 'open') + p('M58 20 L40 40', 'none', 'stroke-width="3"') + el(38, 42, 6, 4, '#D5DAE2'),
+  boire: face(22, 34, 19, 'happy') + p('M38 22 H56 L53 50 H41Z', WH) + p('M40 30 H55 L53 48 H42Z', LB, NS) + p('M38 22 H56 L53 50 H41Z'),
+  dormir: bed() + t(42, 18, 13, 'z') + t(52, 12, 10, 'z'),
+  sortir: r(8, 8, 26, 50, 2, BRN) + c(29, 34, 2, YEL) + p('M38 32 H58 M51 25 L58 32 L51 39', 'none', `stroke="${GRN}" stroke-width="4"`),
+  lire: book(BLU),
+  dessiner: p('M8 52 Q20 36 30 46 Q38 54 50 40', 'none', `stroke="${PNK}" stroke-width="3.5"`) + p('M40 8 L56 24 L30 50 L20 54 L24 44Z', YEL) + p('M40 8 L56 24 L52 28 L36 12Z', PNK) + p('M24 44 L30 50'),
+  televoir: tv(),
+  ecouter: p('M14 38 V30 Q14 12 32 12 Q50 12 50 30 V38', 'none', 'stroke-width="4"') + r(8, 34, 12, 18, 4, RED) + r(44, 34, 12, 18, 4, RED) + note(30, 48, .55),
+  laver: p('M12 8 H38 V14', 'none', 'stroke-width="3"') + el(38, 18, 10, 4, '#9AA3B2') + p('M32 26 L30 32 M38 26 V33 M44 26 L46 32 M35 38 L34 44 M41 38 L42 44', 'none', `stroke="${BLU}" stroke-width="2.5"`) + c(18, 48, 6, LB) + c(28, 54, 4, LB) + c(46, 52, 5, LB),
+  calin: person(22, .9, { hair: 'long', shirt: RED, dress: 1 }) + person(40, .72, { hair: 'short', hc: HY, shirt: ORA }) + p('M14 34 Q30 44 46 32', 'none', 'stroke-width="3.2"') + heart(PNK, 50, 12, .35),
+  reposer: r(6, 30, 52, 18, 5, PUR) + r(12, 20, 40, 16, 4, '#A78BFA') + r(4, 28, 10, 22, 4, PUR) + r(50, 28, 10, 22, 4, PUR) + p('M10 50 V56 M54 50 V56', 'none', 'stroke-width="3"'),
+  allertoilettes: toilet() + p('M46 10 H60 M54 4 L60 10 L54 16', 'none', `stroke="${GRN}" stroke-width="3"`),
+  danser: person(30, .95, { hair: 'pig', shirt: PNK, dress: 1, armsUp: 1 }) + note(50, 22, .5) + note(10, 18, .45),
+  chanter: face(24, 34, 20, 'open') + note(48, 24, .6) + note(56, 40, .45),
+  /* lieux */
+  maison: house(),
+  ecole: r(10, 26, 44, 32, 1, '#F2C36B') + p('M6 28 L32 12 L58 28', RED, 'stroke-width="3"') + r(27, 42, 10, 16, 1, BRN) + r(15, 34, 8, 7, 1, LB) + r(41, 34, 8, 7, 1, LB) + p('M32 12 V2 L42 5 L32 8', BLU, 'stroke-width="2"'),
+  parc: p('M2 56 H62', 'none', `stroke="${GRN}" stroke-width="4"`) + tree(46) + r(6, 38, 26, 5, 1, BRN) + p('M9 43 V52 M29 43 V52', 'none', 'stroke-width="3"') + sun(14, 14, 6),
+  chambre: bed() + r(40, 6, 14, 12, 1, LB),
+  voiture: car(RED),
+  magasin: r(8, 26, 48, 32, 1, WH) + p('M6 14 H58 L56 26 H8Z', WH) + p('M14 14 L13 26 M24 14 V26 M34 14 V26 M44 14 L45 26', 'none', `stroke="${RED}" stroke-width="5"`) + p('M6 14 H58 L56 26 H8Z') + r(16, 34, 14, 24, 1, LB) + r(36, 34, 14, 12, 1, ORA),
+  dehors: sun(16, 16, 8) + tree(46) + p('M2 58 Q32 48 62 58', GRN, 'stroke-width="2.5"'),
+  piscine: p('M18 6 V40 M30 6 V40 M18 16 H30 M18 26 H30', 'none', `stroke="#9AA3B2" stroke-width="3.5"`) + p('M4 44 q7-6 14 0 q7 6 14 0 q7-6 14 0 q7 6 14 0 V58 H4Z', '#6EC1F5', NS) + p('M4 44 q7-6 14 0 q7 6 14 0 q7-6 14 0 q7 6 14 0', 'none', `stroke="${BLU}" stroke-width="2.5"`),
+  docteur: r(8, 18, 48, 36, 5, WH) + p('M24 18 V12 H40 V18', 'none', 'stroke-width="3"') + p('M28 26 H36 V32 H42 V40 H36 V46 H28 V40 H22 V32 H28Z', RED),
+  /* objets */
+  doudou: teddy(),
+  tablette: r(10, 6, 44, 52, 6, '#34405A') + r(15, 11, 34, 38, 2, '#8EC5FF', NS) + c(32, 53, 2, WH, NS) + r(20, 18, 8, 8, 2, YEL, NS) + r(32, 18, 8, 8, 2, PNK, NS) + r(20, 30, 8, 8, 2, GRN, NS) + r(32, 30, 8, 8, 2, ORA, NS),
+  ballon: c(32, 32, 24, WH) + p('M32 8 Q20 32 32 56 M8 32 Q32 22 56 32', 'none', `stroke="${RED}" stroke-width="3"`) + p('M14 15 Q30 30 50 50', 'none', `stroke="${BLU}" stroke-width="3"`) + c(32, 32, 24),
+  livre: r(14, 6, 38, 52, 3, BLU) + r(18, 6, 34, 52, 2, '#2F6FD6') + r(24, 16, 22, 10, 1, WH) + p('M14 6 V58'),
+  tele: tv(),
+  musique: note(22, 46, 1) + note(42, 40, .8),
+  puzzle: p('M10 18 H24 Q22 10 30 10 Q38 10 36 18 H50 V32 Q58 30 58 38 Q58 46 50 44 V58 H10Z', GRN),
+  petitevoiture: car(YEL),
+  velo: c(16, 42, 11) + c(48, 42, 11) + p('M16 42 L26 24 H44 L48 42 M26 24 L32 42 L44 24 M22 18 H30 M44 24 L42 16 H48', 'none', `stroke="${RED}" stroke-width="3"`),
+  lego: r(8, 26, 48, 28, 3, RED) + r(14, 18, 10, 9, 2, RED) + r(27, 18, 10, 9, 2, RED) + r(40, 18, 10, 9, 2, RED),
+  bulles: c(22, 38, 14, LB) + c(44, 22, 10, LB) + c(46, 48, 7, LB) + c(17, 33, 3, WH, NS) + c(41, 19, 2.5, WH, NS),
+  telephone: r(18, 4, 28, 56, 5, '#34405A') + r(21, 10, 22, 40, 1.5, '#8EC5FF', NS) + c(32, 55, 2, WH, NS),
+  /* catégories */
+  cat_debut: speech(WH) + c(22, 25, 3, K, NS) + c(32, 25, 3, K, NS) + c(42, 25, 3, K, NS),
+  cat_manger: '', cat_corps: '', cat_emotions: '', cat_faire: '', cat_lieux: '', cat_objets: '',
+  photo: r(6, 14, 52, 38, 5, '#D5DAE2') + c(32, 33, 11, WH) + c(32, 33, 6, BLU) + r(20, 9, 14, 7, 2, '#D5DAE2'),
+};
+ICONS.cat_manger = ICONS.pomme; ICONS.cat_corps = bodyFig(); ICONS.cat_emotions = ICONS.content;
+ICONS.cat_faire = ICONS.jouer; ICONS.cat_lieux = ICONS.maison; ICONS.cat_objets = ICONS.doudou;
+
+function picto(id) {
+  const g = ICONS[id] || ICONS.photo;
+  return `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g stroke="${K}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${g}</g></svg>`;
+}
+
+/* Pictogrammes ajoutés pour Mon Monde */
+Object.assign(ICONS, {
+  cereales: bowl(WH) + c(20, 32, 3, HY) + c(28, 29, 3, HY) + c(36, 31, 3, HY) + c(44, 30, 3, HY) + c(24, 25, 3, HY) + c(40, 25, 3, HY) + p('M8 34 H56') + p('M46 6 L38 28', 'none', 'stroke-width="3"'),
+  raisin: p('M32 14 Q34 6 40 4', 'none') + p('M34 10 Q44 4 48 12 Q40 14 34 10Z', GRN) + [[24, 20], [36, 20], [18, 31], [30, 31], [42, 31], [24, 42], [36, 42], [30, 53]].map(([x, y]) => c(x, y, 6.5, PUR)).join(''),
+  fraises: p('M32 58 C16 46 10 30 18 22 Q32 14 46 22 C54 30 48 46 32 58Z', RED) + p('M20 22 L26 14 L32 20 L38 14 L44 22 Q32 26 20 22Z', GRN) + [[26, 32], [38, 32], [32, 40], [26, 46], [38, 44]].map(([x, y]) => el(x, y, 1.2, 2, YEL, NS)).join(''),
+  lavermains: hand(24, 36, .85) + hand(42, 36, .85) + p('M30 4 V10 M24 6 V12 M36 6 V12', 'none', `stroke="${BLU}" stroke-width="2.5"`) + c(14, 56, 4, LB) + c(52, 54, 5, LB),
+  brosser: r(6, 40, 40, 8, 4, BLU) + r(36, 30, 18, 10, 3, WH) + p('M38 30 V24 M42 30 V24 M46 30 V24 M50 30 V24', 'none', `stroke="${LB}" stroke-width="3"`) + c(20, 18, 7, WH) + c(30, 14, 5, WH),
+  habiller: p('M22 8 L8 18 L14 28 L20 24 V58 H44 V24 L50 28 L56 18 L42 8 Q32 16 22 8Z', BLU) + c(32, 26, 2, WH, NS) + c(32, 36, 2, WH, NS),
+  histoire: book(PUR) + c(52, 10, 6, YEL) + c(49, 8, 5, '#F4F6FA', NS),
+  toboggan: p('M10 58 V18 H20 V58', 'none', 'stroke-width="3"') + p('M10 26 H20 M10 36 H20 M10 46 H20', 'none', 'stroke-width="2"') + p('M20 18 Q30 18 40 40 Q46 52 58 54 V58 Q42 58 36 44 Q28 26 20 24Z', RED),
+  balancoire: p('M8 58 L18 6 H46 L56 58', 'none', 'stroke-width="3.5"') + p('M26 6 V40 M38 6 V40', 'none', 'stroke-width="2"') + r(22, 40, 20, 5, 2, YEL),
+  jaifini: c(32, 32, 25, BLU) + p('M19 33 L28 42 L45 23', 'none', `stroke="${WH}" stroke-width="6"`),
+  besoinaide: c(32, 32, 25, WH) + p('M32 7 A25 25 0 0 1 57 32 H45 A13 13 0 0 0 32 19Z M32 57 A25 25 0 0 1 7 32 H19 A13 13 0 0 0 32 45Z', RED) + c(32, 32, 13, '#EEF4FB'),
+  allume: p('M22 30 Q22 12 32 12 Q42 12 42 30 Q42 38 37 42 H27 Q22 38 22 30Z', YEL) + r(27, 42, 10, 10, 2, '#9AA3B2') + p('M32 2 V6 M12 14 L15 17 M52 14 L49 17 M8 30 H12 M52 30 H56', 'none', 'stroke-width="2.5"'),
+  eteins: p('M22 30 Q22 12 32 12 Q42 12 42 30 Q42 38 37 42 H27 Q22 38 22 30Z', '#5B6475') + r(27, 42, 10, 10, 2, '#9AA3B2') + c(50, 14, 6, YEL) + c(47, 12, 5, WH, NS),
+  montour: person(26, .85, { hair: 'short', shirt: GRN }) + p('M56 10 L40 26 M40 26 h7 M40 26 v-7', 'none', `stroke="${RED}" stroke-width="3.5"`),
+  atoi: hand(24, 34, .9) + p('M38 32 H58 M51 25 L58 32 L51 39', 'none', `stroke="${GRN}" stroke-width="4"`),
+  viens: hand(28, 32, 1) + p('M48 18 Q58 30 48 44', 'none', `stroke="${GRN}" stroke-width="3.5"`) + p('M44 40 L48 44 L52 39', 'none', `stroke="${GRN}" stroke-width="3.5"`),
+  peu: r(10, 40, 12, 16, 2, RED) + r(26, 28, 12, 28, 2, WH) + r(42, 14, 12, 42, 2, WH),
+  tres: r(10, 40, 12, 16, 2, RED) + r(26, 28, 12, 28, 2, RED) + r(42, 14, 12, 42, 2, RED),
+  adulte: person(32, 1, { hair: 'short', hc: '#3B2A1E', shirt: '#5B6475' }),
+  room_moi: ICONS.moi, room_gens: ICONS.tous, room_cuisine: '', room_salon: '', room_bain: '', room_chambre: ICONS.dormir, room_dehors: ICONS.parc,
+});
+ICONS.room_cuisine = r(14, 6, 36, 52, 5, '#E9EEF5') + p('M14 24 H50') + p('M42 12 V20 M42 30 V44', 'none', 'stroke-width="3"') + c(24, 14, 3, RED, NS) + c(26, 36, 3, YEL, NS);
+ICONS.room_salon = ICONS.reposer;
+ICONS.room_bain = r(4, 30, 56, 18, 6, WH) + p('M8 48 L10 56 M54 48 L52 56', 'none', 'stroke-width="3"') + c(20, 26, 6, LB) + c(32, 22, 5, LB) + c(42, 26, 6, LB) + p('M52 30 V10 H44', 'none', 'stroke-width="3"');
+
+/* ---------- Vocabulaire ----------
+ k : pers (personne), start (début de phrase), noun (objet), body (corps), feel (ressenti), verb (action), place (lieu), soc (social), q (question)
+ FR : g = m | f | p (pluriel), m = se dit « du / de la » (quantité), pos = forme possessive, d = on dit « la télé »
+ EN : ec = mass | count | pl, enp = pluriel, epos = possessif, gb = variante britannique */
+const W = [
+  /* Début : personnes */
+  { id: 'maman', cat: 'debut', k: 'pers', fr: 'Maman', en: 'Mom', gb: 'Mum' },
+  { id: 'papa', cat: 'debut', k: 'pers', fr: 'Papa', en: 'Dad' },
+  { id: 'frere', cat: 'debut', k: 'pers', lbl: 'Frère', fr: 'mon frère', en: 'my brother', elbl: 'Brother' },
+  { id: 'soeur', cat: 'debut', k: 'pers', lbl: 'Sœur', fr: 'ma sœur', en: 'my sister', elbl: 'Sister' },
+  { id: 'mamie', cat: 'debut', k: 'pers', fr: 'Mamie', en: 'Grandma', gb: 'Granny' },
+  { id: 'papy', cat: 'debut', k: 'pers', fr: 'Papy', en: 'Grandpa' },
+  { id: 'maitresse', cat: 'debut', k: 'pers', lbl: 'Maîtresse', fr: 'Maîtresse', en: 'Teacher' },
+  { id: 'tous', cat: 'debut', k: 'pers', lbl: 'Tout le monde', fr: 'tout le monde', en: 'everyone', elbl: 'Everyone' },
+  /* Début : débuts de phrase */
+  { id: 'veux', cat: 'debut', k: 'start', fr: 'je veux', lbl: 'Je veux', en: 'I want', go: 'manger' },
+  { id: 'neveux', cat: 'debut', k: 'start', col: 'neg', fr: 'je ne veux pas', lbl: 'Je ne veux pas', en: "I don't want", go: 'manger' },
+  { id: 'mal', cat: 'debut', k: 'start', col: 'neg', fr: "j'ai mal", lbl: "J'ai mal", en: 'it hurts', elbl: 'It hurts', go: 'corps' },
+  { id: 'suis', cat: 'debut', k: 'start', fr: 'je suis', lbl: 'Je suis', en: "I'm", go: 'emotions' },
+  { id: 'aime', cat: 'debut', k: 'start', fr: "j'aime", lbl: "J'aime", en: 'I like' },
+  { id: 'naime', cat: 'debut', k: 'start', col: 'neg', fr: "je n'aime pas", lbl: "Je n'aime pas", en: "I don't like" },
+  { id: 'besoin', cat: 'debut', k: 'start', fr: "j'ai besoin", lbl: "J'ai besoin de", en: 'I need', go: 'faire' },
+  { id: 'vais', cat: 'debut', k: 'start', fr: 'je vais', lbl: 'Je vais', en: "I'm going", go: 'lieux' },
+  { id: 'ouest', cat: 'debut', k: 'start', col: 'q', fr: 'où est', lbl: 'Où est', en: 'where is', elbl: 'Where is', go: 'objets' },
+  { id: 'cest', cat: 'debut', k: 'start', fr: "c'est", lbl: "C'est", en: "it's", elbl: "It's" },
+  /* Début : social et questions (dits tout de suite) */
+  { id: 'bonjour', cat: 'debut', k: 'soc', fr: 'Bonjour', en: 'Hello' },
+  { id: 'aurevoir', cat: 'debut', k: 'soc', fr: 'Au revoir', en: 'Goodbye' },
+  { id: 'merci', cat: 'debut', k: 'soc', fr: 'Merci', en: 'Thank you' },
+  { id: 'stp', cat: 'debut', k: 'soc', fr: "S'il te plaît", en: 'Please' },
+  { id: 'pardon', cat: 'debut', k: 'soc', fr: 'Pardon', en: 'Sorry' },
+  { id: 'bravo', cat: 'debut', k: 'soc', fr: 'Bravo', en: 'Well done' },
+  { id: 'attends', cat: 'debut', k: 'soc', fr: 'Attends', en: 'Wait' },
+  { id: 'regarde', cat: 'debut', k: 'soc', fr: 'Regarde', en: 'Look' },
+  { id: 'jesaispas', cat: 'debut', k: 'soc', fr: 'Je ne sais pas', en: "I don't know" },
+  { id: 'qui', cat: 'debut', k: 'q', lbl: 'Qui ?', fr: 'Qui ?', en: 'Who?' },
+  { id: 'quoi', cat: 'debut', k: 'q', lbl: 'Quoi ?', fr: "Qu'est-ce que c'est ?", en: 'What is it?', elbl: 'What?' },
+  { id: 'quand', cat: 'debut', k: 'q', lbl: 'Quand ?', fr: 'Quand ?', en: 'When?' },
+  { id: 'ami', cat: 'debut', k: 'pers', lbl: 'Copain', fr: 'mon copain', en: 'my friend', elbl: 'Friend' },
+  /* Manger */
+  { id: 'eau', cat: 'manger', k: 'noun', fr: 'eau', g: 'f', m: 1, en: 'water', ec: 'mass' },
+  { id: 'lait', cat: 'manger', k: 'noun', fr: 'lait', g: 'm', m: 1, en: 'milk', ec: 'mass' },
+  { id: 'jus', cat: 'manger', k: 'noun', fr: 'jus', g: 'm', m: 1, en: 'juice', ec: 'mass' },
+  { id: 'pain', cat: 'manger', k: 'noun', fr: 'pain', g: 'm', m: 1, en: 'bread', ec: 'mass' },
+  { id: 'pomme', cat: 'manger', k: 'noun', fr: 'pomme', g: 'f', en: 'apple', ec: 'count' },
+  { id: 'banane', cat: 'manger', k: 'noun', fr: 'banane', g: 'f', en: 'banana', ec: 'count' },
+  { id: 'gateau', cat: 'manger', k: 'noun', fr: 'gâteau', g: 'm', m: 1, en: 'cake', ec: 'mass' },
+  { id: 'chocolat', cat: 'manger', k: 'noun', fr: 'chocolat', g: 'm', m: 1, en: 'chocolate', ec: 'mass' },
+  { id: 'pates', cat: 'manger', k: 'noun', fr: 'pâtes', g: 'p', en: 'pasta', ec: 'mass' },
+  { id: 'riz', cat: 'manger', k: 'noun', fr: 'riz', g: 'm', m: 1, en: 'rice', ec: 'mass' },
+  { id: 'soupe', cat: 'manger', k: 'noun', fr: 'soupe', g: 'f', m: 1, en: 'soup', ec: 'mass' },
+  { id: 'yaourt', cat: 'manger', k: 'noun', fr: 'yaourt', g: 'm', en: 'yogurt', gb: 'yoghurt', ec: 'count' },
+  { id: 'fromage', cat: 'manger', k: 'noun', fr: 'fromage', g: 'm', m: 1, en: 'cheese', ec: 'mass' },
+  { id: 'biscuit', cat: 'manger', k: 'noun', fr: 'biscuit', g: 'm', en: 'cookie', gb: 'biscuit', ec: 'count' },
+  { id: 'frites', cat: 'manger', k: 'noun', fr: 'frites', g: 'p', en: 'fries', gb: 'chips', ec: 'pl' },
+  { id: 'compote', cat: 'manger', k: 'noun', fr: 'compote', g: 'f', m: 1, en: 'applesauce', gb: 'apple purée', ec: 'mass' },
+  { id: 'bonbon', cat: 'manger', k: 'noun', fr: 'bonbon', g: 'm', en: 'candy', gb: 'sweet', ec: 'count' },
+  { id: 'legumes', cat: 'manger', k: 'noun', fr: 'légumes', g: 'p', en: 'vegetables', ec: 'pl' },
+  { id: 'viande', cat: 'manger', k: 'noun', fr: 'viande', g: 'f', m: 1, en: 'meat', ec: 'mass' },
+  { id: 'gouter', cat: 'manger', k: 'noun', fr: 'goûter', g: 'm', en: 'snack', ec: 'count' },
+  /* Corps */
+  { id: 'tete', cat: 'corps', k: 'body', fr: 'tête', g: 'f', en: 'head' },
+  { id: 'ventre', cat: 'corps', k: 'body', fr: 'ventre', g: 'm', en: 'tummy' },
+  { id: 'dents', cat: 'corps', k: 'body', fr: 'dents', g: 'p', en: 'teeth', pl: 1 },
+  { id: 'gorge', cat: 'corps', k: 'body', fr: 'gorge', g: 'f', en: 'throat' },
+  { id: 'oreille', cat: 'corps', k: 'body', fr: 'oreille', g: 'f', en: 'ear' },
+  { id: 'oeil', cat: 'corps', k: 'body', fr: 'œil', g: 'm', en: 'eye' },
+  { id: 'nez', cat: 'corps', k: 'body', fr: 'nez', g: 'm', en: 'nose' },
+  { id: 'dos', cat: 'corps', k: 'body', fr: 'dos', g: 'm', en: 'back' },
+  { id: 'bras', cat: 'corps', k: 'body', fr: 'bras', g: 'm', en: 'arm' },
+  { id: 'main', cat: 'corps', k: 'body', fr: 'main', g: 'f', en: 'hand' },
+  { id: 'jambe', cat: 'corps', k: 'body', fr: 'jambe', g: 'f', en: 'leg' },
+  { id: 'pied', cat: 'corps', k: 'body', fr: 'pied', g: 'm', en: 'foot' },
+  { id: 'partout', cat: 'corps', k: 'body', fr: 'partout', raw: 1, en: 'everywhere' },
+  /* Ressentir */
+  { id: 'content', cat: 'emotions', k: 'feel', fr: ['content', 'contente'], en: 'happy' },
+  { id: 'triste', cat: 'emotions', k: 'feel', fr: ['triste', 'triste'], en: 'sad' },
+  { id: 'colere', cat: 'emotions', k: 'feel', fr: ['en colère', 'en colère'], en: 'angry' },
+  { id: 'fatigue', cat: 'emotions', k: 'feel', fr: ['fatigué', 'fatiguée'], en: 'tired' },
+  { id: 'peur', cat: 'emotions', k: 'feel', av: 1, fr: 'peur', en: 'scared' },
+  { id: 'malade', cat: 'emotions', k: 'feel', fr: ['malade', 'malade'], en: 'sick', gb: 'poorly' },
+  { id: 'calme', cat: 'emotions', k: 'feel', fr: ['calme', 'calme'], en: 'calm' },
+  { id: 'surpris', cat: 'emotions', k: 'feel', fr: ['surpris', 'surprise'], en: 'surprised' },
+  { id: 'faim', cat: 'emotions', k: 'feel', av: 1, fr: 'faim', en: 'hungry' },
+  { id: 'soif', cat: 'emotions', k: 'feel', av: 1, fr: 'soif', en: 'thirsty' },
+  { id: 'chaud', cat: 'emotions', k: 'feel', av: 1, fr: 'chaud', en: 'hot' },
+  { id: 'froid', cat: 'emotions', k: 'feel', av: 1, fr: 'froid', en: 'cold' },
+  { id: 'ennui', cat: 'emotions', k: 'feel', fx: "je m'ennuie", lbl: "Je m'ennuie", fr: 'ennui', en: 'bored' },
+  /* Faire */
+  { id: 'jouer', cat: 'faire', k: 'verb', fr: 'jouer', en: 'play' },
+  { id: 'manger', cat: 'faire', k: 'verb', fr: 'manger', en: 'eat' },
+  { id: 'boire', cat: 'faire', k: 'verb', fr: 'boire', en: 'drink' },
+  { id: 'dormir', cat: 'faire', k: 'verb', fr: 'dormir', en: 'sleep' },
+  { id: 'sortir', cat: 'faire', k: 'verb', fr: 'sortir', en: 'go out' },
+  { id: 'lire', cat: 'faire', k: 'verb', fr: 'lire', en: 'read' },
+  { id: 'dessiner', cat: 'faire', k: 'verb', fr: 'dessiner', en: 'draw' },
+  { id: 'televoir', cat: 'faire', k: 'verb', fr: 'regarder la télé', en: 'watch TV' },
+  { id: 'ecouter', cat: 'faire', k: 'verb', fr: 'écouter de la musique', lbl: 'Écouter de la musique', en: 'listen to music' },
+  { id: 'laver', cat: 'faire', k: 'verb', fr: 'me laver', lbl: 'Me laver', en: 'have a bath' },
+  { id: 'calin', cat: 'faire', k: 'verb', fr: 'faire un câlin', en: 'have a hug', gb: 'have a cuddle' },
+  { id: 'reposer', cat: 'faire', k: 'verb', fr: 'me reposer', lbl: 'Me reposer', en: 'rest' },
+  { id: 'allertoilettes', cat: 'faire', k: 'verb', fr: 'aller aux toilettes', en: 'go to the bathroom', gb: 'go to the toilet' },
+  { id: 'danser', cat: 'faire', k: 'verb', fr: 'danser', en: 'dance' },
+  { id: 'chanter', cat: 'faire', k: 'verb', fr: 'chanter', en: 'sing' },
+  /* Lieux */
+  { id: 'maison', cat: 'lieux', k: 'place', fr: 'maison', fa: 'à la maison', fd: 'la maison', en: 'home', ea: 'home', ed: 'home' },
+  { id: 'ecole', cat: 'lieux', k: 'place', fr: 'école', fa: "à l'école", fd: "l'école", en: 'school', ea: 'to school', ed: 'school' },
+  { id: 'parc', cat: 'lieux', k: 'place', fr: 'parc', fa: 'au parc', fd: 'le parc', en: 'park', ea: 'to the park', ed: 'the park' },
+  { id: 'chambre', cat: 'lieux', k: 'place', fr: 'chambre', fa: 'dans ma chambre', fd: 'ma chambre', en: 'my room', ea: 'to my room', ed: 'my room' },
+  { id: 'voiture', cat: 'lieux', k: 'place', fr: 'voiture', fa: 'dans la voiture', fd: 'la voiture', en: 'car', ea: 'to the car', ed: 'the car' },
+  { id: 'magasin', cat: 'lieux', k: 'place', fr: 'magasin', fa: 'au magasin', fd: 'le magasin', en: 'store', ea: 'to the store', ed: 'the store', gb: ['shop', 'to the shops', 'the shops'] },
+  { id: 'dehors', cat: 'lieux', k: 'place', fr: 'dehors', fa: 'dehors', fd: 'dehors', en: 'outside', ea: 'outside', ed: 'outside' },
+  { id: 'piscine', cat: 'lieux', k: 'place', fr: 'piscine', fa: 'à la piscine', fd: 'la piscine', en: 'pool', ea: 'to the pool', ed: 'the pool' },
+  { id: 'docteur', cat: 'lieux', k: 'place', fr: 'docteur', fa: 'chez le docteur', fd: 'le docteur', en: 'doctor', ea: "to the doctor's", ed: 'the doctor' },
+  /* Objets */
+  { id: 'doudou', cat: 'objets', k: 'noun', fr: 'doudou', g: 'm', pos: 'mon doudou', en: 'teddy', epos: 'my teddy', ec: 'count' },
+  { id: 'tablette', cat: 'objets', k: 'noun', fr: 'tablette', g: 'f', pos: 'ma tablette', en: 'tablet', epos: 'my tablet', ec: 'count' },
+  { id: 'ballon', cat: 'objets', k: 'noun', fr: 'ballon', g: 'm', en: 'ball', ec: 'count' },
+  { id: 'livre', cat: 'objets', k: 'noun', fr: 'livre', g: 'm', en: 'book', ec: 'count' },
+  { id: 'tele', cat: 'objets', k: 'noun', fr: 'télé', g: 'f', d: 1, en: 'TV', ec: 'the' },
+  { id: 'musique', cat: 'objets', k: 'noun', fr: 'musique', g: 'f', m: 1, en: 'music', ec: 'mass' },
+  { id: 'puzzle', cat: 'objets', k: 'noun', fr: 'puzzle', g: 'm', en: 'puzzle', ec: 'count' },
+  { id: 'petitevoiture', cat: 'objets', k: 'noun', fr: 'petite voiture', g: 'f', en: 'toy car', ec: 'count' },
+  { id: 'velo', cat: 'objets', k: 'noun', fr: 'vélo', g: 'm', pos: 'mon vélo', en: 'bike', epos: 'my bike', ec: 'count' },
+  { id: 'lego', cat: 'objets', k: 'noun', fr: 'Lego', g: 'p', en: 'Lego', ec: 'mass' },
+  { id: 'bulles', cat: 'objets', k: 'noun', fr: 'bulles', g: 'p', en: 'bubbles', ec: 'pl' },
+  { id: 'telephone', cat: 'objets', k: 'noun', fr: 'téléphone', g: 'm', d: 1, en: 'phone', ec: 'the' },
+  /* Ajouts Mon Monde */
+  { id: 'cereales', cat: 'manger', k: 'noun', fr: 'céréales', g: 'p', en: 'cereal', ec: 'mass' },
+  { id: 'raisin', cat: 'manger', k: 'noun', fr: 'raisin', g: 'm', m: 1, en: 'grapes', ec: 'pl' },
+  { id: 'fraises', cat: 'manger', k: 'noun', fr: 'fraises', g: 'p', en: 'strawberries', ec: 'pl' },
+  { id: 'lavermains', cat: 'faire', k: 'verb', fr: 'me laver les mains', lbl: 'Me laver les mains', en: 'wash my hands' },
+  { id: 'brosser', cat: 'faire', k: 'verb', fr: 'me brosser les dents', lbl: 'Me brosser les dents', en: 'brush my teeth' },
+  { id: 'habiller', cat: 'faire', k: 'verb', fr: "m'habiller", lbl: "M'habiller", en: 'get dressed' },
+  { id: 'histoire', cat: 'faire', k: 'verb', fr: 'écouter une histoire', lbl: 'Une histoire', elbl: 'A story', en: 'hear a story' },
+  { id: 'toboggan', cat: 'faire', k: 'verb', fr: 'faire du toboggan', lbl: 'Toboggan', elbl: 'Slide', en: 'go on the slide' },
+  { id: 'balancoire', cat: 'faire', k: 'verb', fr: 'faire de la balançoire', lbl: 'Balançoire', elbl: 'Swing', en: 'go on the swing' },
+  { id: 'jaifini', cat: 'debut', k: 'soc', fr: "J'ai fini", en: "I'm finished" },
+  { id: 'besoinaide', cat: 'debut', k: 'soc', fr: "J'ai besoin d'aide", lbl: 'Aide', en: 'I need help', elbl: 'Help' },
+  { id: 'allume', cat: 'debut', k: 'soc', fr: 'Allume la lumière', lbl: 'Allumer', en: 'Turn the light on', elbl: 'Light on' },
+  { id: 'eteins', cat: 'debut', k: 'soc', fr: 'Éteins la lumière', lbl: 'Éteindre', en: 'Turn the light off', elbl: 'Light off' },
+  { id: 'montour', cat: 'debut', k: 'soc', fr: "C'est mon tour", lbl: 'Mon tour', en: 'My turn' },
+  { id: 'atoi', cat: 'debut', k: 'soc', fr: 'À toi', en: 'Your turn' },
+  { id: 'encore', cat: 'debut', k: 'soc', fr: 'Encore', en: 'More' },
+  { id: 'oui', cat: 'debut', k: 'soc', fr: 'Oui', en: 'Yes' },
+  { id: 'non', cat: 'debut', k: 'soc', col: 'neg', fr: 'Non', en: 'No' },
+];
+
+/* ---------- Grammaire française ---------- */
+const VOY = /^[aeiouàâäéèêëîïôöûüœ]/i; // pas de « y » : on dit « de yaourt »
+const grammarFR = {
+  def(w) { return w.g === 'p' ? 'les ' + w.fr : VOY.test(w.fr) ? "l'" + w.fr : (w.g === 'f' ? 'la ' : 'le ') + w.fr; },
+  indef(w) {
+    if (w.g === 'p') return 'des ' + w.fr;
+    if (w.m) return (VOY.test(w.fr) ? "de l'" : w.g === 'f' ? 'de la ' : 'du ') + w.fr;
+    return (w.g === 'f' ? 'une ' : 'un ') + w.fr;
+  },
+  de(s) { return (VOY.test(s) ? "d'" : 'de ') + s; },
+  a(w) { return w.raw ? w.fr : w.g === 'p' ? 'aux ' + w.fr : VOY.test(w.fr) ? "à l'" + w.fr : (w.g === 'f' ? 'à la ' : 'au ') + w.fr; },
+  noun(w, s) {
+    if (w.pos) return s === 'besoin' ? this.de(w.pos) : s === 'vais' ? 'à ' + w.pos : w.pos;
+    if (w.d && s !== 'neveux' && s !== 'besoin') return this.def(w);
+    switch (s) {
+      case 'neveux': return this.de(w.fr);
+      case 'besoin': return w.m || w.g === 'p' ? this.de(w.fr) : this.de(this.indef(w));
+      case 'aime': case 'naime': case 'ouest': case 'mal': return this.def(w);
+      case 'vais': return this.a(w);
+      default: return this.indef(w);
+    }
+  },
+  obj(w, s, gender) {
+    switch (w.k) {
+      case 'noun': return this.noun(w, s);
+      case 'body': return s === 'mal' || !s ? this.a(w) : w.raw ? w.fr : this.def(w);
+      case 'verb': return s === 'besoin' ? this.de(w.fr) : w.fr;
+      case 'place':
+        if (s === 'vais') return w.fa;
+        if (s === 'aime' || s === 'naime' || s === 'ouest' || s === 'cest') return w.fd;
+        return (s === 'besoin' ? "d'aller " : 'aller ') + w.fa;
+      case 'pers': return s === 'vais' ? 'chez ' + w.fr : s === 'besoin' ? this.de(w.fr) : w.fr;
+      default: return w.fr;
+    }
+  },
+  start(s) { return WD[s].fr; },
+  feel(adj, av, fx, gender) {
+    const out = [];
+    if (adj.length) out.push('je suis ' + list(adj.map((w) => w.fr[gender === 'f' ? 1 : 0]), 'et'));
+    if (av.length) out.push("j'ai " + list(av.map((w) => w.fr), 'et'));
+    fx.forEach((w) => out.push(w.fx));
+    return out.join(' et ');
+  },
+  head(s, objs) { if (s === 'ouest' && objs.some((o) => o.g === 'p' && !o.pos)) return 'où sont'; return WD[s].fr; },
+  and: 'et',
+  infer(k) { return { body: 'mal', verb: 'veux', place: 'veux' }[k] || null; },
+  q(s) { return s === 'ouest' ? ' ?' : ''; },
+};
+
+/* ---------- Grammaire anglaise ---------- */
+const grammarEN = {
+  e(w) { return (GB() && w.gb && typeof w.gb === 'string') ? w.gb : w.en; },
+  a(s) { return (/^[aeiou]/i.test(s) ? 'an ' : 'a ') + s; },
+  noun(w, s) {
+    const e = this.e(w);
+    if (w.epos) return w.epos;
+    if (w.ec === 'the') return 'the ' + e;
+    switch (s) {
+      case 'neveux': return w.ec === 'count' ? this.a(e) : e;
+      case 'aime': case 'naime': return w.ec === 'count' ? (w.enp || e + 's') : e;
+      case 'ouest': return 'the ' + e;
+      case 'cest': return w.ec === 'count' ? this.a(e) : e;
+      case 'vais': return 'to the ' + e;
+      default: return w.ec === 'count' ? this.a(e) : 'some ' + e;
+    }
+  },
+  obj(w, s) {
+    switch (w.k) {
+      case 'noun': return this.noun(w, s);
+      case 'body': return w.raw ? this.e(w) : 'my ' + this.e(w);
+      case 'verb': return s === 'vais' ? 'to ' + this.e(w) : (s === 'aime' || s === 'naime') ? 'to ' + this.e(w) : 'to ' + this.e(w);
+      case 'place': {
+        const gb = GB() && Array.isArray(w.gb) ? w.gb : null;
+        const ea = gb ? gb[1] : w.ea, ed = gb ? gb[2] : w.ed;
+        if (s === 'vais') return ea;
+        if (s === 'aime' || s === 'naime' || s === 'ouest' || s === 'cest') return ed;
+        return 'to go ' + ea;
+      }
+      case 'pers': return s === 'vais' ? 'to see ' + persName(w) : persName(w);
+      default: return this.e(w);
+    }
+  },
+  feel(adj, av, fx) {
+    const all = adj.concat(av, fx).map((w) => this.e(w));
+    return all.length ? "I'm " + list(all, 'and') : '';
+  },
+  head(s, objs) { if (s === 'ouest' && objs.some((o) => o.ec === 'pl' || o.ec === 'mass' && o.k === 'noun' && /s$/.test(o.en))) return 'where are'; return WD[s].en; },
+  and: 'and',
+  infer(k) { return { body: 'mal', verb: 'veux', place: 'veux' }[k] || null; },
+  q(s) { return s === 'ouest' ? '?' : ''; },
+};
+
+/* Scènes illustrées (360 x 480). Chaque objet qu'on peut toucher est un groupe data-hot. */
+const hit = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="#fff" fill-opacity="0" stroke="none"/>`;
+const HOT = (id, inner) => `<g class="hot" data-hot="${id}" tabindex="0" role="button">${inner}</g>`;
+const at = (x, y, s, inner) => `<g transform="translate(${x} ${y}) scale(${s})" stroke-width="${2.5 / s * 1.1}">${inner}</g>`;
+const SHIRT = '#7FB3F5', PANTS = '#5B6475';
+
+const SCENE_ART = {
+  moi: `${r(0, 0, 360, 480, 0, '#EEF3FA', NS)}
+    ${HOT('gorge', r(162, 140, 36, 44, 4, SK))}
+    ${HOT('ventre', p('M118 186 Q180 168 242 186 L236 304 H124Z', SHIRT) + p('M170 250 Q180 258 190 250', 'none'))}
+    ${HOT('bras', p('M122 190 L74 284 L96 296 L134 216Z', SHIRT) + p('M238 190 L286 284 L264 296 L226 216Z', SHIRT))}
+    ${HOT('main', hit(56, 280, 50, 44) + hit(254, 280, 50, 44) + c(82, 300, 16, SK) + c(278, 300, 16, SK))}
+    ${HOT('jambe', r(130, 302, 42, 116, 10, PANTS) + r(188, 302, 42, 116, 10, PANTS))}
+    ${HOT('pied', el(146, 434, 32, 15, '#3A4252') + el(214, 434, 32, 15, '#3A4252'))}
+    ${HOT('tete', c(180, 92, 58, SK) + p('M122 88 Q118 30 180 31 Q242 30 238 88 Q222 56 180 58 Q138 56 122 88Z', HB))}
+    ${HOT('oreille', hit(100, 74, 30, 46) + hit(230, 74, 30, 46) + el(119, 98, 11, 17, SK) + el(241, 98, 11, 17, SK))}
+    ${HOT('oeil', hit(138, 74, 84, 32) + c(158, 90, 10, WH) + c(202, 90, 10, WH) + c(159, 91, 5, K, NS) + c(203, 91, 5, K, NS))}
+    ${HOT('nez', hit(166, 98, 28, 26) + p('M180 98 L172 118 H187', 'none'))}
+    ${HOT('dents', hit(150, 124, 60, 30) + p('M154 130 Q180 158 206 130Z', '#8A2A2F') + r(160, 130, 40, 7, 2, WH, 'stroke-width="1.5"'))}
+    ${HOT('emotions', el(292, 62, 56, 44, WH) + c(242, 116, 9, WH) + c(230, 134, 5, WH) + face(266, 60, 15, 'happy') + face(304, 60, 15, 'sad') + face(285, 86, 9, 'angry'))}
+    ${HOT('partout', r(14, 400, 84, 70, 16, WH) + at(24, 404, .97, ICONS.partout))}`,
+  cuisine: `${r(0, 0, 360, 312, 0, '#F2E6CF', NS)}${r(0, 312, 360, 168, 0, '#D8BE95', NS)}${p('M0 370 H360 M0 430 H360', 'none', 'stroke="#C4A77A" stroke-width="2"')}
+    ${r(24, 36, 110, 92, 8, '#BFE3FF')}${p('M79 36 V128 M24 82 H134', 'none', 'stroke-width="4"')}
+    ${HOT('placard', r(150, 30, 80, 94, 8, '#C98B4E') + p('M190 30 V124') + c(182, 78, 3, K, NS) + c(198, 78, 3, K, NS))}
+    ${r(0, 216, 238, 96, 0, '#B07A47')}${r(-6, 206, 248, 14, 4, '#8C5A2E')}${p('M80 226 V306 M160 226 V306', 'none')}
+    ${HOT('evier', hit(18, 150, 96, 70) + el(64, 210, 42, 9, '#C9CED6') + p('M66 206 V178 Q66 166 80 166 H90', 'none', 'stroke-width="6"') + el(90, 180, 3, 6, BLU, NS))}
+    ${HOT('fruits', hit(126, 156, 88, 58) + c(152, 190, 13, RED) + p('M160 196 Q174 166 200 178 Q184 184 174 200Z', YEL) + c(184, 194, 11, ORA) + p('M126 202 Q170 228 214 202Z', WH))}
+    ${HOT('frigo', r(246, 72, 98, 252, 12, '#E9EEF5') + p('M246 152 H344') + r(328, 96, 7, 36, 3, '#9AA3B2') + r(328, 170, 7, 60, 3, '#9AA3B2') + r(262, 172, 34, 28, 2, WH) + c(272, 214, 6, RED) + c(292, 222, 6, YEL))}
+    ${HOT('table', hit(56, 316, 248, 150) + p('M84 392 V466 M276 392 V466', 'none', 'stroke-width="8"') + r(56, 376, 248, 18, 6, '#A86B3A') + el(170, 370, 48, 10, WH) + el(170, 369, 30, 6) + p('M108 352 V376 M104 352 V360 M112 352 V360', 'none', 'stroke-width="2.5"') + p('M244 330 H268 L265 374 H247Z', LB))}`,
+  salon: `${r(0, 0, 360, 318, 0, '#DCEBF2', NS)}${r(0, 318, 360, 162, 0, '#C9AE88', NS)}${p('M0 360 H360 M0 410 H360 M0 455 H360', 'none', 'stroke="#B59873" stroke-width="2"')}
+    ${HOT('cadre', r(26, 34, 124, 94, 6, '#8C5A2E') + r(34, 42, 108, 78, 3, WH) + face(62, 86, 14, 'happy') + face(90, 80, 17, 'happy') + face(118, 88, 12, 'happy'))}
+    ${HOT('livres', hit(180, 16, 160, 58) + r(190, 26, 14, 38, 2, RED) + r(206, 32, 12, 32, 2, BLU) + r(220, 22, 16, 42, 2, GRN) + r(238, 34, 12, 30, 2, YEL) + r(262, 30, 30, 34, 3, PUR) + r(180, 64, 160, 10, 2, '#8C5A2E'))}
+    ${HOT('tele', r(206, 132, 132, 96, 6, '#34405A') + r(214, 140, 116, 76, 3, '#8EC5FF', NS) + p('M216 210 L250 178 L276 198 L300 172 L328 204 V214 H216Z', GRN, NS) + r(198, 248, 148, 54, 6, '#8C5A2E') + p('M262 228 V248', 'none', 'stroke-width="5"'))}
+    ${el(150, 430, 130, 32, '#F0C987', 'stroke-width="2"')}
+    ${HOT('canape', r(18, 262, 176, 70, 16, PUR) + r(10, 312, 192, 52, 14, '#A78BFA') + r(2, 290, 30, 80, 12, PUR) + r(180, 290, 30, 80, 12, PUR) + r(44, 280, 40, 34, 8, YEL) + p('M24 370 V384 M188 370 V384', 'none', 'stroke-width="5"'))}
+    ${HOT('jouets', c(252, 356, 20, WH) + p('M252 336 Q244 356 252 376 M232 356 Q252 350 272 356', 'none', `stroke="${RED}" stroke-width="3"`) + r(288, 326, 32, 32, 4, YEL) + r(216, 362, 128, 92, 8, RED) + p('M216 386 H344', 'none', `stroke="${WH}" stroke-width="4"`))}`,
+  bain: `${r(0, 0, 360, 330, 0, '#D7EEF0', NS)}${p('M0 60 H360 M0 120 H360 M0 180 H360 M0 240 H360 M0 300 H360 M60 0 V330 M120 0 V330 M180 0 V330 M240 0 V330 M300 0 V330', 'none', 'stroke="#C2E1E5" stroke-width="2"')}${r(0, 330, 360, 150, 0, '#A9C8D1', NS)}
+    ${HOT('lavabo', r(226, 36, 104, 96, 44, '#EAF6FF') + p('M212 188 H338 Q338 232 275 234 Q212 232 212 188Z', WH) + r(262, 234, 26, 84, 4, WH) + p('M275 188 V170 H290', 'none', 'stroke-width="5"') + r(310, 158, 18, 24, 3, BLU) + p('M314 158 L310 140 M322 158 L328 142', 'none', 'stroke-width="3"'))}
+    ${HOT('wc', r(32, 176, 72, 74, 8, WH) + p('M18 254 H122 Q122 300 90 312 L96 352 H48 L54 312 Q18 300 18 254Z', WH) + el(70, 254, 52, 10, LB))}
+    ${HOT('bain', p('M150 362 H352 V404 Q352 446 310 446 H192 Q150 446 150 404Z', WH) + c(184, 354, 12, LB) + c(208, 346, 10, LB) + c(232, 354, 13, LB) + c(290, 352, 11, LB) + el(318, 348, 14, 10, YEL) + c(330, 336, 7, YEL) + p('M336 336 L344 338', 'none', `stroke="${ORA}" stroke-width="3"`) + p('M346 362 V330 H334', 'none', 'stroke-width="5"'))}`,
+  chambre: `${r(0, 0, 360, 300, 0, '#E6E1F5', NS)}${r(0, 300, 360, 180, 0, '#CDB894', NS)}
+    ${r(26, 40, 124, 100, 8, '#2B3A55')}${p('M88 40 V140 M26 90 H150', 'none', 'stroke-width="4"')}${c(56, 64, 12, YEL, NS)}${c(62, 60, 10, '#2B3A55', NS)}${c(118, 112, 2, WH, NS)}${c(130, 70, 2, WH, NS)}
+    ${HOT('armoire', r(244, 30, 104, 210, 8, '#C98B4E') + p('M296 30 V240') + c(288, 136, 3, K, NS) + c(304, 136, 3, K, NS))}
+    ${HOT('lampe', r(262, 300, 80, 76, 6, '#B07A47') + p('M302 300 V282', 'none', 'stroke-width="4"') + p('M272 244 H332 L342 284 H262Z', YEL))}
+    ${el(160, 446, 120, 24, '#B8A4E6', 'stroke-width="2"')}
+    ${HOT('lit', r(10, 232, 30, 160, 8, '#2F6FD6') + r(14, 292, 236, 72, 12, '#3B82F6') + r(36, 270, 64, 30, 12, WH) + r(110, 278, 140, 34, 12, '#7FB3F5') + p('M24 364 V392 M240 364 V392', 'none', 'stroke-width="6"'))}
+    ${HOT('doudou', at(98, 214, 1, teddy()))}`,
+  dehors: `${r(0, 0, 360, 480, 0, '#CDE9FF', NS)}${el(250, 70, 46, 18, WH, NS)}${el(280, 58, 30, 16, WH, NS)}${p('M0 300 Q180 266 360 300 V480 H0Z', '#9BD17A', NS)}
+    ${HOT('soleil', hit(20, 20, 84, 84) + sun(62, 62, 24))}
+    ${HOT('balancoire', p('M28 336 L62 150 H156 L190 336', 'none', 'stroke="#8C5A2E" stroke-width="8"') + p('M92 150 V262 M126 150 V262', 'none', 'stroke-width="3"') + r(84, 262, 50, 10, 4, YEL))}
+    ${HOT('toboggan', p('M226 330 V142 H250 V330', 'none', 'stroke-width="5"') + p('M226 182 H250 M226 222 H250 M226 262 H250 M226 302 H250', 'none', 'stroke-width="3"') + p('M250 142 Q284 142 304 230 Q314 300 352 304 V324 Q300 324 290 240 Q276 166 250 166Z', RED))}
+    ${HOT('ballon', c(118, 392, 26, WH) + p('M118 366 Q104 392 118 418 M92 392 Q118 382 144 392', 'none', `stroke="${RED}" stroke-width="3"`) + c(118, 392, 26))}
+    ${HOT('voiture', at(194, 332, 2.4, car(BLU)))}`,
+};
+
+/* Options : veux:mot, verb:mot, vais:mot, ouest:mot, say:mot, soc:mot, mal / peu / tres:partie, tpl:modèle:personne */
+const SCENES = [
+  { id: 'moi', fr: 'Moi', en: 'Me' },
+  { id: 'gens', fr: 'Les gens', en: 'People' },
+  { id: 'cuisine', fr: 'Cuisine', en: 'Kitchen' },
+  { id: 'salon', fr: 'Salon', en: 'Living room', gb: 'Lounge' },
+  { id: 'bain', fr: 'Salle de bain', en: 'Bathroom' },
+  { id: 'chambre', fr: 'Chambre', en: 'Bedroom' },
+  { id: 'dehors', fr: 'Dehors', en: 'Outside' },
+];
+const pain = (id) => ({ w: id, mode: 'pain', o: ['mal:' + id, 'peu:' + id, 'tres:' + id] });
+const HOTS = {
+  tete: pain('tete'), gorge: pain('gorge'), ventre: pain('ventre'), bras: pain('bras'), main: pain('main'), jambe: pain('jambe'), pied: pain('pied'),
+  oreille: pain('oreille'), oeil: pain('oeil'), nez: pain('nez'), dents: pain('dents'),
+  partout: { w: 'partout', direct: 'mal:partout' },
+  emotions: { fr: 'Ce que je ressens', en: 'How I feel', ic: 'content', o: ['say:content', 'say:triste', 'say:colere', 'say:fatigue', 'say:peur', 'say:malade', 'say:calme', 'say:surpris', 'say:faim', 'say:soif', 'say:chaud', 'say:froid', 'say:ennui'] },
+  frigo: { fr: 'Frigo', en: 'Fridge', ic: 'room_cuisine', neg: 1, o: ['veux:lait', 'veux:eau', 'veux:jus', 'veux:yaourt', 'veux:fromage', 'veux:compote'] },
+  placard: { fr: 'Placard', en: 'Cupboard', ic: 'biscuit', neg: 1, o: ['veux:biscuit', 'veux:gateau', 'veux:chocolat', 'veux:bonbon', 'veux:pain', 'veux:cereales'] },
+  evier: { fr: 'Évier', en: 'Sink', ic: 'eau', o: ['say:soif', 'veux:eau', 'verb:lavermains'] },
+  fruits: { fr: 'Fruits', en: 'Fruit', ic: 'pomme', neg: 1, o: ['veux:pomme', 'veux:banane', 'veux:raisin', 'veux:fraises'] },
+  table: { fr: 'Table', en: 'Table', ic: 'faim', neg: 1, o: ['say:faim', 'veux:pates', 'veux:riz', 'veux:soupe', 'veux:viande', 'veux:legumes', 'veux:frites', 'soc:jaifini'] },
+  cadre: { fr: 'Photos', en: 'Photos', ic: 'tous', go: 'gens' },
+  livres: { fr: 'Livres', en: 'Books', ic: 'lire', neg: 1, o: ['verb:lire', 'verb:histoire', 'verb:dessiner', 'veux:livre'] },
+  tele: { fr: 'Télé', en: 'TV', ic: 'tele', neg: 1, o: ['verb:televoir', 'verb:ecouter', 'verb:danser', 'verb:chanter', 'veux:tablette'] },
+  canape: { fr: 'Canapé', en: 'Sofa', ic: 'reposer', neg: 1, o: ['verb:reposer', 'verb:calin', 'verb:histoire', 'say:fatigue', 'say:ennui'] },
+  jouets: { fr: 'Jouets', en: 'Toys', ic: 'jouer', neg: 1, o: ['verb:jouer', 'veux:ballon', 'veux:lego', 'veux:puzzle', 'veux:petitevoiture', 'veux:doudou', 'veux:bulles', 'veux:tablette'] },
+  lavabo: { fr: 'Lavabo', en: 'Sink', ic: 'brosser', neg: 1, o: ['verb:brosser', 'verb:lavermains', 'veux:eau', 'mal:dents'] },
+  wc: { fr: 'Toilettes', en: 'Toilet', gb: 'Toilet', ic: 'toilettes', o: ['verb:allertoilettes', 'soc:jaifini', 'soc:besoinaide'] },
+  bain: { fr: 'Bain', en: 'Bath', ic: 'room_bain', neg: 1, o: ['verb:laver', 'veux:bulles', 'say:chaud', 'say:froid', 'soc:jaifini'] },
+  lit: { fr: 'Lit', en: 'Bed', ic: 'dormir', neg: 1, o: ['verb:dormir', 'verb:histoire', 'verb:calin', 'say:fatigue', 'say:peur'] },
+  doudou: { fr: 'Doudou', en: 'Teddy', ic: 'doudou', mode: 'start', o: ['veux:doudou', 'ouest:doudou'] },
+  armoire: { fr: 'Armoire', en: 'Wardrobe', ic: 'habiller', neg: 1, o: ['verb:habiller', 'say:chaud', 'say:froid'] },
+  lampe: { fr: 'Lampe', en: 'Lamp', ic: 'allume', o: ['soc:allume', 'soc:eteins', 'say:peur'] },
+  soleil: { fr: 'Soleil', en: 'Sun', ic: 'chaud', o: ['say:chaud', 'say:soif', 'veux:eau'] },
+  balancoire: { fr: 'Balançoire', en: 'Swing', ic: 'balancoire', neg: 1, o: ['verb:balancoire', 'soc:encore', 'soc:montour', 'soc:atoi', 'soc:besoinaide'] },
+  toboggan: { fr: 'Toboggan', en: 'Slide', ic: 'toboggan', neg: 1, o: ['verb:toboggan', 'soc:encore', 'soc:montour', 'soc:atoi'] },
+  ballon: { fr: 'Ballon', en: 'Ball', ic: 'ballon', neg: 1, o: ['veux:ballon', 'verb:jouer', 'soc:montour', 'soc:atoi'] },
+  voiture: { fr: 'Voiture', en: 'Car', ic: 'voiture', o: ['aller:maison', 'aller:ecole', 'aller:parc', 'aller:magasin', 'aller:piscine', 'aller:docteur', 'aller:mamie', 'aller:papy'] },
+};
+const ROUTINE = [[0, 'chambre'], [6.5, 'cuisine'], [9.5, 'salon'], [11.75, 'cuisine'], [13.5, 'dehors'], [16, 'cuisine'], [17, 'salon'], [18.5, 'bain'], [19.5, 'chambre']];
+const TPL = {
+  veux: { ic: 'veux', fr: ['Je veux', 'Je veux {p}'], en: ['I want', 'I want {p}'] },
+  ouest: { ic: 'ouest', fr: ['Où est ?', 'Où est {p} ?'], en: ['Where?', 'Where is {p}?'] },
+  viens: { ic: 'viens', fr: ['Viens', '{P}, viens'], en: ['Come', '{P}, come here'] },
+  aide: { ic: 'besoinaide', fr: ['Aide-moi', '{P}, aide-moi'], en: ['Help me', '{P}, help me'] },
+  regarde: { ic: 'regarde', fr: ['Regarde', '{P}, regarde'], en: ['Look', '{P}, look'] },
+  aime: { ic: 'aime', fr: ["Je t'aime", "Je t'aime, {p}"], en: ['I love you', 'I love you, {p}'] },
+};
+const QUICKQ = [
+  { fr: 'Tu veux quoi ?', en: 'What do you want?', s: 'veux', a: ['eau', 'gouter', 'jouer', 'calin'] },
+  { fr: 'Tu as mal où ?', en: 'Where does it hurt?', s: 'mal', a: ['tete', 'ventre', 'dents', 'oreille'] },
+  { fr: 'Comment tu te sens ?', en: 'How do you feel?', s: 'say', a: ['content', 'triste', 'colere', 'fatigue'] },
+  { fr: 'Tu veux aller où ?', en: 'Where do you want to go?', s: 'veux', a: ['maison', 'parc', 'piscine', 'magasin'] },
+  { fr: 'Tu veux jouer à quoi ?', en: 'What do you want to play with?', s: 'veux', a: ['ballon', 'lego', 'puzzle', 'tablette'] },
+  { fr: 'Tu veux manger quoi ?', en: 'What do you want to eat?', s: 'veux', a: ['pates', 'riz', 'soupe', 'frites'] },
+  { fr: 'Oui ou non ?', en: 'Yes or no?', s: 'say', a: ['oui', 'non'] },
+];
+
+const APP_VERSION = '1.0.0';
+const I18N = {
+  fr: {
+    app: 'Mon Monde', hint: 'Touche un objet pour parler', adult: 'Adulte', close: 'Fermer', back: 'Retour à l’enfant', replay: 'Redire', now: 'Maintenant',
+    want: 'Je veux', notWant: 'Je ne veux pas', pMal: 'Mal', pPeu: 'Un peu', pTres: 'Très mal',
+    tAsk: 'Questions', tLog: 'Fil', tWrite: 'Écrire', tSet: 'Réglages',
+    askHelp: 'Posez une question, choisissez jusqu’à 4 réponses en images, puis montrez l’écran à l’enfant.', askQ: 'Votre question', askPh: 'Par exemple : tu veux quoi au goûter ?',
+    askAns: 'Réponses proposées', askNone: 'Aucune réponse choisie.', search: 'Chercher une image', show: 'Montrer à l’enfant', another: 'Autre question', remove: 'Retirer',
+    logEmpty: 'Les questions posées et tout ce que dit l’enfant s’affichent ici, avec l’heure.', logClear: 'Effacer le fil', logAsk: 'Effacer tout le fil ?',
+    writeHint: 'Écrivez ce que vous voulez dire', say: 'Dire', clear: 'Effacer',
+    lockTitle: 'Réglages protégés', lockEnter: 'Tapez votre code parent', lockCreate: 'Choisissez un code à 4 chiffres', lockConfirm: 'Tapez le même code encore une fois', lockWrong: 'Ce code ne marche pas. Réessayez.', lockMismatch: 'Les deux codes sont différents. Recommencez.', erase: 'Effacer un chiffre',
+    sChild: 'Enfant', girl: 'Fille', boy: 'Garçon', lang: 'Langue',
+    sDay: 'Journée', autoRoom: 'Ouvrir la bonne pièce selon l’heure', dayHelp: 'À l’ouverture, l’appli montre la pièce de ce moment de la journée :',
+    sPeople: 'Les gens', peopleHelp: 'Mettez le vrai prénom et une photo : l’enfant reconnaît sa famille.', name: 'Prénom', photo: 'Photo', addPerson: 'Ajouter une personne',
+    sObjects: 'Choix des objets', objHelp: 'Choisissez un objet, puis décochez ce qui ne sert pas à votre enfant ou ajoutez vos propres choix avec une photo.', object: 'Objet',
+    addChoice: 'Ajouter un choix', word: 'Le mot', how: 'On dit : je veux …', none: '(rien)', choosePhoto: 'Choisir une photo', add: 'Ajouter', added: 'Ajouté',
+    sScenes: 'Scènes avec vos photos', scHelp: 'Prenez en photo une pièce de la maison, puis touchez la photo pour placer les objets que l’enfant pourra toucher.', scName: 'Nom de la scène', scNew: 'Créer la scène', edit: 'Modifier', del: 'Supprimer',
+    zHelp: 'Touchez la photo pour ajouter un objet. Touchez un objet pour le régler.', zName: 'Nom de l’objet', zSize: 'Taille', zChoices: 'Ce que l’enfant peut dire (8 au plus)', done: 'Terminé',
+    sVoice: 'Voix', voice: 'Voix', vDefault: 'Voix par défaut', rate: 'Vitesse', pitch: 'Hauteur', test: 'Écouter un essai', testText: 'Bonjour, je suis ta voix.',
+    sDisplay: 'Affichage', theme: 'Thème', tAuto: 'Comme l’appareil', tLight: 'Clair', tDark: 'Sombre',
+    sCode: 'Code parent', newCode: 'Changer le code',
+    sBackup: 'Sauvegarde', export: 'Enregistrer une sauvegarde', import: 'Restaurer une sauvegarde', imported: 'Sauvegarde restaurée', badFile: 'Ce fichier n’est pas une sauvegarde de Mon Monde.', full: 'Mémoire pleine : utilisez des photos moins nombreuses.',
+    sAbout: 'À propos', about: 'Illustrations et pictogrammes dessinés pour Mon Monde. Police Fira Sans (licence SIL OFL). Fonctionne sans internet.', version: 'Version',
+    reset: 'Tout remettre comme au départ', resetAsk: 'Tout effacer et revenir au départ ? Photos, personnes, choix ajoutés et fil seront supprimés.',
+  },
+  en: {
+    app: 'My World', hint: 'Touch something to talk', adult: 'Adult', close: 'Close', back: 'Back to child', replay: 'Say again', now: 'Now',
+    want: 'I want', notWant: "I don't want", pMal: 'Hurts', pPeu: 'A little', pTres: 'A lot',
+    tAsk: 'Questions', tLog: 'Log', tWrite: 'Type', tSet: 'Settings',
+    askHelp: 'Ask a question, pick up to 4 picture answers, then show the screen to the child.', askQ: 'Your question', askPh: 'For example: what do you want for a snack?',
+    askAns: 'Answers offered', askNone: 'No answer chosen yet.', search: 'Search a picture', show: 'Show the child', another: 'Another question', remove: 'Remove',
+    logEmpty: 'Questions asked and everything the child says appear here, with the time.', logClear: 'Clear the log', logAsk: 'Clear the whole log?',
+    writeHint: 'Type what you want to say', say: 'Speak', clear: 'Clear',
+    lockTitle: 'Protected settings', lockEnter: 'Enter your parent code', lockCreate: 'Choose a 4-digit code', lockConfirm: 'Enter the same code again', lockWrong: 'That code is not right. Try again.', lockMismatch: 'The two codes are different. Start again.', erase: 'Delete a digit',
+    sChild: 'Child', girl: 'Girl', boy: 'Boy', lang: 'Language',
+    sDay: 'Day', autoRoom: 'Open the right room for the time of day', dayHelp: 'When opened, the app shows the room for that time of day:',
+    sPeople: 'People', peopleHelp: 'Add real names and photos: children recognise their family.', name: 'Name', photo: 'Photo', addPerson: 'Add a person',
+    sObjects: 'Object choices', objHelp: 'Pick an object, then untick what your child does not need, or add your own choices with a photo.', object: 'Object',
+    addChoice: 'Add a choice', word: 'The word', how: 'We say: I want …', none: '(nothing)', choosePhoto: 'Choose a photo', add: 'Add', added: 'Added',
+    sScenes: 'Scenes from your photos', scHelp: 'Take a photo of a room at home, then touch the photo to place the things your child can touch.', scName: 'Scene name', scNew: 'Create the scene', edit: 'Edit', del: 'Delete',
+    zHelp: 'Touch the photo to add a thing. Touch a thing to set it up.', zName: 'Name of the thing', zSize: 'Size', zChoices: 'What the child can say (8 at most)', done: 'Done',
+    sVoice: 'Voice', voice: 'Voice', vDefault: 'Default voice', rate: 'Speed', pitch: 'Pitch', test: 'Play a sample', testText: 'Hello, I am your voice.',
+    sDisplay: 'Display', theme: 'Theme', tAuto: 'Same as device', tLight: 'Light', tDark: 'Dark',
+    sCode: 'Parent code', newCode: 'Change the code',
+    sBackup: 'Backup', export: 'Save a backup', import: 'Restore a backup', imported: 'Backup restored', badFile: 'This file is not a My World backup.', full: 'Storage is full: use fewer photos.',
+    sAbout: 'About', about: 'Illustrations and pictures drawn for My World. Fira Sans font (SIL OFL licence). Works offline.', version: 'Version',
+    reset: 'Reset everything', resetAsk: 'Erase everything and start again? Photos, people, added choices and the log will be deleted.',
+  },
+};
+
+/* ---------- État ---------- */
+const KEY = 'monmonde1';
+const PEOPLE0 = ['maman', 'papa', 'frere', 'soeur', 'mamie', 'papy', 'maitresse', 'ami'].map((id) => ({ id }));
+const DEF = { lang: 'fr', gender: 'f', theme: 'auto', auto: true, rate: 0.95, pitch: 1, voice: '', code: '', hidden: {}, custom: [], people: PEOPLE0, scenes: [], log: [] };
+let S = load();
+function load() { try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { return Object.assign({}, DEF); } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { toast(T('full')); return false; } }
+const L = () => (S.lang === 'fr' ? 'fr' : 'en');
+const GB = () => S.lang === 'en-GB';
+const T = (k) => I18N[L()][k] || k;
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function list(a, and) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' ' + and + ' ' + a[a.length - 1]; }
+const nm = (o) => (L() === 'fr' ? o.fr : (GB() && o.gb) || o.en);
+
+/* ---------- Mots ---------- */
+const WD = {};
+W.forEach((w) => { WD[w.id] = w; });
+const ART = { 'un': { g: 'm', ec: 'count' }, 'une': { g: 'f', ec: 'count' }, 'du': { g: 'm', m: 1, ec: 'mass' }, 'de la': { g: 'f', m: 1, ec: 'mass' }, "de l'": { g: 'm', m: 1, ec: 'mass' }, 'des': { g: 'p', ec: 'pl' }, 'mon': { pos: 1 }, 'ma': { pos: 1 }, 'mes': { pos: 1 }, '': { pos: 1 } };
+function customWord(c) {
+  const a = ART[c.art] || ART.un;
+  const w = { id: c.id, k: 'noun', custom: 1, img: c.img, lbl: cap(c.label), elbl: cap(c.label), fr: c.label, en: c.label, g: a.g || 'm', m: a.m, ec: a.ec || 'count' };
+  if (a.pos) { w.pos = (c.art ? c.art + ' ' : '') + c.label; w.epos = c.art ? 'my ' + c.label : c.label; }
+  return w;
+}
+function word(id) {
+  if (WD[id]) return WD[id];
+  const c = S.custom.find((x) => x.id === id); if (c) return customWord(c);
+  const pe = S.people.find((x) => x.id === id); if (pe) return { id, k: 'pers', fr: pe.name || '?', en: pe.name || '?', img: pe.img };
+  return null;
+}
+function persName(w) { const pe = S.people.find((x) => x.id === w.id); return (pe && pe.name) || (L() === 'fr' ? w.fr : (GB() && w.gb) || w.en); }
+function label(w) {
+  if (w.k === 'pers') return cap(S.people.find((x) => x.id === w.id && x.name) ? persName(w) : (L() === 'fr' ? w.lbl || w.fr : w.elbl || (GB() && w.gb) || w.en));
+  if (L() === 'fr') return w.lbl || cap(w.k === 'feel' && Array.isArray(w.fr) ? w.fr[S.gender === 'f' ? 1 : 0] : w.fr);
+  if (w.k === 'start' || w.k === 'q' || w.k === 'soc') return w.elbl || cap(w.en);
+  return w.elbl || cap(grammarEN.e(w));
+}
+function pic(w) {
+  const pe = w && S.people.find((x) => x.id === w.id);
+  const img = (pe && pe.img) || (w && w.img);
+  return img ? `<img src="${img}" alt="">` : picto(w ? w.id : 'photo');
+}
+const COL = { pers: 'pers', start: 'verb', verb: 'verb', noun: 'noun', body: 'noun', place: 'noun', feel: 'desc', soc: 'soc', q: 'q' };
+const colOf = (w) => (w && (w.col || COL[w.k])) || 'noun';
+
+/* ---------- Composition (moteur de grammaire) ---------- */
+function compose(tokens) {
+  const fr = L() === 'fr', G = fr ? grammarFR : grammarEN;
+  const ws = tokens.map(word).filter(Boolean);
+  if (!ws.length) return '';
+  let voc = '';
+  if (ws.length > 1 && ws[0].k === 'pers') voc = persName(ws.shift());
+  const clauses = []; let cur = null;
+  ws.forEach((w) => {
+    if (w.k === 'start') { cur = { s: w.id, o: [] }; clauses.push(cur); }
+    else if (w.k === 'soc' || w.k === 'q') { clauses.push({ txt: fr ? w.fr : w.en }); cur = null; }
+    else { if (!cur) { cur = { s: null, o: [] }; clauses.push(cur); } cur.o.push(w); }
+  });
+  const out = clauses.map((c) => {
+    if (c.txt) return c.txt;
+    let s = c.s;
+    const feels = c.o.filter((w) => w.k === 'feel'), rest = c.o.filter((w) => w.k !== 'feel');
+    const parts = [];
+    if (feels.length) parts.push(G.feel(feels.filter((w) => !w.av && !w.fx), feels.filter((w) => w.av), feels.filter((w) => w.fx), S.gender));
+    if (feels.length && !rest.length && (!s || s === 'suis')) return parts.join('');
+    if (!s && rest.length) s = G.infer(rest[0].k);
+    if (!s) parts.unshift(list(rest.map((w) => (w.k === 'pers' ? persName(w) : fr ? (w.pos || w.fr) : (w.epos || grammarEN.e(w)))), G.and));
+    else if (!fr && s === 'mal') {
+      if (!rest.length) parts.unshift('it hurts');
+      else if (rest.some((w) => w.raw)) parts.unshift('I hurt everywhere');
+      else parts.unshift(list(rest.map((w) => grammarEN.obj(w, s)), 'and') + (rest.length > 1 || rest[0].pl ? ' hurt' : ' hurts'));
+    } else {
+      const head = G.head(s, rest);
+      parts.unshift(rest.length ? head + ' ' + list(rest.map((w) => G.obj(w, s, S.gender)), G.and) + G.q(s) : head);
+    }
+    return parts.join(' ' + G.and + ' ');
+  }).filter(Boolean);
+  if (!out.length) return voc;
+  let txt = out.join(', ');
+  if (voc) txt = voc + ', ' + txt;
+  return cap(txt);
+}
+
+/* ---------- Options : ce qu'un objet permet de dire ---------- */
+const parts = (o) => { const [k, a, b] = o.split(':'); return { k, a, b }; };
+function optText(o, neg) {
+  const { k, a, b } = parts(o), fr = L() === 'fr';
+  switch (k) {
+    case 'veux': case 'verb': return compose([neg ? 'neveux' : 'veux', a]);
+    case 'vais': case 'ouest': case 'mal': return compose([k, a]);
+    case 'peu': case 'tres': {
+      const base = compose(['mal', a]);
+      if (fr) return base.replace(/^J'ai mal/, k === 'peu' ? "J'ai un peu mal" : "J'ai très mal");
+      return base + (k === 'peu' ? ' a little' : ' a lot');
+    }
+    case 'aller': { const w = word(a); if (w && w.k === 'pers') return fr ? 'Je veux aller chez ' + persName(w) : 'I want to go and see ' + persName(w); return compose(['veux', a]); }
+    case 'soc': { const w = word(a); return w ? (fr ? w.fr : w.en) : ''; }
+    case 'tpl': { const n = persName(word(b)), t = TPL[a][L()][1]; return t.replace('{P}', cap(n)).replace('{p}', n); }
+    default: return compose([a]);
+  }
+}
+function defOpt(w) { return ({ noun: 'veux:', verb: 'verb:', place: 'aller:', feel: 'say:', body: 'mal:', soc: 'soc:', q: 'soc:' }[w.k] || 'say:') + w.id; }
+function optView(o, h, neg) {
+  const { k, a, b } = parts(o);
+  if (k === 'tpl') return { ic: picto(TPL[a].ic), lb: TPL[a][L()][0], col: a === 'veux' ? 'verb' : a === 'ouest' ? 'q' : 'soc' };
+  if (h && h.mode === 'pain') return { ic: picto(k === 'mal' ? 'mal' : k), lb: T({ mal: 'pMal', peu: 'pPeu', tres: 'pTres' }[k]), col: 'neg' };
+  if (h && h.mode === 'start') return { ic: picto(TPL[k] ? TPL[k].ic : k), lb: TPL[k] ? TPL[k][L()][0] : k, col: k === 'ouest' ? 'q' : 'verb' };
+  const w = word(a) || {};
+  return { ic: pic(w), lb: w.id ? label(w) : '?', col: neg && (k === 'veux' || k === 'verb') ? 'neg' : colOf(w) };
+}
+
+/* ---------- Objets des scènes ---------- */
+function hotDef(id) {
+  if (id.startsWith('p:')) { const pid = id.slice(2); return { w: pid, mode: 'tpl', o: Object.keys(TPL).map((t) => 'tpl:' + t + ':' + pid) }; }
+  if (id.startsWith('z:')) {
+    const [, sid, i] = id.split(':'), sc = S.scenes.find((x) => x.id === sid), z = sc && sc.zones[+i];
+    if (!z) return null;
+    return { fr: z.name, en: z.name, ic: z.o[0] && parts(z.o[0]).a, o: z.o, neg: z.o.some((o) => /^(veux|verb):/.test(o)) };
+  }
+  const h = HOTS[id]; if (!h) return null;
+  const hid = S.hidden[id] || [];
+  return Object.assign({}, h, { o: (h.o || []).concat(S.custom.filter((c) => c.hot === id).map((c) => 'veux:' + c.id)).filter((o) => !hid.includes(o)) });
+}
+const hotName = (h) => (h.fr ? nm(h) : label(word(h.w)));
+const hotIcon = (h) => (h.ic ? (word(h.ic) && word(h.ic).img ? pic(word(h.ic)) : picto(h.ic)) : pic(word(h.w)));
+
+/* ---------- Voix ---------- */
+let voices = [];
+function loadVoices() { if ('speechSynthesis' in window) voices = speechSynthesis.getVoices(); }
+if ('speechSynthesis' in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+const langCode = () => (S.lang === 'fr' ? 'fr-FR' : S.lang);
+function speak(text) {
+  if (!text || !('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langCode(); u.rate = S.rate; u.pitch = S.pitch;
+  const v = voices.find((x) => x.voiceURI === S.voice) || voices.find((x) => x.lang.replace('_', '-') === langCode()) || voices.find((x) => x.lang.startsWith(L()));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function logIt(who, t) { S.log.push({ w: who, t, ts: Date.now() }); if (S.log.length > 200) S.log.splice(0, S.log.length - 200); save(); }
+function say(text, icon) {
+  if (!text) return;
+  speak(text); logIt('c', text);
+  const b = $('#bubble');
+  b.innerHTML = `<span class="bic">${icon || ''}</span><span class="btx">${esc(text)}</span>${ui('say')}`;
+  b.setAttribute('aria-label', T('replay') + ' : ' + text); b.dataset.t = text; b.classList.remove('idle');
+  b.style.animation = 'none'; void b.offsetWidth; b.style.animation = '';
+}
+
+/* ---------- Icônes d'interface ---------- */
+const UI = {
+  say: '<path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>', del: '<path d="M21 5H9l-6 7 6 7h12z"/><path d="M12 9l6 6M18 9l-6 6"/>',
+  ask: '<path d="M4 5h16v11H9l-5 4z"/><path d="M10 9a2 2 0 1 1 2.5 2c-.5.2-.5.6-.5 1"/><path d="M12 14.2v.1"/>',
+  log: '<path d="M5 6h14M5 12h14M5 18h9"/>', write: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h1M10 10h1M14 10h1M7 14h10"/>',
+  set: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>', plus: '<path d="M12 5v14M5 12h14"/>', cam: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+};
+const ui = (k) => `<svg class="ui" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${UI[k]}</g></svg>`;
+
+/* ---------- Écran enfant ---------- */
+const URG = [
+  { id: 'oui', ic: 'oui', col: 'soc', fr: ['Oui', 'Oui'], en: ['Yes', 'Yes'] },
+  { id: 'non', ic: 'non', col: 'neg', fr: ['Non', 'Non'], en: ['No', 'No'] },
+  { id: 'aide', ic: 'aide', col: 'neg', fr: ['Aide', "J'ai besoin d'aide"], en: ['Help', 'I need help'] },
+  { id: 'stop', ic: 'stop', col: 'neg', fr: ['Stop', 'Stop'], en: ['Stop', 'Stop'] },
+  { id: 'wc', ic: 'toilettes', col: 'noun', fr: ['Toilettes', 'Je veux aller aux toilettes'], en: ['Bathroom', 'I need the bathroom'], gb: ['Toilet', 'I need the toilet'] },
+  { id: 'mal', ic: 'mal', col: 'neg', fr: ['Mal', "J'ai mal"], en: ['Hurt', 'It hurts'] },
+];
+let scene = 'cuisine', sheetHot = null, neg = false, view = 'child', adultTab = 'ask', unlocked = false;
+const urgTxt = (u) => (L() === 'fr' ? u.fr : (GB() && u.gb) || u.en);
+function nowRoom() { const d = new Date(), h = d.getHours() + d.getMinutes() / 60; let r0 = ROUTINE[0][1]; ROUTINE.forEach(([t, r]) => { if (h >= t) r0 = r; }); return r0; }
+function allScenes() { return SCENES.map((s) => ({ id: s.id, name: nm(s), ic: picto('room_' + s.id) })).concat(S.scenes.map((s) => ({ id: s.id, name: s.name, ic: `<img src="${s.img}" alt="">` }))); }
+function renderUrg() {
+  $('#urg').innerHTML = URG.map((u) => `<button class="urg c-${u.col}" data-urg="${u.id}" aria-label="${esc(urgTxt(u)[1])}"><span class="pic">${picto(u.ic)}</span><span class="lbl">${esc(urgTxt(u)[0])}</span></button>`).join('');
+}
+function renderRooms() {
+  const nr = nowRoom();
+  $('#rooms').innerHTML = allScenes().map((s) => `<button data-room="${s.id}" aria-current="${s.id === scene}"><span class="rpic">${s.ic}</span><span class="rl">${esc(s.name)}</span>${S.auto && s.id === nr ? `<span class="nowdot" title="${T('now')}"></span>` : ''}</button>`).join('') +
+    `<button class="adultbtn" data-open="adult"><span class="rpic">${picto('adulte')}</span><span class="rl">${T('adult')}</span></button>`;
+  const on = $('#rooms [aria-current="true"]'); if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+function sceneSVG(id) {
+  const sc = S.scenes.find((x) => x.id === id);
+  if (sc) {
+    return `<svg class="scene" viewBox="0 0 ${sc.w} ${sc.h}" preserveAspectRatio="xMidYMid meet"><image href="${sc.img}" width="${sc.w}" height="${sc.h}"/>` +
+      sc.zones.map((z, i) => `<g class="hot zone" data-hot="z:${sc.id}:${i}" tabindex="0" role="button"><circle cx="${z.x * sc.w}" cy="${z.y * sc.h}" r="${z.r * sc.w}"/></g>`).join('') + '</svg>';
+  }
+  return `<svg class="scene" viewBox="0 0 360 480" preserveAspectRatio="xMidYMid meet"><g stroke="${K}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${SCENE_ART[id]}</g></svg>`;
+}
+function renderScene() {
+  const st = $('#scene');
+  if (scene !== 'gens' && !SCENE_ART[scene] && !S.scenes.find((x) => x.id === scene)) scene = 'cuisine';
+  st.className = 'sc-' + (S.scenes.find((x) => x.id === scene) ? 'photo' : scene);
+  if (scene === 'gens') {
+    st.innerHTML = `<div class="people">${S.people.map((pe) => { const w = word(pe.id); return `<button class="pcard c-pers" data-hot="p:${pe.id}"><span class="pic">${pic(w)}</span><span class="lbl">${esc(label(w))}</span></button>`; }).join('')}</div>`;
+  } else st.innerHTML = sceneSVG(scene);
+  $$('#scene [data-hot]').forEach((g) => { const h = hotDef(g.dataset.hot); if (h) g.setAttribute('aria-label', hotName(h)); });
+}
+function goScene(id) { scene = id; renderScene(); renderRooms(); closeSheet(); }
+
+/* ---------- Bulle de choix ---------- */
+function openSheet(id) {
+  const h = hotDef(id); if (!h) return;
+  if (h.go) return goScene(h.go);
+  if (h.direct) return say(optText(h.direct), hotIcon(h));
+  if (!h.o.length) return;
+  sheetHot = id; neg = false; renderSheet();
+  $$('#scene .hot.on').forEach((g) => g.classList.remove('on'));
+  const g = $(`#scene [data-hot="${CSS.escape(id)}"]`); if (g) g.classList.add('on');
+}
+function renderSheet() {
+  const h = hotDef(sheetHot), sh = $('#sheet');
+  const n = h.o.length;
+  sh.innerHTML = `<div class="sh-card" role="dialog" aria-modal="true" aria-label="${esc(hotName(h))}">
+    <div class="sh-top"><span class="sh-ic">${hotIcon(h)}</span><h2>${esc(hotName(h))}</h2><button class="iconbtn" data-close="sheet" aria-label="${T('close')}">${ui('close')}</button></div>
+    ${h.neg ? `<div class="neg" role="radiogroup"><button role="radio" aria-checked="${!neg}" data-neg="0"><span class="mini">${picto('veux')}</span>${T('want')}</button><button role="radio" aria-checked="${neg}" data-neg="1"><span class="mini">${picto('neveux')}</span>${T('notWant')}</button></div>` : ''}
+    <div class="opts n${Math.min(n, 9)}">${h.o.map((o, i) => { const v = optView(o, h, neg); return `<button class="opt c-${v.col}" data-o="${i}"><span class="pic">${v.ic}</span><span class="lbl">${esc(v.lb)}</span></button>`; }).join('')}</div></div>`;
+  sh.hidden = false;
+  const f = $('.opt', sh); if (f && matchMedia('(pointer: fine)').matches) f.focus();
+}
+function closeSheet() { sheetHot = null; $('#sheet').hidden = true; $$('#scene .hot.on').forEach((g) => g.classList.remove('on')); }
+
+/* ---------- Adulte : questions ---------- */
+let ask = { q: '', a: [] }, query = '';
+const libWords = () => W.filter((w) => w.k !== 'start' && w.k !== 'q').concat(S.custom.map(customWord), S.people.filter((pe) => !WD[pe.id]).map((pe) => word(pe.id)));
+function libResults(q, n = 36) {
+  const qq = norm(q.trim());
+  return libWords().filter((w) => !qq || norm(label(w)).includes(qq)).slice(0, qq ? 60 : n);
+}
+function renderAsk() {
+  return `<p class="hint">${T('askHelp')}</p>
+  <div class="chips2">${QUICKQ.map((q, i) => `<button class="qchip" data-qq="${i}">${esc(nm(q))}</button>`).join('')}</div>
+  <label class="f">${T('askQ')}<input id="askQ" value="${esc(ask.q)}" placeholder="${esc(T('askPh'))}" autocomplete="off"></label>
+  <p class="flabel">${T('askAns')}</p>
+  <div class="sel">${ask.a.length ? ask.a.map((id, i) => { const w = word(id); return w ? `<button class="selc c-${colOf(w)}" data-rma="${i}" aria-label="${esc(T('remove') + ' ' + label(w))}"><span class="mini">${pic(w)}</span>${esc(label(w))}${ui('close')}</button>` : ''; }).join('') : `<span class="hint">${T('askNone')}</span>`}</div>
+  <label class="f">${T('search')}<input id="askS" type="search" value="${esc(query)}" autocomplete="off"></label>
+  <div class="lib" id="lib">${libHTML()}</div>
+  <div class="stick"><button class="btn primary big" data-open="ask"${ask.a.length ? '' : ' disabled'}>${ui('ask')}${T('show')}</button></div>`;
+}
+function libHTML() { return libResults(query).map((w) => `<button class="libw${ask.a.includes(w.id) ? ' is-on' : ''}" data-lib="${w.id}" aria-pressed="${ask.a.includes(w.id)}"><span class="mini">${pic(w)}</span><span>${esc(label(w))}</span></button>`).join(''); }
+function showAsk() {
+  const q = ask.q.trim();
+  $('#ask').innerHTML = `<button class="iconbtn askx" data-close="ask" aria-label="${T('close')}">${ui('close')}</button>
+    <p class="askq">${esc(q || '…')}</p>
+    <div class="askg n${ask.a.length}">${ask.a.map((id) => { const w = word(id); return `<button class="opt c-${colOf(w)}" data-ans="${id}"><span class="pic">${pic(w)}</span><span class="lbl">${esc(label(w))}</span></button>`; }).join('')}</div>
+    <div class="askfoot" hidden><button class="btn" data-again="1">${T('another')}</button><button class="btn" data-close="ask">${T('back')}</button></div>`;
+  $('#ask').hidden = false;
+  if (q) { speak(q); logIt('a', q); }
+}
+
+/* ---------- Adulte : fil, écrire ---------- */
+function renderLog() {
+  if (!S.log.length) return `<p class="hint">${T('logEmpty')}</p>`;
+  let day = '';
+  const loc = L() === 'fr' ? 'fr-FR' : S.lang;
+  return `<ol class="fil">${S.log.map((m) => {
+    const d = new Date(m.ts), ds = d.toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long' });
+    const head = ds !== day ? `<li class="day">${esc(ds)}</li>` : ''; day = ds;
+    return `${head}<li class="msg ${m.w === 'a' ? 'from-a' : 'from-c'}"><span>${esc(m.t)}</span><time>${d.toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' })}</time></li>`;
+  }).join('')}</ol><button class="btn danger" id="logClr">${ui('trash')}${T('logClear')}</button>`;
+}
+function renderWrite() { return `<label class="sr" for="wTxt">${T('writeHint')}</label><textarea id="wTxt" placeholder="${esc(T('writeHint'))}"></textarea><div class="row"><button class="btn" id="wClr">${T('clear')}</button><button class="btn primary" id="wSay">${ui('say')}${T('say')}</button></div>`; }
+
+/* ---------- Adulte : code et réglages ---------- */
+let pin = '', firstPin = '';
+function renderLock(msg) {
+  const mode = !S.code ? (firstPin ? 'confirm' : 'create') : 'enter';
+  return `<div class="lock"><h2>${T('lockTitle')}</h2><p class="${msg ? 'err' : ''}" role="status">${esc(msg || T(mode === 'create' ? 'lockCreate' : mode === 'confirm' ? 'lockConfirm' : 'lockEnter'))}</p>
+  <div class="dots" aria-hidden="true">${[0, 1, 2, 3].map((i) => `<span class="${i < pin.length ? 'on' : ''}"></span>`).join('')}</div>
+  <div class="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => `<button data-d="${d}">${d}</button>`).join('')}<span></span><button data-d="0">0</button><button data-d="x" aria-label="${T('erase')}">${ui('del')}</button></div></div>`;
+}
+function pinKey(d) {
+  if (d === 'x') { pin = pin.slice(0, -1); return renderAdult(); }
+  if (pin.length >= 4) return;
+  pin += d; renderAdult();
+  if (pin.length < 4) return;
+  setTimeout(() => {
+    let msg = '';
+    if (!S.code && !firstPin) { firstPin = pin; }
+    else if (!S.code) { if (pin === firstPin) { S.code = pin; save(); unlocked = true; } else msg = T('lockMismatch'); firstPin = ''; }
+    else if (pin === S.code) unlocked = true; else msg = T('lockWrong');
+    pin = ''; renderAdult(msg);
+  }, 150);
+}
+let objHot = 'frigo', newImg = '', editSc = null, selZ = -1, zq = '';
+const opt = (v, t, cur) => `<option value="${esc(v)}"${String(v) === String(cur) ? ' selected' : ''}>${esc(t)}</option>`;
+const seg = (name, items, cur) => `<div class="seg">${items.map(([v, t]) => `<label><input type="radio" name="${name}" value="${v}"${String(v) === String(cur) ? ' checked' : ''}><span>${esc(t)}</span></label>`).join('')}</div>`;
+const photoBtn = (id, cls = 'btn') => `<label class="${cls}">${ui('cam')}${T('choosePhoto')}<input type="file" id="${id}" accept="image/*" class="sr"></label>`;
+function renderSettings() {
+  if (editSc) return renderEditor();
+  const lv = voices.filter((v) => v.lang.replace('_', '-').startsWith(L()));
+  const h = hotDef(objHot), base = HOTS[objHot];
+  const hotOpts = SCENES.filter((s) => s.id !== 'gens').map((s) => `<optgroup label="${esc(nm(s))}">${Object.keys(HOTS).filter((k) => SCENE_ART[s.id].includes(`data-hot="${k}"`) && (HOTS[k].o || []).length && HOTS[k].mode !== 'pain').map((k) => opt(k, nm(HOTS[k]), objHot)).join('')}</optgroup>`).join('');
+  const allO = (base.o || []).concat(S.custom.filter((c) => c.hot === objHot).map((c) => 'veux:' + c.id));
+  return `<details open><summary>${T('sChild')}</summary>${seg('gender', [['f', T('girl')], ['m', T('boy')]], S.gender)}
+    <label class="f">${T('lang')}<select id="sLang">${opt('fr', 'Français', S.lang)}${opt('en-US', 'English (US)', S.lang)}${opt('en-GB', 'English (UK)', S.lang)}</select></label></details>
+  <details><summary>${T('sDay')}</summary><label class="chk"><input type="checkbox" id="sAuto"${S.auto ? ' checked' : ''}> ${T('autoRoom')}</label><p class="hint">${T('dayHelp')}</p>
+    <ul class="routine">${ROUTINE.map(([t, r]) => `<li><b>${String(Math.floor(t)).padStart(2, '0')}:${String(Math.round((t % 1) * 60)).padStart(2, '0')}</b> ${esc(nm(SCENES.find((s) => s.id === r)))}</li>`).join('')}</ul></details>
+  <details><summary>${T('sPeople')}</summary><p class="hint">${T('peopleHelp')}</p>
+    <ul class="plist">${S.people.map((pe, i) => { const w = word(pe.id); return `<li><span class="mini big">${pic(w)}</span><input aria-label="${T('name')}" data-pname="${i}" value="${esc(pe.name || '')}" placeholder="${esc(label(WD[pe.id] || w))}">${photoBtn('pimg' + i, 'iconbtn')}<button class="iconbtn" data-pdel="${i}" aria-label="${T('del')}">${ui('trash')}</button></li>`; }).join('')}</ul>
+    <button class="btn" id="pAdd">${ui('plus')}${T('addPerson')}</button></details>
+  <details id="dObj"><summary>${T('sObjects')}</summary><p class="hint">${T('objHelp')}</p>
+    <label class="f">${T('object')}<select id="sHot">${hotOpts}</select></label>
+    <ul class="olist">${allO.map((o) => { const v = optView(o, h); return `<li><label class="chk"><input type="checkbox" data-hide="${esc(o)}"${(S.hidden[objHot] || []).includes(o) ? '' : ' checked'}><span class="mini">${v.ic}</span>${esc(optText(o))}</label>${parts(o).a.startsWith('c') && word(parts(o).a) && word(parts(o).a).custom ? `<button class="iconbtn" data-cdel="${parts(o).a}" aria-label="${T('del')}">${ui('trash')}</button>` : ''}</li>`; }).join('')}</ul>
+    <fieldset class="add"><legend>${T('addChoice')}</legend><label class="f">${T('word')}<input id="nLabel" autocomplete="off"></label>
+      <label class="f">${T('how')}<select id="nArt">${Object.keys(ART).map((a) => opt(a, a || T('none'), 'un')).join('')}</select></label>
+      <div class="photo"><span class="mini big" id="nPrev">${newImg ? `<img src="${newImg}" alt="">` : picto('photo')}</span>${photoBtn('nImg')}</div>
+      <button class="btn primary" id="nAdd">${T('add')}</button></fieldset></details>
+  <details id="dSc"><summary>${T('sScenes')}</summary><p class="hint">${T('scHelp')}</p>
+    <ul class="plist">${S.scenes.map((s) => `<li><span class="mini big"><img src="${s.img}" alt=""></span><span class="grow">${esc(s.name)}</span><button class="btn" data-sedit="${s.id}">${T('edit')}</button><button class="iconbtn" data-sdel="${s.id}" aria-label="${T('del')}">${ui('trash')}</button></li>`).join('')}</ul>
+    <fieldset class="add"><label class="f">${T('scName')}<input id="scName" autocomplete="off"></label><div class="photo"><span class="mini big" id="scPrev">${newImg ? `<img src="${newImg}" alt="">` : picto('photo')}</span>${photoBtn('scImg')}</div><button class="btn primary" id="scNew">${T('scNew')}</button></fieldset></details>
+  <details><summary>${T('sVoice')}</summary>
+    <label class="f">${T('voice')}<select id="sVoice">${opt('', T('vDefault'), S.voice)}${lv.map((v) => opt(v.voiceURI, v.name + ' (' + v.lang + ')', S.voice)).join('')}</select></label>
+    <label class="f">${T('rate')}<input type="range" id="sRate" min="0.6" max="1.3" step="0.05" value="${S.rate}"></label>
+    <label class="f">${T('pitch')}<input type="range" id="sPitch" min="0.7" max="1.4" step="0.05" value="${S.pitch}"></label>
+    <button class="btn" id="sTest">${ui('say')}${T('test')}</button></details>
+  <details><summary>${T('sDisplay')}</summary><p class="flabel">${T('theme')}</p>${seg('theme', [['auto', T('tAuto')], ['light', T('tLight')], ['dark', T('tDark')]], S.theme)}</details>
+  <details><summary>${T('sCode')}</summary><button class="btn" id="sCode">${T('newCode')}</button></details>
+  <details><summary>${T('sBackup')}</summary><div class="row"><button class="btn" id="sExp">${T('export')}</button><label class="btn">${T('import')}<input type="file" id="sImp" accept="application/json,.json" class="sr"></label></div></details>
+  <details><summary>${T('sAbout')}</summary><p class="hint">${T('about')}</p><p class="hint">${T('version')} ${APP_VERSION}</p><button class="btn danger" id="sReset">${T('reset')}</button></details>`;
+}
+function renderEditor() {
+  const sc = S.scenes.find((x) => x.id === editSc), z = sc.zones[selZ];
+  const qq = norm(zq.trim()), lib = libWords().filter((w) => !qq || norm(label(w)).includes(qq)).slice(0, qq ? 60 : 30);
+  return `<div class="ptop"><h2>${esc(sc.name)}</h2><button class="btn primary" id="edDone">${T('done')}</button></div><p class="hint">${T('zHelp')}</p>
+  <div class="edwrap"><svg class="edsvg" viewBox="0 0 ${sc.w} ${sc.h}"><image href="${sc.img}" width="${sc.w}" height="${sc.h}"/>${sc.zones.map((zz, i) => `<circle class="zc${i === selZ ? ' sel' : ''}" data-z="${i}" cx="${zz.x * sc.w}" cy="${zz.y * sc.h}" r="${zz.r * sc.w}"/>`).join('')}</svg></div>
+  ${z ? `<fieldset class="add"><label class="f">${T('zName')}<input id="zName" value="${esc(z.name)}" autocomplete="off"></label>
+    <label class="f">${T('zSize')}<input type="range" id="zSize" min="0.03" max="0.3" step="0.01" value="${z.r}"></label>
+    <p class="flabel">${T('zChoices')}</p><div class="sel">${z.o.map((o, i) => { const v = optView(o); return `<button class="selc c-${v.col}" data-zrm="${i}" aria-label="${esc(T('remove') + ' ' + v.lb)}"><span class="mini">${v.ic}</span>${esc(v.lb)}${ui('close')}</button>`; }).join('')}</div>
+    <label class="f">${T('search')}<input id="zS" type="search" value="${esc(zq)}" autocomplete="off"></label>
+    <div class="lib">${lib.map((w) => `<button class="libw" data-zadd="${w.id}"><span class="mini">${pic(w)}</span><span>${esc(label(w))}</span></button>`).join('')}</div>
+    <button class="btn danger" id="zDel">${ui('trash')}${T('del')}</button></fieldset>` : ''}`;
+}
+function renderAdult(msg) {
+  const body = adultTab === 'ask' ? renderAsk() : adultTab === 'log' ? renderLog() : adultTab === 'write' ? renderWrite() : unlocked ? renderSettings() : renderLock(msg);
+  const was = $$('#adult details').map((d) => d.open);
+  $('#adult').innerHTML = `<div class="ahead"><button class="btn" data-close="adult">${ui('close')}${T('back')}</button></div>
+    <div class="atabs" role="tablist">${[['ask', 'tAsk'], ['log', 'tLog'], ['write', 'tWrite'], ['set', 'tSet']].map(([k, t]) => `<button role="tab" aria-selected="${k === adultTab}" data-atab="${k}">${ui(k)}<span>${T(t)}</span></button>`).join('')}</div>
+    <div class="abody">${body}</div>`;
+  const ds = $$('#adult details'); if (was.length === ds.length) ds.forEach((d, i) => { d.open = was[i]; });
+  $('#adult').hidden = false;
+}
+function resizeImg(file, max) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(1, max / Math.max(img.width, img.height)), cv = document.createElement('canvas');
+      cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(url);
+      res({ src: cv.toDataURL('image/jpeg', 0.78), w: cv.width, h: cv.height }); // shortcut: photos en base64 dans localStorage (~5 Mo), passer à @capacitor/filesystem dans l'appli native
+    };
+    img.onerror = rej; img.src = url;
+  });
+}
+
+/* ---------- Thème, langue, démarrage ---------- */
+function applyTheme() {
+  const dark = S.theme === 'dark' || (S.theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  $('meta[name=theme-color]').content = dark ? '#12161D' : '#F4F6F8';
+}
+function idleBubble() { const b = $('#bubble'); b.className = 'idle'; b.dataset.t = ''; b.innerHTML = `<span class="btx">${esc(T('hint'))}</span>`; }
+function renderAll() { if ($('#bubble').classList.contains('idle')) idleBubble(); document.documentElement.lang = L(); document.title = T('app'); applyTheme(); renderUrg(); renderRooms(); renderScene(); if (sheetHot) renderSheet(); }
+let toastT;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2400); }
+
+/* ---------- Événements ---------- */
+document.addEventListener('click', (e) => {
+  const zc = e.target.closest('.edsvg');
+  if (zc) {
+    const sc = S.scenes.find((x) => x.id === editSc), c = e.target.closest('[data-z]');
+    if (c) selZ = +c.dataset.z;
+    else { const pt = zc.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const q = pt.matrixTransform(zc.getScreenCTM().inverse()); sc.zones.push({ x: q.x / sc.w, y: q.y / sc.h, r: 0.08, name: '', o: [] }); selZ = sc.zones.length - 1; save(); }
+    zq = ''; return renderAdult();
+  }
+  const b = e.target.closest('button, [data-hot]'); if (!b) return;
+  const d = b.dataset;
+  if (d.hot) return openSheet(d.hot);
+  if (d.urg) {
+    const u = URG.find((x) => x.id === d.urg); say(urgTxt(u)[1], picto(u.ic));
+    if (u.id === 'mal') goScene('moi');
+    return;
+  }
+  if (d.room) return goScene(d.room);
+  if (d.o !== undefined) { const h = hotDef(sheetHot), o = h.o[+d.o]; const v = optView(o, h, neg); say(optText(o, neg), v.ic); return closeSheet(); }
+  if (d.neg !== undefined) { neg = d.neg === '1'; return renderSheet(); }
+  if (d.close === 'sheet') return closeSheet();
+  if (d.close === 'adult') { $('#adult').hidden = true; unlocked = false; pin = firstPin = ''; editSc = null; view = 'child'; return renderAll(); }
+  if (d.close === 'ask') { $('#ask').hidden = true; return; }
+  if (d.open === 'adult') { view = 'adult'; closeSheet(); return renderAdult(); }
+  if (d.open === 'ask') { ask.q = $('#askQ').value; return showAsk(); }
+  if (d.again) { $('#ask').hidden = true; ask = { q: '', a: [] }; adultTab = 'ask'; view = 'adult'; return renderAdult(); }
+  if (d.ans) {
+    const w = word(d.ans); say(optText(defOpt(w)), pic(w));
+    $$('#ask .opt').forEach((x) => x.classList.toggle('dim', x !== b)); $('.askfoot').hidden = false; return;
+  }
+  if (d.atab) { adultTab = d.atab; if (d.atab !== 'set') { unlocked = false; editSc = null; } return renderAdult(); }
+  if (d.qq !== undefined) { const q = QUICKQ[+d.qq]; ask = { q: nm(q), a: q.a.slice() }; return renderAdult(); }
+  if (d.lib) { ask.q = $('#askQ').value; const i = ask.a.indexOf(d.lib); if (i >= 0) ask.a.splice(i, 1); else if (ask.a.length < 4) ask.a.push(d.lib); return renderAdult(); }
+  if (d.rma !== undefined) { ask.q = $('#askQ').value; ask.a.splice(+d.rma, 1); return renderAdult(); }
+  if (d.d) return pinKey(d.d);
+  if (d.pdel !== undefined) { S.people.splice(+d.pdel, 1); save(); return renderAdult(); }
+  if (d.cdel) { S.custom = S.custom.filter((c) => c.id !== d.cdel); save(); return renderAdult(); }
+  if (d.sedit) { editSc = d.sedit; selZ = -1; return renderAdult(); }
+  if (d.sdel) { S.scenes = S.scenes.filter((s) => s.id !== d.sdel); if (scene === d.sdel) scene = 'cuisine'; save(); return renderAdult(); }
+  if (d.zadd) { const z = S.scenes.find((x) => x.id === editSc).zones[selZ]; const o = defOpt(word(d.zadd)); if (z.o.length < 8 && !z.o.includes(o)) { z.o.push(o); if (!z.name) z.name = label(word(d.zadd)); } save(); return renderAdult(); }
+  if (d.zrm !== undefined) { S.scenes.find((x) => x.id === editSc).zones[selZ].o.splice(+d.zrm, 1); save(); return renderAdult(); }
+  switch (b.id) {
+    case 'bubble': return b.dataset.t && speak(b.dataset.t);
+    case 'logClr': if (confirm(T('logAsk'))) { S.log = []; save(); renderAdult(); } return;
+    case 'wSay': { const x = $('#wTxt').value.trim(); if (x) { speak(x); logIt('c', x); } return; }
+    case 'wClr': $('#wTxt').value = ''; return $('#wTxt').focus();
+    case 'sTest': return speak(T('testText'));
+    case 'sCode': S.code = ''; save(); unlocked = false; pin = firstPin = ''; return renderAdult();
+    case 'pAdd': S.people.push({ id: 'p' + Date.now().toString(36), name: '' }); save(); return renderAdult();
+    case 'nAdd': {
+      const lab = $('#nLabel').value.trim(); if (!lab) return $('#nLabel').focus();
+      S.custom.push({ id: 'c' + Date.now().toString(36), hot: objHot, label: lab, art: $('#nArt').value, img: newImg }); newImg = '';
+      save(); toast(T('added')); return renderAdult();
+    }
+    case 'scNew': {
+      const n = $('#scName').value.trim(); if (!n) return $('#scName').focus(); if (!newImg) return toast(T('choosePhoto'));
+      const sc = { id: 's' + Date.now().toString(36), name: n, img: newImg, w: newDim.w, h: newDim.h, zones: [] };
+      S.scenes.push(sc); newImg = ''; if (!save()) { S.scenes.pop(); return; }
+      editSc = sc.id; selZ = -1; return renderAdult();
+    }
+    case 'edDone': editSc = null; renderRooms(); return renderAdult();
+    case 'zDel': S.scenes.find((x) => x.id === editSc).zones.splice(selZ, 1); selZ = -1; save(); return renderAdult();
+    case 'sExp': {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(Object.assign({ app: 'monmonde', v: APP_VERSION }, S, { code: '' }))], { type: 'application/json' }));
+      a.download = 'mon-monde-sauvegarde.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); return;
+    }
+    case 'sReset': if (confirm(T('resetAsk'))) { const code = S.code; S = JSON.parse(JSON.stringify(DEF)); S.code = code; save(); renderAll(); renderAdult(); } return;
+  }
+});
+let newDim = { w: 0, h: 0 };
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.id === 'askS') { query = t.value; $('#lib').innerHTML = libHTML(); }
+  else if (t.id === 'zS') { zq = t.value; const pos = t.selectionStart; renderAdult(); const n = $('#zS'); n.focus(); n.setSelectionRange(pos, pos); }
+  else if (t.id === 'askQ') ask.q = t.value;
+  else if (t.id === 'zSize' || t.id === 'zName') {
+    const z = S.scenes.find((x) => x.id === editSc).zones[selZ];
+    if (t.id === 'zSize') { z.r = +t.value; const c = $(`.zc[data-z="${selZ}"]`); if (c) c.setAttribute('r', z.r * S.scenes.find((x) => x.id === editSc).w); } else z.name = t.value;
+    save();
+  }
+});
+document.addEventListener('change', async (e) => {
+  const t = e.target, d = t.dataset;
+  if (t.name === 'gender') S.gender = t.value;
+  else if (t.name === 'theme') { S.theme = t.value; applyTheme(); }
+  else if (t.id === 'sLang') { S.lang = t.value; S.voice = ''; save(); renderAll(); return renderAdult(); }
+  else if (t.id === 'sAuto') S.auto = t.checked;
+  else if (t.id === 'sVoice') S.voice = t.value;
+  else if (t.id === 'sRate') S.rate = +t.value;
+  else if (t.id === 'sPitch') S.pitch = +t.value;
+  else if (t.id === 'sHot') { objHot = t.value; return renderAdult(); }
+  else if (d.pname !== undefined) S.people[+d.pname].name = t.value.trim();
+  else if (d.hide) { const a = S.hidden[objHot] || []; S.hidden[objHot] = t.checked ? a.filter((x) => x !== d.hide) : a.concat(d.hide); }
+  else if (t.type === 'file' && t.files[0]) {
+    try {
+      if (t.id === 'sImp') {
+        const j = JSON.parse(await t.files[0].text()); if (j.app !== 'monmonde') throw new Error('bad');
+        const code = S.code; S = Object.assign({}, DEF, j, { code }); delete S.app; delete S.v; save(); renderAll(); toast(T('imported')); return renderAdult();
+      }
+      const big = t.id === 'scImg', r0 = await resizeImg(t.files[0], big ? 1000 : 260);
+      if (t.id.startsWith('pimg')) { S.people[+t.id.slice(4)].img = r0.src; save(); return renderAdult(); }
+      newImg = r0.src; newDim = r0; $(big ? '#scPrev' : '#nPrev').innerHTML = `<img src="${newImg}" alt="">`;
+    } catch (err) { toast(T('badFile')); }
+    return;
+  } else return;
+  save();
+  if (t.name === 'gender' || t.id === 'sAuto') renderAll();
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('g[data-hot]')) { e.preventDefault(); openSheet(e.target.dataset.hot); }
+  if (e.key === 'Escape') { if (!$('#ask').hidden) $('#ask').hidden = true; else if (sheetHot) closeSheet(); }
+});
+$('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.auto && view === 'child' && !sheetHot && scene !== nowRoom() && SCENE_ART[scene] && Date.now() - lastTouch > 15 * 60e3) goScene(nowRoom()); });
+let lastTouch = Date.now();
+document.addEventListener('pointerdown', () => { lastTouch = Date.now(); }, true);
+
+if (S.auto) scene = nowRoom();
+renderAll();
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('service-worker.js');
+</script>
+</body>
+</html>

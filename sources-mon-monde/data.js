@@ -2,27 +2,6 @@
  k : pers (personne), start (début de phrase), noun (objet), body (corps), feel (ressenti), verb (action), place (lieu), soc (social), q (question)
  FR : g = m | f | p (pluriel), m = se dit « du / de la » (quantité), pos = forme possessive, d = on dit « la télé »
  EN : ec = mass | count | pl, enp = pluriel, epos = possessif, gb = variante britannique */
-const CATS = [
-  { id: 'debut', fr: 'Début', en: 'Start' },
-  { id: 'manger', fr: 'Manger', en: 'Food' },
-  { id: 'corps', fr: 'Corps', en: 'Body' },
-  { id: 'emotions', fr: 'Ressentir', en: 'Feelings' },
-  { id: 'faire', fr: 'Faire', en: 'Do' },
-  { id: 'lieux', fr: 'Lieux', en: 'Places' },
-  { id: 'objets', fr: 'Objets', en: 'Things' },
-];
-
-const ESS = [
-  { id: 'oui', col: 'soc', fr: ['Oui', 'Oui'], en: ['Yes', 'Yes'] },
-  { id: 'non', col: 'neg', fr: ['Non', 'Non'], en: ['No', 'No'] },
-  { id: 'stop', col: 'neg', fr: ['Stop', 'Stop'], en: ['Stop', 'Stop'] },
-  { id: 'aide', col: 'neg', fr: ['Aide', "J'ai besoin d'aide"], en: ['Help', 'I need help'] },
-  { id: 'toilettes', col: 'noun', fr: ['Toilettes', 'Je veux aller aux toilettes'], en: ['Bathroom', 'I need the bathroom'], gb: ['Toilet', 'I need the toilet'] },
-  { id: 'mal', col: 'neg', fr: ['Mal', "J'ai mal"], en: ['Hurt', 'It hurts'] },
-  { id: 'encore', col: 'verb', fr: ['Encore', 'Encore'], en: ['More', 'More'] },
-  { id: 'fini', col: 'desc', fr: ['Fini', "C'est fini"], en: ['Done', 'All done'] },
-];
-
 const W = [
   /* Début : personnes */
   { id: 'maman', cat: 'debut', k: 'pers', fr: 'Maman', en: 'Mom', gb: 'Mum' },
@@ -146,10 +125,29 @@ const W = [
   { id: 'lego', cat: 'objets', k: 'noun', fr: 'Lego', g: 'p', en: 'Lego', ec: 'mass' },
   { id: 'bulles', cat: 'objets', k: 'noun', fr: 'bulles', g: 'p', en: 'bubbles', ec: 'pl' },
   { id: 'telephone', cat: 'objets', k: 'noun', fr: 'téléphone', g: 'm', d: 1, en: 'phone', ec: 'the' },
+  /* Ajouts Mon Monde */
+  { id: 'cereales', cat: 'manger', k: 'noun', fr: 'céréales', g: 'p', en: 'cereal', ec: 'mass' },
+  { id: 'raisin', cat: 'manger', k: 'noun', fr: 'raisin', g: 'm', m: 1, en: 'grapes', ec: 'pl' },
+  { id: 'fraises', cat: 'manger', k: 'noun', fr: 'fraises', g: 'p', en: 'strawberries', ec: 'pl' },
+  { id: 'lavermains', cat: 'faire', k: 'verb', fr: 'me laver les mains', lbl: 'Me laver les mains', en: 'wash my hands' },
+  { id: 'brosser', cat: 'faire', k: 'verb', fr: 'me brosser les dents', lbl: 'Me brosser les dents', en: 'brush my teeth' },
+  { id: 'habiller', cat: 'faire', k: 'verb', fr: "m'habiller", lbl: "M'habiller", en: 'get dressed' },
+  { id: 'histoire', cat: 'faire', k: 'verb', fr: 'écouter une histoire', lbl: 'Une histoire', elbl: 'A story', en: 'hear a story' },
+  { id: 'toboggan', cat: 'faire', k: 'verb', fr: 'faire du toboggan', lbl: 'Toboggan', elbl: 'Slide', en: 'go on the slide' },
+  { id: 'balancoire', cat: 'faire', k: 'verb', fr: 'faire de la balançoire', lbl: 'Balançoire', elbl: 'Swing', en: 'go on the swing' },
+  { id: 'jaifini', cat: 'debut', k: 'soc', fr: "J'ai fini", en: "I'm finished" },
+  { id: 'besoinaide', cat: 'debut', k: 'soc', fr: "J'ai besoin d'aide", lbl: 'Aide', en: 'I need help', elbl: 'Help' },
+  { id: 'allume', cat: 'debut', k: 'soc', fr: 'Allume la lumière', lbl: 'Allumer', en: 'Turn the light on', elbl: 'Light on' },
+  { id: 'eteins', cat: 'debut', k: 'soc', fr: 'Éteins la lumière', lbl: 'Éteindre', en: 'Turn the light off', elbl: 'Light off' },
+  { id: 'montour', cat: 'debut', k: 'soc', fr: "C'est mon tour", lbl: 'Mon tour', en: 'My turn' },
+  { id: 'atoi', cat: 'debut', k: 'soc', fr: 'À toi', en: 'Your turn' },
+  { id: 'encore', cat: 'debut', k: 'soc', fr: 'Encore', en: 'More' },
+  { id: 'oui', cat: 'debut', k: 'soc', fr: 'Oui', en: 'Yes' },
+  { id: 'non', cat: 'debut', k: 'soc', col: 'neg', fr: 'Non', en: 'No' },
 ];
 
 /* ---------- Grammaire française ---------- */
-const VOY = /^[aeiouyàâäéèêëîïôöûüœ]/i;
+const VOY = /^[aeiouàâäéèêëîïôöûüœ]/i; // pas de « y » : on dit « de yaourt »
 const grammarFR = {
   def(w) { return w.g === 'p' ? 'les ' + w.fr : VOY.test(w.fr) ? "l'" + w.fr : (w.g === 'f' ? 'la ' : 'le ') + w.fr; },
   indef(w) {
