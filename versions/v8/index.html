@@ -334,6 +334,9 @@ body.modeling .sentence-bar{background:#fff8e1}
 @keyframes shown{0%{transform:scale(1)}40%{transform:scale(1.07);box-shadow:0 0 0 6px #f5a400}100%{transform:scale(1)}}
 .done-box .btn{justify-content:center}
 .le-row .meta small{display:block}
+/* correctif : texte lisible dans les champs en mode sombre */
+input,select,textarea{color:var(--color-text)}
+input::placeholder,textarea::placeholder{color:var(--color-text-faint);opacity:1}
 </style>
 </head>
 <body>
