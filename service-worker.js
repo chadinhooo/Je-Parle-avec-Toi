@@ -1,4 +1,4 @@
-const VERSION = 'jpat-v7';
+const VERSION = 'jpat-v8';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
