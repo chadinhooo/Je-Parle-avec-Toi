@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F1F3F7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Je Parle">
+<meta name="description" content="Application de communication par pictogrammes pour enfants et adultes qui ne parlent pas ou peu.">
+<title>Je Parle avec Toi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preload" href="fonts/FiraSans-SemiBold.woff" as="font" type="font/woff" crossorigin>
+<style>/*CSS*/</style>
+</head>
+<body>
+<div id="app">
+  <main>
+    <section class="view" id="vTalk" data-v="talk">
+      <div class="say-bar">
+        <div id="phrase" aria-live="polite"><div class="chips" id="chips"></div><div id="txt"></div></div>
+        <div class="acts">
+          <button class="iconbtn" id="bDel"><svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12z"/><path d="M12 9l6 6M18 9l-6 6"/></g></svg></button>
+          <button class="iconbtn" id="bClr"><svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></g></svg></button>
+          <button class="iconbtn" id="bKeep"><svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l2.8 5.8 6.2.9-4.5 4.4 1 6.2L12 17.4 6.5 20.3l1-6.2L3 9.7l6.2-.9z"/></g></svg></button>
+          <button id="bSay"></button>
+        </div>
+      </div>
+      <div id="ess"></div>
+      <div id="cats" role="tablist"></div>
+      <div id="grid"></div>
+      <div id="pager"><button class="btn" id="pgPrev"><svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span id="pgTxt"></span><button class="btn" id="pgNext"><svg class="ui" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    </section>
+    <section class="view" id="vPhrases" data-v="phrases" hidden></section>
+    <section class="view" id="vWrite" data-v="write" hidden></section>
+    <section class="view" id="vParents" data-v="parents" hidden></section>
+  </main>
+  <nav id="tabs"></nav>
+</div>
+<div id="toast" role="status" hidden></div>
+<script>/*JS*/</script>
+</body>
+</html>
